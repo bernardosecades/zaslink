@@ -20,29 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51514625-f94f-4217-ada5-0c75c1e7c6d1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controllers/SecretController.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crypto/Crypter.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crypto/Crypter_test.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/go/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/mysql/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker/mysql/test.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mocks/MockSecretRepository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/Secret.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/InMemorySecretRepository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/MysqlSecretRepository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/SecretRepository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/SecretService.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/SecretService_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/app/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sharesecret" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sharesecret.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/SecretService_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/SecretService_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,28 +178,32 @@
       <screen x="0" y="23" width="1440" height="828" />
     </state>
     <state x="678" y="149" key="#xdebugger.evaluate/0.23.1440.828@0.23.1440.828" timestamp="1607544031701" />
-    <state width="1398" height="185" key="GridCell.Tab.0.bottom" timestamp="1607546789624">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="185" key="GridCell.Tab.0.bottom" timestamp="1607547358414">
+      <screen x="0" y="23" width="1440" height="829" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
+    <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.829@0.23.1440.829" timestamp="1607547358414" />
     <state width="1398" height="212" key="GridCell.Tab.0.bottom/0.23.1440.830@0.23.1440.830" timestamp="1607009588187" />
     <state width="1398" height="285" key="GridCell.Tab.0.bottom/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1398" height="185" key="GridCell.Tab.0.center" timestamp="1607546789623">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="185" key="GridCell.Tab.0.center" timestamp="1607547358412">
+      <screen x="0" y="23" width="1440" height="829" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
+    <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.829@0.23.1440.829" timestamp="1607547358412" />
     <state width="1398" height="212" key="GridCell.Tab.0.center/0.23.1440.830@0.23.1440.830" timestamp="1607009588186" />
     <state width="1398" height="285" key="GridCell.Tab.0.center/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1398" height="185" key="GridCell.Tab.0.left" timestamp="1607546789623">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="185" key="GridCell.Tab.0.left" timestamp="1607547358411">
+      <screen x="0" y="23" width="1440" height="829" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
+    <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.829@0.23.1440.829" timestamp="1607547358411" />
     <state width="1398" height="212" key="GridCell.Tab.0.left/0.23.1440.830@0.23.1440.830" timestamp="1607009588186" />
     <state width="1398" height="285" key="GridCell.Tab.0.left/0.23.1440.831@0.23.1440.831" timestamp="1607533058130" />
-    <state width="1398" height="185" key="GridCell.Tab.0.right" timestamp="1607546789624">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="185" key="GridCell.Tab.0.right" timestamp="1607547358413">
+      <screen x="0" y="23" width="1440" height="829" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
+    <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.829@0.23.1440.829" timestamp="1607547358413" />
     <state width="1398" height="212" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1607009588187" />
     <state width="1398" height="285" key="GridCell.Tab.0.right/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
     <state width="1398" height="217" key="GridCell.Tab.1.bottom" timestamp="1607544794972">

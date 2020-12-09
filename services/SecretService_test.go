@@ -17,7 +17,7 @@ func TestGetContentSecret(t *testing.T) {
 	assert.Equal(t, "My name is Bernie", content)
 }
 
-func TestCreateContentSecret(t *testing.T) {
+func TestCreateSecret(t *testing.T) {
 
 	key := "11111111111111111111111111111111"
 	pass := "@myPassword"

@@ -20,8 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51514625-f94f-4217-ada5-0c75c1e7c6d1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/viewmodel/SecretViewModel.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/SecretService_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/SecretService_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/SecretController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/SecretController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/Secret.go" beforeDir="false" afterPath="$PROJECT_DIR$/models/Secret.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repositories/InMemorySecretRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repositories/InMemorySecretRepository.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +70,7 @@
       <recent name="$PROJECT_DIR$/docker/MySQL" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.go test github.com/bernardosecades/sharesecret/crypto">
+  <component name="RunManager" selected="Go Build.go build main.go">
     <configuration name="App Engine" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="sharesecret" />
       <working_directory value="$PROJECT_DIR$" />
@@ -73,6 +78,15 @@
       <kind value="PACKAGE" />
       <filePath value="$PROJECT_DIR$" />
       <package value="sharesecret" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="sharesecret" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="github.com/bernardosecades/sharesecret" />
       <directory value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
@@ -98,17 +112,6 @@
       <pattern value="^\QTestEncryptDecryptWithSameKey\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestGetContentSecret in github.com/bernardosecades/sharesecret/services" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
-      <module name="sharesecret" />
-      <working_directory value="$PROJECT_DIR$/services" />
-      <framework value="gotest" />
-      <kind value="PACKAGE" />
-      <package value="github.com/bernardosecades/sharesecret/services" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <pattern value="^\QTestGetContentSecret\E$" />
-      <method v="2" />
-    </configuration>
     <configuration name="go test github.com/bernardosecades/sharesecret/crypto" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="sharesecret" />
       <working_directory value="$PROJECT_DIR$/crypto" />
@@ -131,19 +134,19 @@
     </configuration>
     <list>
       <item itemvalue="Go Build.App Engine" />
-      <item itemvalue="Go Test.TestGetContentSecret in github.com/bernardosecades/sharesecret/services" />
       <item itemvalue="Go Test.TestCreateContentSecret in github.com/bernardosecades/sharesecret/services" />
       <item itemvalue="Go Test.go test github.com/bernardosecades/sharesecret/services" />
       <item itemvalue="Go Test.go test github.com/bernardosecades/sharesecret/crypto" />
       <item itemvalue="Go Test.TestEncryptDecryptWithSameKey in github.com/bernardosecades/sharesecret/crypto" />
+      <item itemvalue="Go Build.go build main.go" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Test.go test github.com/bernardosecades/sharesecret/crypto" />
         <item itemvalue="Go Test.TestEncryptDecryptWithSameKey in github.com/bernardosecades/sharesecret/crypto" />
         <item itemvalue="Go Test.go test github.com/bernardosecades/sharesecret/services" />
         <item itemvalue="Go Test.TestCreateContentSecret in github.com/bernardosecades/sharesecret/services" />
-        <item itemvalue="Go Test.TestGetContentSecret in github.com/bernardosecades/sharesecret/services" />
       </list>
     </recent_temporary>
   </component>
@@ -174,54 +177,59 @@
       <screen x="0" y="23" width="1440" height="828" />
     </state>
     <state x="458" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.828@0.23.1440.828" timestamp="1607356377717" />
-    <state x="678" y="149" key="#xdebugger.evaluate" timestamp="1607544031701">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state x="678" y="149" key="#xdebugger.evaluate" timestamp="1607589784190">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state x="678" y="149" key="#xdebugger.evaluate/0.23.1440.828@0.23.1440.828" timestamp="1607544031701" />
-    <state width="1398" height="185" key="GridCell.Tab.0.bottom" timestamp="1607547358414">
-      <screen x="0" y="23" width="1440" height="829" />
+    <state x="678" y="149" key="#xdebugger.evaluate/0.23.1440.830@0.23.1440.830" timestamp="1607589784190" />
+    <state width="1398" height="162" key="GridCell.Tab.0.bottom" timestamp="1607590261417">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
     <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.829@0.23.1440.829" timestamp="1607547358414" />
-    <state width="1398" height="212" key="GridCell.Tab.0.bottom/0.23.1440.830@0.23.1440.830" timestamp="1607009588187" />
+    <state width="1398" height="162" key="GridCell.Tab.0.bottom/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.bottom/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1398" height="185" key="GridCell.Tab.0.center" timestamp="1607547358412">
-      <screen x="0" y="23" width="1440" height="829" />
+    <state width="1398" height="162" key="GridCell.Tab.0.center" timestamp="1607590261417">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
     <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.829@0.23.1440.829" timestamp="1607547358412" />
-    <state width="1398" height="212" key="GridCell.Tab.0.center/0.23.1440.830@0.23.1440.830" timestamp="1607009588186" />
+    <state width="1398" height="162" key="GridCell.Tab.0.center/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.center/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1398" height="185" key="GridCell.Tab.0.left" timestamp="1607547358411">
-      <screen x="0" y="23" width="1440" height="829" />
+    <state width="1398" height="162" key="GridCell.Tab.0.left" timestamp="1607590261417">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
     <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.829@0.23.1440.829" timestamp="1607547358411" />
-    <state width="1398" height="212" key="GridCell.Tab.0.left/0.23.1440.830@0.23.1440.830" timestamp="1607009588186" />
+    <state width="1398" height="162" key="GridCell.Tab.0.left/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.left/0.23.1440.831@0.23.1440.831" timestamp="1607533058130" />
-    <state width="1398" height="185" key="GridCell.Tab.0.right" timestamp="1607547358413">
-      <screen x="0" y="23" width="1440" height="829" />
+    <state width="1398" height="162" key="GridCell.Tab.0.right" timestamp="1607590261417">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
     <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.829@0.23.1440.829" timestamp="1607547358413" />
-    <state width="1398" height="212" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1607009588187" />
+    <state width="1398" height="162" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.right/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1398" height="217" key="GridCell.Tab.1.bottom" timestamp="1607544794972">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="162" key="GridCell.Tab.1.bottom" timestamp="1607590261418">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="217" key="GridCell.Tab.1.bottom/0.23.1440.828@0.23.1440.828" timestamp="1607544794972" />
-    <state width="1398" height="217" key="GridCell.Tab.1.center" timestamp="1607544794971">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="162" key="GridCell.Tab.1.bottom/0.23.1440.830@0.23.1440.830" timestamp="1607590261418" />
+    <state width="1398" height="162" key="GridCell.Tab.1.center" timestamp="1607590261418">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="217" key="GridCell.Tab.1.center/0.23.1440.828@0.23.1440.828" timestamp="1607544794971" />
-    <state width="1398" height="217" key="GridCell.Tab.1.left" timestamp="1607544794971">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="162" key="GridCell.Tab.1.center/0.23.1440.830@0.23.1440.830" timestamp="1607590261418" />
+    <state width="1398" height="162" key="GridCell.Tab.1.left" timestamp="1607590261417">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="217" key="GridCell.Tab.1.left/0.23.1440.828@0.23.1440.828" timestamp="1607544794971" />
-    <state width="1398" height="217" key="GridCell.Tab.1.right" timestamp="1607544794971">
-      <screen x="0" y="23" width="1440" height="828" />
+    <state width="1398" height="162" key="GridCell.Tab.1.left/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
+    <state width="1398" height="162" key="GridCell.Tab.1.right" timestamp="1607590261418">
+      <screen x="0" y="23" width="1440" height="830" />
     </state>
     <state width="1398" height="217" key="GridCell.Tab.1.right/0.23.1440.828@0.23.1440.828" timestamp="1607544794971" />
+    <state width="1398" height="162" key="GridCell.Tab.1.right/0.23.1440.830@0.23.1440.830" timestamp="1607590261418" />
     <state x="463" y="160" key="RollbackChangesDialog" timestamp="1607447267373">
       <screen x="0" y="23" width="1440" height="828" />
     </state>
@@ -234,6 +242,17 @@
       <screen x="0" y="23" width="1440" height="828" />
     </state>
     <state x="418" y="69" width="604" height="735" key="find.popup/0.23.1440.828@0.23.1440.828" timestamp="1607500856885" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/controllers/SecretController.go</url>
+          <line>30</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/sharesecret$go_test_github_com_bernardosecades_sharesecret_crypto.out" NAME="go test github.com/bernardosecades/sharesecret/crypto Coverage Results" MODIFIED="1607443543760" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="GoCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

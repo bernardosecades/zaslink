@@ -22,7 +22,7 @@ func init() {
 func main() {
 
 	secretRepository := repositories.NewInMemorySecretRepository()
-	secretService := services.NewSecretService(secretRepository, "@myPassword111111111111111111111") // TODO use environment variable
+	secretService := services.NewSecretService(secretRepository, os.Getenv("SECRET_KEY"))
 	secretController := controllers.NewSecretController(secretService)
 
 	r := mux.NewRouter()

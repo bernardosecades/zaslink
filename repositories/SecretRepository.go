@@ -6,4 +6,6 @@ import (
 
 type SecretRepository interface {
 	GetSecret(id string) (models.Secret, error)
+	CreateSecret(content string) (string, error)
+	UpdateToViewed(id string) error
 }

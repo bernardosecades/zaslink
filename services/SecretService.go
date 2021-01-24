@@ -5,7 +5,6 @@ import (
 	"github.com/bernardosecades/sharesecret/crypto"
 	"github.com/bernardosecades/sharesecret/models"
 	"github.com/bernardosecades/sharesecret/repositories"
-	uuid "github.com/satori/go.uuid"
 )
 
 type SecretService struct {
@@ -22,30 +21,46 @@ func NewSecretService(r repositories.SecretRepository, key string) SecretService
 	return SecretService{r, key}
 }
 
-func (s *SecretService) GetSecret(id string) models.Secret {
+func (s *SecretService) GetSecret(id string) (models.Secret, error) {
 	secret, err := s.repository.GetSecret(id)
 	if err != nil {
-		panic("errornto try to get secret") // TODO handle error better
+		return models.Secret{}, err
 	}
 
-	return secret
+	err = s.repository.UpdateToViewed(id)
+
+	if err != nil {
+		return models.Secret{}, err
+	}
+
+	return secret, nil
 }
 
-func (s *SecretService) GetContentSecret(id string, password string) string {
-	secret := s.GetSecret(id)
-	return s.DecryptContentSecret(secret.Content, password)
+func (s *SecretService) GetContentSecret(id string, password string) (string, error) {
+	secret, err := s.GetSecret(id)
+	// TODO update like visited
+
+	if err != nil {
+		return "", err
+	}
+
+	return s.DecryptContentSecret(secret.Content, password), nil
 }
 
-func (s *SecretService) CreateSecret(rawContent string, password string) models.Secret {
+func (s *SecretService) CreateSecret(rawContent string, password string) (string, error) {
 
 	if len(password) > 32 {
 		panic("password too long")
 	}
 
-	return models.Secret{
-		uuid.NewV4().String(),
-		s.EncryptContentSecret(rawContent, password),
+	content := s.EncryptContentSecret(rawContent, password)
+	id, err := s.repository.CreateSecret(content)
+
+	if err != nil {
+		return "", err
 	}
+
+	return id, nil
 }
 
 func (s *SecretService) DecryptContentSecret(content string, password string) string {

@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
+	"github.com/bernardosecades/sharesecret/dto"
 	"github.com/bernardosecades/sharesecret/services"
-	models "github.com/bernardosecades/sharesecret/viewmodel"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
@@ -18,28 +18,58 @@ func NewSecretController(s services.SecretService) *SecretController {
 }
 
 func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.Request) {
-	secret := controller.secretService.CreateSecret("raw content", "myPassword")
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(secret)
+	var cs dto.CreateSecretRequest
+	err := json.NewDecoder(r.Body).Decode(&cs)
+
 	if err != nil {
-		panic("error to encode secret")
+		w.WriteHeader(400)
+		return
+	}
+
+	pass := r.Header.Get("X-Password")
+	if pass == "" {
+		pass = os.Getenv("SECRET_PASSWORD")
+	}
+
+	id, err := controller.secretService.CreateSecret(cs.Content, pass)
+
+	if err != nil {
+		w.WriteHeader(500)
+		return
+	}
+
+	// TODO change url
+	cr := dto.CreateSecretResponse{
+		Url: "http://127.0.0.1:8080/secret/" + id,
+	}
+
+	err = json.NewEncoder(w).Encode(cr)
+	if err != nil {
+		panic("error to encode create secret response")
 	}
 }
 
 func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	pass:= r.Header.Get("X-Password")
+	pass := r.Header.Get("X-Password")
 
 	if pass == "" {
 		pass = os.Getenv("SECRET_PASSWORD")
 	}
 
-	content := controller.secretService.GetContentSecret(id, pass)
-	viewModel := models.SecretViewModel{content}
+	content, err := controller.secretService.GetContentSecret(id, pass)
+
+	if err != nil {
+		w.WriteHeader(404)
+		return
+	}
+
+	sr := dto.SecretResponse{content}
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(viewModel)
+	err = json.NewEncoder(w).Encode(sr)
 	if err != nil {
 		panic("error to encode secret")
 	}

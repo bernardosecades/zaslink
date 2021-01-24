@@ -27,7 +27,7 @@ https://irahardianto.github.io/service-pattern-go/
 Read: https://qiita.com/osk_kamui/items/1539ade3c23f58b89f80
 
 docker-compose up --build
-docker exec -it golang_db
+docker exec -it golang_db bash
 docker exec -it golang_app bash -c "go run main.go"
 
 Golang docker and test pipeline.
@@ -38,3 +38,12 @@ https://codefresh.io/docs/docs/learn-by-example/golang/golang-hello-world/
 # Architecture
 
 https://www.perimeterx.com/tech-blog/2019/ok-lets-go/
+
+
+# Build version
+
+go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)" 
+
+# Reference
+
+https://github.com/s1s1ty/go-mysql-crud

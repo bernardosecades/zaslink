@@ -33,7 +33,7 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 		pass = os.Getenv("SECRET_PASSWORD")
 	}
 
-	id, err := controller.secretService.CreateSecret(cs.Content, pass)
+	secret, err := controller.secretService.CreateSecret(cs.Content, pass)
 
 	if err != nil {
 		w.WriteHeader(500)
@@ -42,7 +42,7 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 
 	// TODO change url
 	cr := dto.CreateSecretResponse{
-		Url: "http://127.0.0.1:8080/secret/" + id,
+		Url: "http://127.0.0.1:8080/secret/" + secret.Id,
 	}
 
 	err = json.NewEncoder(w).Encode(cr)

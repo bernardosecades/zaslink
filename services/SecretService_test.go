@@ -23,7 +23,7 @@ func TestCreateSecret(t *testing.T) {
 	pass := "@myPassword"
 
 	sut := NewSecretService(mocks.NewMockSecretRepository(), key)
-	id, _ := sut.CreateSecret("My secret content", pass)
+	secret, _ := sut.CreateSecret("My secret content", pass)
 
-	assert.Equal(t, "727d7040-aac7-4dc3-ab44-938bfba92ebd", id)
+	assert.Equal(t, "My name is Bernie", sut.DecryptContentSecret(secret.Content, pass))
 }

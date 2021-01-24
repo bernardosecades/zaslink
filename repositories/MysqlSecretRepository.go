@@ -34,7 +34,7 @@ func (repository *MySqlSecretRepository) GetSecret(id string) (models.Secret, er
 	res := repository.SQL.QueryRow("SELECT * FROM secret WHERE id = ? AND viewed = 0", id)
 
 	var secret models.Secret
-	err := res.Scan(&secret.Id, &secret.Content, &secret.Visited)
+	err := res.Scan(&secret.Id, &secret.Content, &secret.Viewed)
 
 	if err != nil {
 		return models.Secret{}, err
@@ -43,18 +43,20 @@ func (repository *MySqlSecretRepository) GetSecret(id string) (models.Secret, er
 	return secret, nil
 }
 
-func (repository *MySqlSecretRepository) CreateSecret(content string) (string, error) {
+func (repository *MySqlSecretRepository) CreateSecret(content string) (models.Secret, error) {
 
 	u := uuid.Must(uuid.NewV4(), nil)
 	id := u.String()
 
-	_, err := repository.SQL.Exec("INSERT INTO secret (id, content) VALUES (?, ?)", id, content)
+	secret := models.Secret{Id: id, Content: content, Viewed: false }
+
+	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, viewed) VALUES (?, ?, ?)", secret.Id, secret.Content, secret.Viewed)
 
 	if err != nil {
-		return "", err
+		return models.Secret{}, err
 	}
 
-	return id, nil
+	return secret, nil
 }
 
 func (repository *MySqlSecretRepository) UpdateToViewed(id string) error {

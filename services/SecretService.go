@@ -38,8 +38,6 @@ func (s *SecretService) GetSecret(id string) (models.Secret, error) {
 
 func (s *SecretService) GetContentSecret(id string, password string) (string, error) {
 	secret, err := s.GetSecret(id)
-	// TODO update like visited
-
 	if err != nil {
 		return "", err
 	}
@@ -47,20 +45,19 @@ func (s *SecretService) GetContentSecret(id string, password string) (string, er
 	return s.DecryptContentSecret(secret.Content, password), nil
 }
 
-func (s *SecretService) CreateSecret(rawContent string, password string) (string, error) {
+func (s *SecretService) CreateSecret(rawContent string, password string) (models.Secret, error) {
 
 	if len(password) > 32 {
 		panic("password too long")
 	}
 
 	content := s.EncryptContentSecret(rawContent, password)
-	id, err := s.repository.CreateSecret(content)
-
+	secret, err := s.repository.CreateSecret(content)
 	if err != nil {
-		return "", err
+		return models.Secret{}, err
 	}
 
-	return id, nil
+	return secret, nil
 }
 
 func (s *SecretService) DecryptContentSecret(content string, password string) string {

@@ -71,6 +71,13 @@ func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Req
 		return
 	}
 
+	if len(content) == 0 && len(r.Header.Get("X-Password")) == 0 {
+		customError := dto.ErrorResponse{StatusCode: 400, Err: "Empty password"}
+		w.WriteHeader(customError.StatusCode)
+		_ = json.NewEncoder(w).Encode(customError)
+		return
+	}
+
 	sr := dto.SecretResponse{content}
 	_ = json.NewEncoder(w).Encode(sr)
 }

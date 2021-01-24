@@ -47,3 +47,8 @@ go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"
 # Reference
 
 https://github.com/s1s1ty/go-mysql-crud
+
+
+# Add swagger
+
+https://medium.com/@pedram.esmaeeli/generate-swagger-specification-from-go-source-code-648615f7b9d9

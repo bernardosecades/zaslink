@@ -40,9 +40,8 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 		return
 	}
 
-	// TODO change url
 	cr := dto.CreateSecretResponse{
-		Url: "http://127.0.0.1:8080/secret/" + secret.Id,
+		Url: os.Getenv("SERVER_URL") + ":" + os.Getenv("SERVER_PORT") + "/secret/" + secret.Id,
 	}
 
 	err = json.NewEncoder(w).Encode(cr)

@@ -24,7 +24,7 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 	_ = json.NewDecoder(r.Body).Decode(&cs)
 
 	if len(cs.Content) == 0 {
-		customError := dto.ErrorResponse{ StatusCode: 400, Err: "Empty 'content'"}
+		customError := dto.ErrorResponse{StatusCode: 400, Err: "Empty 'content'"}
 		w.WriteHeader(customError.StatusCode)
 		_ = json.NewEncoder(w).Encode(customError)
 		return
@@ -38,7 +38,7 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 	secret, err := controller.secretService.CreateSecret(cs.Content, pass)
 
 	if err != nil {
-		customError := dto.ErrorResponse{ StatusCode: 404, Err: err.Error()}
+		customError := dto.ErrorResponse{StatusCode: 404, Err: err.Error()}
 		w.WriteHeader(customError.StatusCode)
 		_ = json.NewEncoder(w).Encode(customError)
 		return
@@ -64,7 +64,7 @@ func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Req
 	content, err := controller.secretService.GetContentSecret(id, pass)
 
 	if err != nil {
-		customError := dto.ErrorResponse{ StatusCode: 404, Err: err.Error()}
+		customError := dto.ErrorResponse{StatusCode: 404, Err: err.Error()}
 		w.WriteHeader(customError.StatusCode)
 		_ = json.NewEncoder(w).Encode(customError)
 		return

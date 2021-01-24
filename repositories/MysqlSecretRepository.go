@@ -48,7 +48,7 @@ func (repository *MySqlSecretRepository) CreateSecret(content string) (models.Se
 	u := uuid.Must(uuid.NewV4(), nil)
 	id := u.String()
 
-	secret := models.Secret{Id: id, Content: content, Viewed: false }
+	secret := models.Secret{Id: id, Content: content, Viewed: false}
 
 	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, viewed) VALUES (?, ?, ?)", secret.Id, secret.Content, secret.Viewed)
 

@@ -33,7 +33,7 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 
 	pass := r.Header.Get("X-Password")
 	if pass == "" {
-		pass = os.Getenv("SECRET_PASSWORD")
+		pass = os.Getenv("SECRET_DEFAULT_PASSWORD")
 	}
 
 	secret, err := controller.secretService.CreateSecret(cs.Content, pass)
@@ -59,7 +59,7 @@ func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Req
 	pass := r.Header.Get("X-Password")
 
 	if pass == "" {
-		pass = os.Getenv("SECRET_PASSWORD")
+		pass = os.Getenv("SECRET_DEFAULT_PASSWORD")
 	}
 
 	content, err := controller.secretService.GetContentSecret(id, pass)

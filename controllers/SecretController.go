@@ -21,10 +21,12 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 
 	w.Header().Set("Content-Type", "application/json")
 	var cs dto.CreateSecretRequest
-	err := json.NewDecoder(r.Body).Decode(&cs)
+	_ = json.NewDecoder(r.Body).Decode(&cs)
 
-	if err != nil {
-		w.WriteHeader(400)
+	if len(cs.Content) == 0 {
+		customError := dto.ErrorResponse{ StatusCode: 400, Err: "Empty 'content'"}
+		w.WriteHeader(customError.StatusCode)
+		_ = json.NewEncoder(w).Encode(customError)
 		return
 	}
 
@@ -36,21 +38,22 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 	secret, err := controller.secretService.CreateSecret(cs.Content, pass)
 
 	if err != nil {
-		w.WriteHeader(500)
+		customError := dto.ErrorResponse{ StatusCode: 404, Err: err.Error()}
+		w.WriteHeader(customError.StatusCode)
+		_ = json.NewEncoder(w).Encode(customError)
 		return
 	}
 
 	cr := dto.CreateSecretResponse{
 		Url: os.Getenv("SERVER_URL") + ":" + os.Getenv("SERVER_PORT") + "/secret/" + secret.Id,
 	}
-
-	err = json.NewEncoder(w).Encode(cr)
-	if err != nil {
-		panic("error to encode create secret response")
-	}
+	_ = json.NewEncoder(w).Encode(cr)
 }
 
 func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+
 	id := mux.Vars(r)["id"]
 	pass := r.Header.Get("X-Password")
 
@@ -61,15 +64,12 @@ func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Req
 	content, err := controller.secretService.GetContentSecret(id, pass)
 
 	if err != nil {
-		w.WriteHeader(404)
+		customError := dto.ErrorResponse{ StatusCode: 404, Err: err.Error()}
+		w.WriteHeader(customError.StatusCode)
+		_ = json.NewEncoder(w).Encode(customError)
 		return
 	}
 
 	sr := dto.SecretResponse{content}
-
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(sr)
-	if err != nil {
-		panic("error to encode secret")
-	}
+	_ = json.NewEncoder(w).Encode(sr)
 }

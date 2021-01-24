@@ -20,6 +20,7 @@ func NewSecretController(s services.SecretService) *SecretController {
 func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
+
 	var cs dto.CreateSecretRequest
 	_ = json.NewDecoder(r.Body).Decode(&cs)
 

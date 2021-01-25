@@ -34,7 +34,7 @@ func (repository *MySqlSecretRepository) GetSecret(id string) (models.Secret, er
 	res := repository.SQL.QueryRow("SELECT * FROM secret WHERE id = ? AND viewed = 0", id)
 
 	var secret models.Secret
-	err := res.Scan(&secret.Id, &secret.Content, &secret.Viewed)
+	err := res.Scan(&secret.Id, &secret.Content, &secret.Viewed, &secret.CustomPwd)
 
 	if err != nil {
 		return models.Secret{}, err
@@ -43,14 +43,14 @@ func (repository *MySqlSecretRepository) GetSecret(id string) (models.Secret, er
 	return secret, nil
 }
 
-func (repository *MySqlSecretRepository) CreateSecret(content string) (models.Secret, error) {
+func (repository *MySqlSecretRepository) CreateSecret(content string, customPwd bool) (models.Secret, error) {
 
 	u := uuid.Must(uuid.NewV4(), nil)
 	id := u.String()
 
-	secret := models.Secret{Id: id, Content: content, Viewed: false}
+	secret := models.Secret{Id: id, Content: content, Viewed: false, CustomPwd: customPwd}
 
-	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, viewed) VALUES (?, ?, ?)", secret.Id, secret.Content, secret.Viewed)
+	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, viewed, custom_pwd) VALUES (?, ?, ?, ?)", secret.Id, secret.Content, secret.Viewed, secret.CustomPwd)
 
 	if err != nil {
 		return models.Secret{}, err
@@ -66,4 +66,14 @@ func (repository *MySqlSecretRepository) UpdateToViewed(id string) error {
 		return err
 	}
 	return nil
+}
+
+func (repository *MySqlSecretRepository) HasSecretWithCustomPwd(id string) (bool, error) {
+
+	secret, err := repository.GetSecret(id)
+	if err != nil {
+		return false, err
+	}
+
+	return secret.CustomPwd, nil
 }

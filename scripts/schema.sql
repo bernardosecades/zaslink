@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS sharesecret.secret;
 CREATE TABLE sharesecret.secret (
     id varchar(36) NOT NULL PRIMARY KEY,
     content text NOT NULL,
-    viewed bool not null default 0
+    viewed bool not null default 0,
+    custom_pwd bool not null default 0
 );
 
 INSERT INTO `secret` (`id`, `content`, `viewed`)

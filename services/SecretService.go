@@ -36,6 +36,11 @@ func (s *SecretService) GetSecret(id string) (models.Secret, error) {
 	return secret, nil
 }
 
+func (s *SecretService) HasSecretWithCustomPwd(id string) (bool, error) {
+
+	return s.repository.HasSecretWithCustomPwd(id)
+}
+
 func (s *SecretService) GetContentSecret(id string, password string) (string, error) {
 	secret, err := s.GetSecret(id)
 	if err != nil {
@@ -45,7 +50,7 @@ func (s *SecretService) GetContentSecret(id string, password string) (string, er
 	return s.DecryptContentSecret(secret.Content, password), nil
 }
 
-func (s *SecretService) CreateSecret(rawContent string, password string) (models.Secret, error) {
+func (s *SecretService) CreateSecret(rawContent string, password string, customPwd bool) (models.Secret, error) {
 
 	if len(password) > 32 {
 		// TODO custom error
@@ -53,7 +58,7 @@ func (s *SecretService) CreateSecret(rawContent string, password string) (models
 	}
 
 	content := s.EncryptContentSecret(rawContent, password)
-	secret, err := s.repository.CreateSecret(content)
+	secret, err := s.repository.CreateSecret(content, customPwd)
 	if err != nil {
 		return models.Secret{}, err
 	}

@@ -20,13 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51514625-f94f-4217-ada5-0c75c1e7c6d1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/SecretController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/SecretController.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/SecretService.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/SecretService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/SecretService_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/SecretService_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sharesecret" beforeDir="false" afterPath="$PROJECT_DIR$/sharesecret" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +68,7 @@
       <recent name="$PROJECT_DIR$/docker/MySQL" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Test.go test github.com/bernardosecades/sharesecret/services">
+  <component name="RunManager" selected="Go Test.go test sharesecret">
     <configuration name="App Engine" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="sharesecret" />
       <working_directory value="$PROJECT_DIR$" />
@@ -143,8 +138,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.go test github.com/bernardosecades/sharesecret/services" />
         <item itemvalue="Go Test.go test sharesecret" />
+        <item itemvalue="Go Test.go test github.com/bernardosecades/sharesecret/services" />
         <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Test.SecretService_test.go" />
         <item itemvalue="Go Test.Crypter_test.go" />
@@ -193,34 +188,34 @@
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
     <state width="578" height="466" key="DebuggerActiveHint/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611503404506" />
-    <state width="1878" height="237" key="GridCell.Tab.0.bottom" timestamp="1611570130599">
+    <state width="1878" height="237" key="GridCell.Tab.0.bottom" timestamp="1611570188825">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.bottom/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570130599" />
+    <state width="1878" height="237" key="GridCell.Tab.0.bottom/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570188825" />
     <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
     <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.829@0.23.1440.829" timestamp="1607547358414" />
     <state width="1398" height="162" key="GridCell.Tab.0.bottom/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.bottom/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1878" height="237" key="GridCell.Tab.0.center" timestamp="1611570130598">
+    <state width="1878" height="237" key="GridCell.Tab.0.center" timestamp="1611570188822">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.center/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570130598" />
+    <state width="1878" height="237" key="GridCell.Tab.0.center/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570188822" />
     <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
     <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.829@0.23.1440.829" timestamp="1607547358412" />
     <state width="1398" height="162" key="GridCell.Tab.0.center/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.center/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1878" height="237" key="GridCell.Tab.0.left" timestamp="1611570130597">
+    <state width="1878" height="237" key="GridCell.Tab.0.left" timestamp="1611570188821">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.left/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570130597" />
+    <state width="1878" height="237" key="GridCell.Tab.0.left/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570188821" />
     <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
     <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.829@0.23.1440.829" timestamp="1607547358411" />
     <state width="1398" height="162" key="GridCell.Tab.0.left/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.left/0.23.1440.831@0.23.1440.831" timestamp="1607533058130" />
-    <state width="1878" height="237" key="GridCell.Tab.0.right" timestamp="1611570130598">
+    <state width="1878" height="237" key="GridCell.Tab.0.right" timestamp="1611570188824">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.right/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570130598" />
+    <state width="1878" height="237" key="GridCell.Tab.0.right/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611570188824" />
     <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
     <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.829@0.23.1440.829" timestamp="1607547358413" />
     <state width="1398" height="162" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />

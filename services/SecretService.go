@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/hex"
+	"errors"
 	"github.com/bernardosecades/sharesecret/crypto"
 	"github.com/bernardosecades/sharesecret/models"
 	"github.com/bernardosecades/sharesecret/repositories"
@@ -59,8 +60,7 @@ func (s *SecretService) GetContentSecret(id string, password string) (string, er
 func (s *SecretService) CreateSecret(rawContent string, password string) (models.Secret, error) {
 
 	if len(password) > 32 {
-		// TODO custom error
-		panic("password too long")
+		return models.Secret{}, errors.New("password too long")
 	}
 
 	customPwd := true

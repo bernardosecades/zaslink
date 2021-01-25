@@ -12,8 +12,6 @@ General we can't do anything with your information even if we wanted to (which w
 
 If you include a password, we use it to encrypt the secret. We don't store the password (only a crypted hash) so we can never know what the secret is because we can't decrypt it.
 
-# Endpoints
-
 ## Create new secret
 
 POST: `http://localhost:8080/secret`

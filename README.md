@@ -1,54 +1,126 @@
-# Structure folder
+# ShareSecret
 
-https://kgolding.co.uk/blog/2020/02/19/golang-application-directory-structure/
+ShareSecret is a service to share sensitive information that's both simple and secure.
 
-./	The root of the git repo
-./README.md	The projects main readme
-./go.mod	Created by running go mod github.com/kgolding.go-app-structure
-./cmd/*	Folders for each build-able application main.go
-./internal/*	Folders for each private package (that can not be used in other projects)
-./pkg/*	Folders for each public package (that might be used in other projects)
-./vendor/*	Optional: External dependencies as populated by go mod vendor
+If you share some text will be display it once and then delete it. After that it's gone forever.
 
-# Gorilla mux
+We keep secrets for up to 5 days (WIP).
 
-https://medium.com/@hugo.bjarred/rest-api-with-golang-and-mux-e934f581b8b5
+## Why should I trust you?
 
-API => muy bueno: https://www.soberkoder.com/go-rest-api-gorilla-mux/
+General we can't do anything with your information even if we wanted to (which we don't). If it's a password for example, we don't know the username or even the application that the credentials are for.
 
-# Service encapsulation structure folder
+If you include a password, we use it to encrypt the secret. We don't store the password (only a crypted hash) so we can never know what the secret is because we can't decrypt it.
 
-Muy bueno: https://github.com/irahardianto/service-pattern-go
+# Endpoints
 
-https://irahardianto.github.io/service-pattern-go/
+## Create new secret
+
+POST: `http://localhost:8080/secret`
+
+### Header (optional)
+
+```
+X-Password: "MyPassword"
+```
+
+### Payload
+
+```json
+{
+    "content": "This is my secret"
+}
+```
+
+### Example
+
+Without password:
+
+`curl -X POST http://localhost:8080/secret -d "{\"content\":\"This is my secret\"}"`
+
+With password:
+
+`curl -X POST http://localhost:8080/secret -H "X-Header: myPassword" -d "{\"content\":\"This is my secret\"}"`
+
+## See secret
+
+### Header (optional)
+
+```
+X-Password: "MyPassword"
+```
+
+### Request
+
+GET: `http://localhost:8080/secret/{id}`
+
+### Example
+
+Without password:
+
+`curl http://127.0.0.1:8080/secret/b3eb17a5-bda5-4e83-9690-56967857d03e`
+
+With password:
+
+`curl -H "X-Header: myPassword" http://127.0.0.1:8080/secret/19d38f65-18c3-4d06-9685-9b705ee9d734`
+
+# Use case (Generate secret without password)
+
+UserA create a new secret:
+
+Request:
+
+`curl -X POST http://localhost:8080/secret -d "{\"content\":\"This is my secret for userB\"}"`
+
+Response:
+
+```json
+{
+    "url": "http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54"
+}
+```
+
+And share the link to UserB to open the link and see the content of the secret:
+
+Request:
+
+`curl http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54`
+
+Response:
+
+```json
+{
+    "content": "This is my secret for userB"
+}
+```
+
+If UserB try to access again to the secret:
+
+`curl http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54`
+
+He will receive the response not found because already was viewed:
+
+```json
+{
+    "StatusCode": 404,
+    "Error": "sql: no rows in result set"
+}
+```
+
+# Use case (Generate secret with password)
+
+WIP
 
 # Docker
 
-Read: https://qiita.com/osk_kamui/items/1539ade3c23f58b89f80
+Up the database:
 
-docker-compose up --build
-docker exec -it golang_db bash
-docker exec -it golang_app bash -c "go run main.go"
+`docker-compose up --build`
 
-Golang docker and test pipeline.
+Build with version:
 
-https://codefresh.io/docs/docs/learn-by-example/golang/golang-hello-world/
+`go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"`
 
+Run service:
 
-# Architecture
-
-https://www.perimeterx.com/tech-blog/2019/ok-lets-go/
-
-
-# Build version
-
-go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)" 
-
-# Reference
-
-https://github.com/s1s1ty/go-mysql-crud
-
-
-# Add swagger
-
-https://medium.com/@pedram.esmaeeli/generate-swagger-specification-from-go-source-code-648615f7b9d9
+`./sharesecret`

@@ -29,7 +29,7 @@ func (s *SecretService) GetSecret(id string) (models.Secret, error) {
 		return models.Secret{}, err
 	}
 
-	err = s.repository.UpdateToViewed(id)
+	err = s.repository.RemoveSecret(id)
 
 	if err != nil {
 		return models.Secret{}, err

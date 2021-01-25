@@ -6,6 +6,7 @@ import (
 	"github.com/bernardosecades/sharesecret/models"
 	_ "github.com/go-sql-driver/mysql"
 	uuid "github.com/satori/go.uuid"
+	"time"
 )
 
 type MySqlSecretRepository struct {
@@ -14,7 +15,7 @@ type MySqlSecretRepository struct {
 
 func NewMySqlSecretRepository(dbName string, dbUser string, dbPass string, dbHost string, dbPort string) SecretRepository {
 	dbSource := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?charset=utf8",
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true",
 		dbUser,
 		dbPass,
 		dbHost,
@@ -34,7 +35,7 @@ func (repository *MySqlSecretRepository) GetSecret(id string) (models.Secret, er
 	res := repository.SQL.QueryRow("SELECT * FROM secret WHERE id = ?", id)
 
 	var secret models.Secret
-	err := res.Scan(&secret.Id, &secret.Content, &secret.CustomPwd)
+	err := res.Scan(&secret.Id, &secret.Content, &secret.CustomPwd, &secret.CreatedAt)
 
 	if err != nil {
 		return models.Secret{}, err
@@ -48,9 +49,9 @@ func (repository *MySqlSecretRepository) CreateSecret(content string, customPwd 
 	u := uuid.Must(uuid.NewV4(), nil)
 	id := u.String()
 
-	secret := models.Secret{Id: id, Content: content, CustomPwd: customPwd}
+	secret := models.Secret{Id: id, Content: content, CustomPwd: customPwd, CreatedAt: time.Now().UTC()}
 
-	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, custom_pwd) VALUES (?, ?, ?)", secret.Id, secret.Content, secret.CustomPwd)
+	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, custom_pwd, created_at) VALUES (?, ?, ?, ?)", secret.Id, secret.Content, secret.CustomPwd, secret.CreatedAt.Format("2006-01-02 15:04:05"))
 
 	if err != nil {
 		return models.Secret{}, err

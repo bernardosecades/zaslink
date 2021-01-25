@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const formatDate = "2006-01-02 15:04:05"
+
 type MySqlSecretRepository struct {
 	SQL *sql.DB
 }
@@ -32,10 +34,10 @@ func NewMySqlSecretRepository(dbName string, dbUser string, dbPass string, dbHos
 
 func (repository *MySqlSecretRepository) GetSecret(id string) (models.Secret, error) {
 
-	res := repository.SQL.QueryRow("SELECT * FROM secret WHERE id = ?", id)
+	res := repository.SQL.QueryRow("SELECT * FROM secret WHERE id = ? AND expired_at > ?", id, time.Now().UTC().Format(formatDate))
 
 	var secret models.Secret
-	err := res.Scan(&secret.Id, &secret.Content, &secret.CustomPwd, &secret.CreatedAt)
+	err := res.Scan(&secret.Id, &secret.Content, &secret.CustomPwd, &secret.CreatedAt, &secret.ExpiredAt)
 
 	if err != nil {
 		return models.Secret{}, err
@@ -44,14 +46,14 @@ func (repository *MySqlSecretRepository) GetSecret(id string) (models.Secret, er
 	return secret, nil
 }
 
-func (repository *MySqlSecretRepository) CreateSecret(content string, customPwd bool) (models.Secret, error) {
+func (repository *MySqlSecretRepository) CreateSecret(content string, customPwd bool, expire time.Time) (models.Secret, error) {
 
 	u := uuid.Must(uuid.NewV4(), nil)
 	id := u.String()
 
-	secret := models.Secret{Id: id, Content: content, CustomPwd: customPwd, CreatedAt: time.Now().UTC()}
+	secret := models.Secret{Id: id, Content: content, CustomPwd: customPwd, CreatedAt: time.Now().UTC(), ExpiredAt: expire}
 
-	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, custom_pwd, created_at) VALUES (?, ?, ?, ?)", secret.Id, secret.Content, secret.CustomPwd, secret.CreatedAt.Format("2006-01-02 15:04:05"))
+	_, err := repository.SQL.Exec("INSERT INTO secret (id, content, custom_pwd, created_at, expired_at) VALUES (?, ?, ?, ?, ?)", secret.Id, secret.Content, secret.CustomPwd, secret.CreatedAt.Format(formatDate), secret.ExpiredAt.Format(formatDate))
 
 	if err != nil {
 		return models.Secret{}, err

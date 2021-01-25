@@ -6,6 +6,7 @@ import (
 	"github.com/bernardosecades/sharesecret/crypto"
 	"github.com/bernardosecades/sharesecret/models"
 	"github.com/bernardosecades/sharesecret/repositories"
+	"time"
 )
 
 type SecretService struct {
@@ -70,7 +71,9 @@ func (s *SecretService) CreateSecret(rawContent string, password string) (models
 	}
 
 	content := s.EncryptContentSecret(rawContent, password)
-	secret, err := s.repository.CreateSecret(content, customPwd)
+
+	expire := time.Now().UTC().AddDate(0, 0, 5)
+	secret, err := s.repository.CreateSecret(content, customPwd, expire)
 	if err != nil {
 		return models.Secret{}, err
 	}

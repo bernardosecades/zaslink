@@ -40,7 +40,7 @@ Without password:
 
 With password:
 
-`curl -X POST http://localhost:8080/secret -H "X-Header: myPassword" -d "{\"content\":\"This is my secret\"}"`
+`curl -X POST http://localhost:8080/secret -H "X-Password: myPassword" -d "{\"content\":\"This is my secret\"}"`
 
 ## See secret
 
@@ -62,7 +62,7 @@ Without password:
 
 With password:
 
-`curl -H "X-Header: myPassword" http://127.0.0.1:8080/secret/19d38f65-18c3-4d06-9685-9b705ee9d734`
+`curl -H "X-Password: myPassword" http://127.0.0.1:8080/secret/19d38f65-18c3-4d06-9685-9b705ee9d734`
 
 # Use case (Generate secret without password)
 

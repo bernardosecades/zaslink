@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"encoding/json"
@@ -9,15 +9,15 @@ import (
 	"os"
 )
 
-type SecretController struct {
+type SecretHandler struct {
 	secretService services.SecretService
 }
 
-func NewSecretController(s services.SecretService) *SecretController {
-	return &SecretController{s}
+func NewSecretHandler(s services.SecretService) *SecretHandler {
+	return &SecretHandler{s}
 }
 
-func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.Request) {
+func (controller *SecretHandler) CreateSecret(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -47,7 +47,7 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 	_ = json.NewEncoder(w).Encode(cr)
 }
 
-func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Request) {
+func (controller *SecretHandler) GetSecret(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 

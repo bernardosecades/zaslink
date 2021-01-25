@@ -122,3 +122,7 @@ Build with version:
 Run service:
 
 `./sharesecret`
+
+
+Travis
+https://dave.cheney.net/2018/07/16/using-go-modules-with-travis-ci

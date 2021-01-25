@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/bernardosecades/sharesecret/controllers"
+	"github.com/bernardosecades/sharesecret/handlers"
 	"github.com/bernardosecades/sharesecret/repositories"
 	"github.com/bernardosecades/sharesecret/services"
 	"github.com/gorilla/mux"
@@ -37,12 +37,12 @@ func main() {
 
 	secretRepository := repositories.NewMySqlSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
 	secretService := services.NewSecretService(secretRepository, os.Getenv("SECRET_KEY"), os.Getenv("SECRET_PASSWORD"))
-	secretController := controllers.NewSecretController(secretService)
+	secretHandler := handlers.NewSecretHandler(secretService)
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/secret/{id}", secretController.GetSecret).Methods("GET")
-	r.HandleFunc("/secret", secretController.CreateSecret).Methods("POST")
+	r.HandleFunc("/secret/{id}", secretHandler.GetSecret).Methods("GET")
+	r.HandleFunc("/secret", secretHandler.CreateSecret).Methods("POST")
 
 	http.Handle("/", r)
 	port := os.Getenv("SERVER_PORT")

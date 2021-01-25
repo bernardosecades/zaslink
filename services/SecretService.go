@@ -10,15 +10,16 @@ import (
 type SecretService struct {
 	repository repositories.SecretRepository
 	key        string
+	defaultPwd string
 }
 
-func NewSecretService(r repositories.SecretRepository, key string) SecretService {
+func NewSecretService(r repositories.SecretRepository, key string, defaultPwd string) SecretService {
 
 	if len(key) != 32 {
 		panic("key secret should have 32 bytes")
 	}
 
-	return SecretService{r, key}
+	return SecretService{r, key, defaultPwd}
 }
 
 func (s *SecretService) GetSecret(id string) (models.Secret, error) {
@@ -42,6 +43,11 @@ func (s *SecretService) HasSecretWithCustomPwd(id string) (bool, error) {
 }
 
 func (s *SecretService) GetContentSecret(id string, password string) (string, error) {
+
+	if len(password) == 0 {
+		password = s.defaultPwd
+	}
+
 	secret, err := s.GetSecret(id)
 	if err != nil {
 		return "", err
@@ -50,11 +56,17 @@ func (s *SecretService) GetContentSecret(id string, password string) (string, er
 	return s.DecryptContentSecret(secret.Content, password), nil
 }
 
-func (s *SecretService) CreateSecret(rawContent string, password string, customPwd bool) (models.Secret, error) {
+func (s *SecretService) CreateSecret(rawContent string, password string) (models.Secret, error) {
 
 	if len(password) > 32 {
 		// TODO custom error
 		panic("password too long")
+	}
+
+	customPwd := true
+	if len(password) == 0 {
+		customPwd = false
+		password = s.defaultPwd
 	}
 
 	content := s.EncryptContentSecret(rawContent, password)

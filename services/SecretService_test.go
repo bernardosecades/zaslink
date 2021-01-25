@@ -11,7 +11,7 @@ func TestGetContentSecret(t *testing.T) {
 	key := "11111111111111111111111111111111"
 	pass := "@myPassword"
 
-	sut := NewSecretService(mocks.NewMockSecretRepository(), key)
+	sut := NewSecretService(mocks.NewMockSecretRepository(), key, "")
 	content, _ := sut.GetContentSecret("10", pass)
 
 	assert.Equal(t, "My name is Bernie", content)
@@ -20,10 +20,11 @@ func TestGetContentSecret(t *testing.T) {
 func TestCreateSecret(t *testing.T) {
 
 	key := "11111111111111111111111111111111"
-	pass := "@myPassword"
+	pass := ""
+	defaultPwd := "@myPassword"
 
-	sut := NewSecretService(mocks.NewMockSecretRepository(), key)
-	secret, _ := sut.CreateSecret("My secret content", pass, false)
+	sut := NewSecretService(mocks.NewMockSecretRepository(), key, defaultPwd)
+	secret, _ := sut.CreateSecret("My secret content", pass)
 
-	assert.Equal(t, "My name is Bernie", sut.DecryptContentSecret(secret.Content, pass))
+	assert.Equal(t, "My name is Bernie", sut.DecryptContentSecret(secret.Content, defaultPwd))
 }

@@ -31,15 +31,8 @@ func (controller *SecretController) CreateSecret(w http.ResponseWriter, r *http.
 		return
 	}
 
-	customPwd := true
 	pass := r.Header.Get("X-Password")
-	if pass == "" {
-		pass = os.Getenv("SECRET_DEFAULT_PASSWORD")
-		customPwd = false
-	}
-
-	// TODO default password injected in sercice so refactor (pass will be optional will simplify the controller) if X-Password is empty ignore him
-	secret, err := controller.secretService.CreateSecret(cs.Content, pass, customPwd)
+	secret, err := controller.secretService.CreateSecret(cs.Content, pass)
 
 	if err != nil {
 		customError := dto.ErrorResponse{StatusCode: 404, Err: err.Error()}
@@ -75,10 +68,6 @@ func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Req
 		w.WriteHeader(customError.StatusCode)
 		_ = json.NewEncoder(w).Encode(customError)
 		return
-	}
-
-	if pass == "" {
-		pass = os.Getenv("SECRET_DEFAULT_PASSWORD")
 	}
 
 	content, err := controller.secretService.GetContentSecret(id, pass)

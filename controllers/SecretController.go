@@ -70,14 +70,7 @@ func (controller *SecretController) GetSecret(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	content, err := controller.secretService.GetContentSecret(id, pass)
-
-	if err != nil {
-		customError := dto.ErrorResponse{StatusCode: 404, Err: err.Error()}
-		w.WriteHeader(customError.StatusCode)
-		_ = json.NewEncoder(w).Encode(customError)
-		return
-	}
+	content, _ := controller.secretService.GetContentSecret(id, pass)
 
 	if len(content) == 0 {
 		customError := dto.ErrorResponse{StatusCode: 400, Err: "We can not decrypt the content"}

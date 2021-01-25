@@ -21,7 +21,8 @@
   <component name="ChangeListManager">
     <list default="true" id="51514625-f94f-4217-ada5-0c75c1e7c6d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/SecretService.go" beforeDir="false" afterPath="$PROJECT_DIR$/services/SecretService.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/SecretController.go" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/SecretController.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sharesecret" beforeDir="false" afterPath="$PROJECT_DIR$/sharesecret" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

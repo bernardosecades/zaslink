@@ -92,7 +92,7 @@ Response:
 }
 ```
 
-If UserB try to access again to the secret:
+If UserB or whoever try to access again to the secret:
 
 `curl http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54`
 

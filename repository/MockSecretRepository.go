@@ -37,6 +37,10 @@ func (r *MockSecretRepository) RemoveSecret(id string) error {
 	return nil
 }
 
+func (r *MockSecretRepository) RemoveSecretsExpired() (int64, error) {
+	return 0, nil
+}
+
 func (repository *MockSecretRepository) HasSecretWithCustomPwd(id string) (bool, error) {
 	return false, nil
 }

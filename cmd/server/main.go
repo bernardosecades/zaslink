@@ -35,8 +35,11 @@ func main() {
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 
+	secretKey := os.Getenv("SECRET_KEY")
+	secretPassword := os.Getenv("SECRET_PASSWORD")
+
 	secretRepository := repository.NewMySqlSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
-	secretService := service.NewSecretService(secretRepository, os.Getenv("SECRET_KEY"), os.Getenv("SECRET_PASSWORD"))
+	secretService := service.NewSecretService(secretRepository, secretKey, secretPassword)
 	secretHandler := handlers.NewSecretHandler(secretService)
 
 	r := mux.NewRouter()

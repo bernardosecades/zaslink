@@ -1,7 +1,7 @@
 # ShareSecret
 
-![Test](https://github.com/bernardosecades/sharesecret/workflows/Test/badge.svg)
-![Super-Linter](https://github.com/bernardosecades/sharesecret/workflows/Super-Linter/badge.svg)
+[![Test](https://github.com/bernardosecades/sharesecret/workflows/Test/badge.svg)](https://github.com/bernardosecades/sharesecret/actions)
+[![Super-Linter](https://github.com/bernardosecades/sharesecret/workflows/Super-Linter/badge.svg)](https://github.com/bernardosecades/sharesecret/actions)
 
 ShareSecret is a service to share sensitive information that's both simple and secure.
 

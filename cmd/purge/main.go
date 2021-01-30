@@ -35,7 +35,7 @@ func main() {
 	r, err := secretRepository.RemoveSecretsExpired()
 
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		log.Fatal("Error to try to remove expired secrets", err)
 	}
 
 	fmt.Printf("%d secrets deleted", r)

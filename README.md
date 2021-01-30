@@ -112,6 +112,20 @@ He will receive the response not found because already was viewed:
 
 WIP
 
+# Builds
+
+## Server
+
+Up the server with REST API.
+
+`cd cmd/server && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"`
+
+## Purge
+
+Command to delete in database secrets already expided.
+
+`cd cmd/purge && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"`
+
 # Docker
 
 Up the database:

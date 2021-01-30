@@ -20,25 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51514625-f94f-4217-ada5-0c75c1e7c6d1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/superlinter.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypto/Crypter.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/Crypter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypto/Crypter_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/Crypter_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/CreateSecretRequest.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/CreateSecretRequest.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/CreateSecretResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/CreateSecretResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/ErrorResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/ErrorResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/SecretResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/SecretResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/SecretHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/http/SecretHandler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mocks/MockSecretRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/MockSecretRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Secret.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/Secret.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/MysqlSecretRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/MysqlSecretRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/SecretRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/SecretRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/SecretService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/SecretService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/SecretService_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/SecretService_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sharesecret" beforeDir="false" afterPath="$PROJECT_DIR$/sharesecret" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,34 +190,34 @@
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
     <state width="578" height="466" key="DebuggerActiveHint/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611503404506" />
-    <state width="1878" height="237" key="GridCell.Tab.0.bottom" timestamp="1611994676649">
+    <state width="1878" height="237" key="GridCell.Tab.0.bottom" timestamp="1611994695584">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.bottom/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994676649" />
+    <state width="1878" height="237" key="GridCell.Tab.0.bottom/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994695584" />
     <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
     <state width="1398" height="185" key="GridCell.Tab.0.bottom/0.23.1440.829@0.23.1440.829" timestamp="1607547358414" />
     <state width="1398" height="162" key="GridCell.Tab.0.bottom/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.bottom/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1878" height="237" key="GridCell.Tab.0.center" timestamp="1611994676648">
+    <state width="1878" height="237" key="GridCell.Tab.0.center" timestamp="1611994695582">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.center/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994676648" />
+    <state width="1878" height="237" key="GridCell.Tab.0.center/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994695582" />
     <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
     <state width="1398" height="185" key="GridCell.Tab.0.center/0.23.1440.829@0.23.1440.829" timestamp="1607547358412" />
     <state width="1398" height="162" key="GridCell.Tab.0.center/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.center/0.23.1440.831@0.23.1440.831" timestamp="1607533058131" />
-    <state width="1878" height="237" key="GridCell.Tab.0.left" timestamp="1611994676647">
+    <state width="1878" height="237" key="GridCell.Tab.0.left" timestamp="1611994695581">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.left/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994676647" />
+    <state width="1878" height="237" key="GridCell.Tab.0.left/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994695581" />
     <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.828@0.23.1440.828" timestamp="1607546789623" />
     <state width="1398" height="185" key="GridCell.Tab.0.left/0.23.1440.829@0.23.1440.829" timestamp="1607547358411" />
     <state width="1398" height="162" key="GridCell.Tab.0.left/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
     <state width="1398" height="285" key="GridCell.Tab.0.left/0.23.1440.831@0.23.1440.831" timestamp="1607533058130" />
-    <state width="1878" height="237" key="GridCell.Tab.0.right" timestamp="1611994676648">
+    <state width="1878" height="237" key="GridCell.Tab.0.right" timestamp="1611994695583">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state width="1878" height="237" key="GridCell.Tab.0.right/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994676648" />
+    <state width="1878" height="237" key="GridCell.Tab.0.right/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611994695583" />
     <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.828@0.23.1440.828" timestamp="1607546789624" />
     <state width="1398" height="185" key="GridCell.Tab.0.right/0.23.1440.829@0.23.1440.829" timestamp="1607547358413" />
     <state width="1398" height="162" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1607590261417" />
@@ -276,6 +259,10 @@
       <screen x="0" y="23" width="1440" height="828" />
     </state>
     <state width="720" height="414" key="XDebugger.FullValuePopup/0.23.1440.828@0.23.1440.828" timestamp="1607544004666" />
+    <state x="100" y="123" width="1720" height="808" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog" timestamp="1611995411745">
+      <screen x="0" y="23" width="1920" height="1008" />
+    </state>
+    <state x="100" y="123" width="1720" height="808" key="com.intellij.history.integration.ui.views.SelectionHistoryDialog/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611995411745" />
     <state x="509" y="263" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1611592488493">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>

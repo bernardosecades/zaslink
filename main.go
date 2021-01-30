@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/bernardosecades/sharesecret/handlers"
-	"github.com/bernardosecades/sharesecret/repositories"
-	"github.com/bernardosecades/sharesecret/services"
+	handlers "github.com/bernardosecades/sharesecret/http"
+	"github.com/bernardosecades/sharesecret/repository"
+	"github.com/bernardosecades/sharesecret/service"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
@@ -35,8 +35,8 @@ func main() {
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 
-	secretRepository := repositories.NewMySqlSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
-	secretService := services.NewSecretService(secretRepository, os.Getenv("SECRET_KEY"), os.Getenv("SECRET_PASSWORD"))
+	secretRepository := repository.NewMySqlSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
+	secretService := service.NewSecretService(secretRepository, os.Getenv("SECRET_KEY"), os.Getenv("SECRET_PASSWORD"))
 	secretHandler := handlers.NewSecretHandler(secretService)
 
 	r := mux.NewRouter()

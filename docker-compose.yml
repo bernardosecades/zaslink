@@ -11,4 +11,4 @@ services:
       MYSQL_DATABASE: sharesecret
 
     volumes:
-      - "./scripts/schema.sql:/docker-entrypoint-initdb.d/schema.sql"
+      - "./schema.sql:/docker-entrypoint-initdb.d/schema.sql"

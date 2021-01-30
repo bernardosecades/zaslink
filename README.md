@@ -1,5 +1,8 @@
 # ShareSecret
 
+[![Actions Status](https://github.com/bernardosecades/sharesecret/workflows/Continuous%20integration/badge.svg)](https://github.com/bernardosecades/sharesecret/actions)
+[![Actions Status](https://github.com/bernardosecades/sharesecret/workflows/Windows%20CI/badge.svg)](https://github.com/bernardosecades/sharesecret/actions)
+
 ShareSecret is a service to share sensitive information that's both simple and secure.
 
 If you share some text will be display it once and then delete it. After that it's gone forever.

@@ -20,25 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="51514625-f94f-4217-ada5-0c75c1e7c6d1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypto/Crypter.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/Crypter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypto/Crypter_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/Crypter_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/CreateSecretRequest.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/CreateSecretRequest.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/CreateSecretResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/CreateSecretResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/ErrorResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/ErrorResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dto/SecretResponse.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/SecretResponse.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/SecretHandler.go" beforeDir="false" afterPath="$PROJECT_DIR$/http/SecretHandler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mocks/MockSecretRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/MockSecretRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Secret.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/Secret.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/MysqlSecretRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/MysqlSecretRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/SecretRepository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/SecretRepository.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/SecretService.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/SecretService.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/SecretService_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/SecretService_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sharesecret" beforeDir="false" afterPath="$PROJECT_DIR$/sharesecret" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/workflows/superlinter.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,10 +175,10 @@
       <screen x="0" y="23" width="1440" height="828" />
     </state>
     <state x="211" y="86" width="1071" height="765" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1440.828@0.23.1440.828" timestamp="1607355940690" />
-    <state x="611" y="310" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1611497270784">
+    <state x="611" y="310" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1611996131525">
       <screen x="0" y="23" width="1920" height="1008" />
     </state>
-    <state x="611" y="310" key="#com.intellij.fileTypes.FileTypeChooser/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611497270784" />
+    <state x="611" y="310" key="#com.intellij.fileTypes.FileTypeChooser/-1440.119.1440.877/0.23.1920.1008@0.23.1920.1008" timestamp="1611996131525" />
     <state x="458" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1440.828@0.23.1440.828" timestamp="1607356377717" />
     <state x="678" y="149" key="#xdebugger.evaluate" timestamp="1607589784190">
       <screen x="0" y="23" width="1440" height="830" />

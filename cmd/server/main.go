@@ -1,16 +1,19 @@
 package main
 
 import (
-	"fmt"
 	handlers "github.com/bernardosecades/sharesecret/http"
 	"github.com/bernardosecades/sharesecret/repository"
 	"github.com/bernardosecades/sharesecret/service"
+
 	"github.com/gorilla/mux"
+
 	"github.com/joho/godotenv"
+
 	"log"
 	"net/http"
 	"os"
 	"time"
+	"fmt"
 )
 
 var (

@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"github.com/bernardosecades/sharesecret/repository"
 	"github.com/joho/godotenv"
+
+	"fmt"
 	"log"
 	"os"
 	"time"

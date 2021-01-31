@@ -102,7 +102,7 @@ You will see two containers:
 - sharesecret_web_1
 
 In the container "sharesecret_web_1" we already compile two binary (server and purge) in the Dockerfile and run the server. If
-you want to execute the binary "purge":
+you want to execute the binary "purge" (delete from database all secrets expired):
 
 ```bash
 docker exec -it sharesecret_web_1 ./cmd/purge/purge

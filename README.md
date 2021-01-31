@@ -17,7 +17,7 @@ If you include a password, we use it to encrypt the secret. We don't store the p
 
 ## Demo
 
-
+![Share Secret Demo](demo/demo.gif)
 
 ## Create new secret
 

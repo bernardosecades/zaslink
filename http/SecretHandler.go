@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 )
@@ -24,12 +25,17 @@ func (controller *SecretHandler) CreateSecret(w http.ResponseWriter, r *http.Req
 	w.Header().Set("Content-Type", "application/json")
 
 	var cs types.CreateSecretRequest
-	_ = json.NewDecoder(r.Body).Decode(&cs)
+	err := json.NewDecoder(r.Body).Decode(&cs)
+
+	if err != nil {
+		customError := types.ErrorResponse{StatusCode: 400, Err: "Bad JSON in CreateSecretRequest'"}
+		encodeCustomError(customError, w)
+		return
+	}
 
 	if len(cs.Content) == 0 {
 		customError := types.ErrorResponse{StatusCode: 400, Err: "Empty 'content'"}
-		w.WriteHeader(customError.StatusCode)
-		_ = json.NewEncoder(w).Encode(customError)
+		encodeCustomError(customError, w)
 		return
 	}
 
@@ -37,16 +43,19 @@ func (controller *SecretHandler) CreateSecret(w http.ResponseWriter, r *http.Req
 	secret, err := controller.secretService.CreateSecret(cs.Content, pass)
 
 	if err != nil {
-		customError := types.ErrorResponse{StatusCode: 404, Err: err.Error()}
-		w.WriteHeader(customError.StatusCode)
-		_ = json.NewEncoder(w).Encode(customError)
+		customError := types.ErrorResponse{StatusCode: 500, Err: "We can not create your secret"}
+		log.Println(err.Error())
+		encodeCustomError(customError, w)
 		return
 	}
 
 	cr := types.CreateSecretResponse{
 		URL: os.Getenv("SERVER_URL") + ":" + os.Getenv("SERVER_PORT") + "/secret/" + secret.ID,
 	}
-	_ = json.NewEncoder(w).Encode(cr)
+
+	if err := json.NewEncoder(w).Encode(cr); err != nil {
+		log.Fatal("Error to encode CreateSecretResponse")
+	}
 }
 
 func (controller *SecretHandler) GetSecret(w http.ResponseWriter, r *http.Request) {
@@ -59,28 +68,42 @@ func (controller *SecretHandler) GetSecret(w http.ResponseWriter, r *http.Reques
 	customPwd, err := controller.secretService.HasSecretWithCustomPwd(id)
 
 	if err != nil {
-		customError := types.ErrorResponse{StatusCode: 404, Err: err.Error()}
-		w.WriteHeader(customError.StatusCode)
-		_ = json.NewEncoder(w).Encode(customError)
+		customError := types.ErrorResponse{StatusCode: 404, Err: "Unknown Secret: It either never existed or has already been viewed"}
+		log.Println(err.Error())
+		encodeCustomError(customError, w)
 		return
 	}
 
 	if customPwd && pass == "" {
 		customError := types.ErrorResponse{StatusCode: 400, Err: "Missing X-Password"}
-		w.WriteHeader(customError.StatusCode)
-		_ = json.NewEncoder(w).Encode(customError)
+		encodeCustomError(customError, w)
 		return
 	}
 
-	content, _ := controller.secretService.GetContentSecret(id, pass)
+	content, err := controller.secretService.GetContentSecret(id, pass)
+
+	if err != nil {
+		customError := types.ErrorResponse{StatusCode: 404, Err: "Unknown Secret: It either never existed or has already been viewed"}
+		log.Println(err.Error())
+		encodeCustomError(customError, w)
+		return
+	}
 
 	if len(content) == 0 {
 		customError := types.ErrorResponse{StatusCode: 400, Err: "We can not decrypt the content"}
-		w.WriteHeader(customError.StatusCode)
-		_ = json.NewEncoder(w).Encode(customError)
+		encodeCustomError(customError, w)
 		return
 	}
 
-	sr := types.SecretResponse{content}
-	_ = json.NewEncoder(w).Encode(sr)
+	sr := types.SecretResponse{Content: content}
+	if err := json.NewEncoder(w).Encode(sr); err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+func encodeCustomError(customError types.ErrorResponse, w http.ResponseWriter) {
+	w.WriteHeader(customError.StatusCode)
+	if err := json.NewEncoder(w).Encode(customError); err != nil {
+		log.Fatal("Error to encode customError")
+	}
 }

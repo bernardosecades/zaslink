@@ -16,9 +16,7 @@ import (
 	"time"
 )
 
-var (
-	commitHash string
-)
+var commitHash string
 
 func init() {
 	err := godotenv.Load(".env")

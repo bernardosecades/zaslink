@@ -6,8 +6,8 @@ import (
 	"github.com/bernardosecades/sharesecret/repository"
 	"github.com/bernardosecades/sharesecret/types"
 
-	"time"
 	"errors"
+	"time"
 )
 
 type SecretService struct {

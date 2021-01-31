@@ -1,10 +1,12 @@
 package http
 
 import (
-	"encoding/json"
 	"github.com/bernardosecades/sharesecret/service"
 	"github.com/bernardosecades/sharesecret/types"
+
 	"github.com/gorilla/mux"
+
+	"encoding/json"
 	"net/http"
 	"os"
 )
@@ -42,7 +44,7 @@ func (controller *SecretHandler) CreateSecret(w http.ResponseWriter, r *http.Req
 	}
 
 	cr := types.CreateSecretResponse{
-		Url: os.Getenv("SERVER_URL") + ":" + os.Getenv("SERVER_PORT") + "/secret/" + secret.Id,
+		URL: os.Getenv("SERVER_URL") + ":" + os.Getenv("SERVER_PORT") + "/secret/" + secret.ID,
 	}
 	_ = json.NewEncoder(w).Encode(cr)
 }

@@ -2,7 +2,9 @@ package service
 
 import (
 	"github.com/bernardosecades/sharesecret/repository"
+
 	"github.com/stretchr/testify/assert"
+
 	"testing"
 )
 

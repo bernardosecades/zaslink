@@ -2,11 +2,14 @@ package repository
 
 import (
 	"database/sql"
-	"fmt"
+
 	"github.com/bernardosecades/sharesecret/types"
 	_ "github.com/go-sql-driver/mysql"
+
 	uuid "github.com/satori/go.uuid"
+
 	"time"
+	"fmt"
 )
 
 const formatDate = "2006-01-02 15:04:05"
@@ -37,7 +40,7 @@ func (r *MySqlSecretRepository) GetSecret(id string) (types.Secret, error) {
 	res := r.SQL.QueryRow("SELECT * FROM secret WHERE id = ? AND expired_at > ?", id, time.Now().UTC().Format(formatDate))
 
 	var secret types.Secret
-	err := res.Scan(&secret.Id, &secret.Content, &secret.CustomPwd, &secret.CreatedAt, &secret.ExpiredAt)
+	err := res.Scan(&secret.ID, &secret.Content, &secret.CustomPwd, &secret.CreatedAt, &secret.ExpiredAt)
 
 	if err != nil {
 		return types.Secret{}, err
@@ -51,9 +54,9 @@ func (r *MySqlSecretRepository) CreateSecret(content string, customPwd bool, exp
 	u := uuid.Must(uuid.NewV4(), nil)
 	id := u.String()
 
-	secret := types.Secret{Id: id, Content: content, CustomPwd: customPwd, CreatedAt: time.Now().UTC(), ExpiredAt: expire}
+	secret := types.Secret{ID: id, Content: content, CustomPwd: customPwd, CreatedAt: time.Now().UTC(), ExpiredAt: expire}
 
-	_, err := r.SQL.Exec("INSERT INTO secret (id, content, custom_pwd, created_at, expired_at) VALUES (?, ?, ?, ?, ?)", secret.Id, secret.Content, secret.CustomPwd, secret.CreatedAt.Format(formatDate), secret.ExpiredAt.Format(formatDate))
+	_, err := r.SQL.Exec("INSERT INTO secret (id, content, custom_pwd, created_at, expired_at) VALUES (?, ?, ?, ?, ?)", secret.ID, secret.Content, secret.CustomPwd, secret.CreatedAt.Format(formatDate), secret.ExpiredAt.Format(formatDate))
 
 	if err != nil {
 		return types.Secret{}, err

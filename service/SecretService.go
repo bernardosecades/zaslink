@@ -2,10 +2,12 @@ package service
 
 import (
 	"encoding/hex"
-	"errors"
+
 	"github.com/bernardosecades/sharesecret/repository"
 	"github.com/bernardosecades/sharesecret/types"
+
 	"time"
+	"errors"
 )
 
 type SecretService struct {

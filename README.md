@@ -150,14 +150,14 @@ You will see two containers:
 - sharesecret_mysql_1
 - sharesecret_web_1
 
-In the container "sharesecret_web_1" we already compile two binary (server and prune) in the Dockerfile and run the server. If
-you want to execute the binary "prune":
+In the container "sharesecret_web_1" we already compile two binary (server and purge) in the Dockerfile and run the server. If
+you want to execute the binary "purge":
 
 ```bash
 docker exec -it sharesecret_web_1 ./cmd/purge/purge
 ```
 
-Note: You can compile the sever and prune using flags for version:
+Note: You can compile the sever and purge using flags for version:
 
 ```bash
 cd cmd/server && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"

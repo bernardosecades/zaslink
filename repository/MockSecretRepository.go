@@ -9,7 +9,7 @@ import (
 type MockSecretRepository struct {
 }
 
-func NewMockSecretRepository() SecretRepository {
+func NewMockSecretRepository() *MockSecretRepository {
 	return &MockSecretRepository{}
 }
 

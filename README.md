@@ -21,7 +21,7 @@ POST: `http://localhost:8080/secret`
 
 ### Header (optional)
 
-```
+```bash
 X-Password: "MyPassword"
 ```
 
@@ -37,33 +37,44 @@ X-Password: "MyPassword"
 
 Without password:
 
-`curl -X POST http://localhost:8080/secret -d "{\"content\":\"This is my secret\"}"`
+```bash
+curl -X POST http://localhost:8080/secret -d "{\"content\":\"This is my secret\"}"
+```
 
 With password:
 
-`curl -X POST http://localhost:8080/secret -H "X-Password: myPassword" -d "{\"content\":\"This is my secret\"}"`
+```bash
+curl -X POST http://localhost:8080/secret -H "X-Password: myPassword" -d "{\"content\":\"This is my secret\"}"
+```
 
 ## See secret
 
 ### Header (optional)
 
-```
+```bash
 X-Password: "MyPassword"
 ```
 
 ### Request
 
-GET: `http://localhost:8080/secret/{id}`
+GET
+```bash 
+http://localhost:8080/secret/{id}
+```
 
 ### Example
 
 Without password:
 
-`curl http://127.0.0.1:8080/secret/b3eb17a5-bda5-4e83-9690-56967857d03e`
+```bash 
+curl http://127.0.0.1:8080/secret/b3eb17a5-bda5-4e83-9690-56967857d03e
+```
 
 With password:
 
-`curl -H "X-Password: myPassword" http://127.0.0.1:8080/secret/19d38f65-18c3-4d06-9685-9b705ee9d734`
+```bash
+curl -H "X-Password: myPassword" http://127.0.0.1:8080/secret/19d38f65-18c3-4d06-9685-9b705ee9d734
+```
 
 # Use case (Generate secret without password)
 
@@ -71,7 +82,9 @@ UserA create a new secret:
 
 Request:
 
-`curl -X POST http://localhost:8080/secret -d "{\"content\":\"This is my secret for userB\"}"`
+```bash
+curl -X POST http://localhost:8080/secret -d "{\"content\":\"This is my secret for userB\"}"
+```
 
 Response:
 
@@ -85,7 +98,9 @@ And share the link to UserB to open the link and see the content of the secret:
 
 Request:
 
-`curl http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54`
+```bash
+curl http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54
+```
 
 Response:
 
@@ -97,7 +112,9 @@ Response:
 
 If UserB or whoever try to access again to the secret:
 
-`curl http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54`
+```bash
+curl http://127.0.0.1:8080/secret/90055dba-36aa-4572-8bb0-e4a1f8ecdf54
+```
 
 He will receive the response not found because already was viewed:
 
@@ -112,34 +129,40 @@ He will receive the response not found because already was viewed:
 
 WIP
 
-# Builds
+# Docker Compose
 
-## Server
+Up webserver and MySQL:
 
-Up the server with REST API.
+```bash
+docker-compose up --build
+```
 
-`cd cmd/server && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"`
+Now you will can access to: localhost:8080/secret (POST/GET)
 
-## Purge
+If you execute the command:
 
-Command to delete in database secrets already expided.
+```bash
+docker-compose ps
+```
 
-`cd cmd/purge && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"`
+You will see two containers:
 
-# Docker
+- sharesecret_mysql_1
+- sharesecret_web_1
 
-Up the database:
+In the container "sharesecret_web_1" we already compile two binary (server and prune) in the Dockerfile and run the server. If
+you want to execute the binary "prune":
 
-`docker-compose up --build`
+```bash
+docker exec -it sharesecret_web_1 ./cmd/purge/purge
+```
 
-Build with version:
+Note: You can compile the sever and prune using flags for version:
 
-`go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"`
+```bash
+cd cmd/server && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"
+```
 
-Run service:
-
-`./sharesecret`
-
-
-Travis
-https://dave.cheney.net/2018/07/16/using-go-modules-with-travis-ci
+```bash
+cd cmd/purge && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"
+```

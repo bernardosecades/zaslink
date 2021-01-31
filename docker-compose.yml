@@ -1,5 +1,21 @@
 version: '3.1'
 services:
+  web:
+    build: .
+    environment:
+      SERVER_PORT: 8080
+      SERVER_URL: http://127.0.0.1
+      SECRET_KEY: 11111111111111111111111111111111
+      SECRET_PASSWORD: "@myPassword"
+      DB_NAME: sharesecret
+      DB_USER: berni
+      DB_PASS: 1234
+      DB_HOST: mysql
+      DB_PORT: 3306
+    ports:
+      - 8080:8080
+    links:
+      - mysql
   mysql:
     image: mysql:5.7
     ports:

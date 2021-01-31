@@ -9,11 +9,11 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"time"
-	"fmt"
 )
 
 var (

@@ -12,10 +12,10 @@ import (
 )
 
 type SecretHandler struct {
-	secretService service.SecretService
+	secretService *service.SecretService
 }
 
-func NewSecretHandler(s service.SecretService) *SecretHandler {
+func NewSecretHandler(s *service.SecretService) *SecretHandler {
 	return &SecretHandler{s}
 }
 

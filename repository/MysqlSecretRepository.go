@@ -8,8 +8,8 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
-	"time"
 	"fmt"
+	"time"
 )
 
 const formatDate = "2006-01-02 15:04:05"
@@ -18,7 +18,7 @@ type MySqlSecretRepository struct {
 	SQL *sql.DB
 }
 
-func NewMySqlSecretRepository(dbName string, dbUser string, dbPass string, dbHost string, dbPort string) SecretRepository {
+func NewMySqlSecretRepository(dbName string, dbUser string, dbPass string, dbHost string, dbPort string) *MySqlSecretRepository {
 	dbSource := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true",
 		dbUser,

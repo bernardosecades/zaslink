@@ -39,7 +39,7 @@ func main() {
 	secretKey := os.Getenv("SECRET_KEY")
 	secretPassword := os.Getenv("SECRET_PASSWORD")
 
-	secretRepository := repository.NewMySqlSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
+	secretRepository := repository.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
 	secretService := service.NewSecretService(secretRepository, secretKey, secretPassword)
 	secretHandler := handlers.NewSecretHandler(secretService)
 

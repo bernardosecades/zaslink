@@ -30,7 +30,7 @@ func main() {
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 
-	secretRepository := repository.NewMySqlSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
+	secretRepository := repository.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
 	r, err := secretRepository.RemoveSecretsExpired()
 
 	if err != nil {

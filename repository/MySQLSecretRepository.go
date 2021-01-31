@@ -14,11 +14,11 @@ import (
 
 const formatDate = "2006-01-02 15:04:05"
 
-type MySqlSecretRepository struct {
+type MySQLSecretRepository struct {
 	SQL *sql.DB
 }
 
-func NewMySqlSecretRepository(dbName string, dbUser string, dbPass string, dbHost string, dbPort string) *MySqlSecretRepository {
+func NewMySQLSecretRepository(dbName string, dbUser string, dbPass string, dbHost string, dbPort string) *MySQLSecretRepository {
 	dbSource := fmt.Sprintf(
 		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true",
 		dbUser,
@@ -32,10 +32,10 @@ func NewMySqlSecretRepository(dbName string, dbUser string, dbPass string, dbHos
 		panic(err)
 	}
 
-	return &MySqlSecretRepository{SQL: d}
+	return &MySQLSecretRepository{SQL: d}
 }
 
-func (r *MySqlSecretRepository) GetSecret(id string) (types.Secret, error) {
+func (r *MySQLSecretRepository) GetSecret(id string) (types.Secret, error) {
 
 	res := r.SQL.QueryRow("SELECT * FROM secret WHERE id = ? AND expired_at > ?", id, time.Now().UTC().Format(formatDate))
 
@@ -49,7 +49,7 @@ func (r *MySqlSecretRepository) GetSecret(id string) (types.Secret, error) {
 	return secret, nil
 }
 
-func (r *MySqlSecretRepository) CreateSecret(content string, customPwd bool, expire time.Time) (types.Secret, error) {
+func (r *MySQLSecretRepository) CreateSecret(content string, customPwd bool, expire time.Time) (types.Secret, error) {
 
 	u := uuid.Must(uuid.NewV4(), nil)
 	id := u.String()
@@ -65,7 +65,7 @@ func (r *MySqlSecretRepository) CreateSecret(content string, customPwd bool, exp
 	return secret, nil
 }
 
-func (r *MySqlSecretRepository) RemoveSecret(id string) error {
+func (r *MySQLSecretRepository) RemoveSecret(id string) error {
 
 	_, err := r.SQL.Exec("DELETE FROM secret WHERE id = ?", id)
 	if err != nil {
@@ -74,7 +74,7 @@ func (r *MySqlSecretRepository) RemoveSecret(id string) error {
 	return nil
 }
 
-func (r *MySqlSecretRepository) HasSecretWithCustomPwd(id string) (bool, error) {
+func (r *MySQLSecretRepository) HasSecretWithCustomPwd(id string) (bool, error) {
 
 	secret, err := r.GetSecret(id)
 	if err != nil {
@@ -84,7 +84,7 @@ func (r *MySqlSecretRepository) HasSecretWithCustomPwd(id string) (bool, error) 
 	return secret.CustomPwd, nil
 }
 
-func (r *MySqlSecretRepository) RemoveSecretsExpired() (int64, error) {
+func (r *MySQLSecretRepository) RemoveSecretsExpired() (int64, error) {
 
 	re, err := r.SQL.Exec("DELETE FROM secret WHERE expired_at <= ?", time.Now().UTC().Format(formatDate))
 	if err != nil {

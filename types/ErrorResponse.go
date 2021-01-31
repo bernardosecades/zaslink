@@ -1,6 +1,6 @@
 package types
 
 type ErrorResponse struct {
-	StatusCode int    `json:"StatusCode"`
+	StatusCode int    `json:"Status"`
 	Err        string `json:"Error"`
 }

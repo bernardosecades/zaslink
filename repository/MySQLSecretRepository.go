@@ -32,6 +32,11 @@ func NewMySQLSecretRepository(dbName string, dbUser string, dbPass string, dbHos
 		panic(err)
 	}
 
+	err = d.Ping() // Need to do this to check that the connection is valid
+	if err != nil {
+		panic(err)
+	}
+
 	return &MySQLSecretRepository{SQL: d}
 }
 

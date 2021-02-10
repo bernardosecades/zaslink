@@ -117,3 +117,8 @@ cd cmd/server && go build -ldflags "-X main.commitHash=$(git rev-parse --short H
 ```bash
 cd cmd/purge && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"
 ```
+
+```bash
+docker build -t sharesecret-server .
+docker run --env-file=../.ENV_PROD_SHARESECRET --rm -d -p 8080:8080 sharesecret-server
+```

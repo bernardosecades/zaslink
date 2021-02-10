@@ -39,6 +39,12 @@ func (controller *SecretHandler) CreateSecret(w http.ResponseWriter, r *http.Req
 		return
 	}
 
+	if len(cs.Content) > 10000 {
+		customError := types.ErrorResponse{StatusCode: 400, Err: "Text too long"}
+		encodeCustomError(customError, w)
+		return
+	}
+
 	pass := r.Header.Get("X-Password")
 	secret, err := controller.secretService.CreateSecret(cs.Content, pass)
 
@@ -51,6 +57,7 @@ func (controller *SecretHandler) CreateSecret(w http.ResponseWriter, r *http.Req
 
 	cr := types.CreateSecretResponse{
 		URL: os.Getenv("SERVER_URL") + ":" + os.Getenv("SERVER_PORT") + "/secret/" + secret.ID,
+		ID:  secret.ID,
 	}
 
 	if err := json.NewEncoder(w).Encode(cr); err != nil {

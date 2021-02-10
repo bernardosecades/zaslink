@@ -1,10 +1,11 @@
 package main
 
 import (
-	handlers "github.com/bernardosecades/sharesecret/http"
+	secretHandlers "github.com/bernardosecades/sharesecret/http"
 	"github.com/bernardosecades/sharesecret/repository"
 	"github.com/bernardosecades/sharesecret/service"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	"github.com/joho/godotenv"
@@ -41,12 +42,19 @@ func main() {
 
 	secretRepository := repository.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
 	secretService := service.NewSecretService(secretRepository, secretKey, secretPassword)
-	secretHandler := handlers.NewSecretHandler(secretService)
+	secretHandler := secretHandlers.NewSecretHandler(secretService)
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/secret/{id}", secretHandler.GetSecret).Methods("GET")
-	r.HandleFunc("/secret", secretHandler.CreateSecret).Methods("POST")
+	r.HandleFunc("/secret/{id}", secretHandler.GetSecret).Methods(http.MethodGet, http.MethodOptions)
+	r.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost, http.MethodOptions)
+
+	cors := handlers.CORS(
+		handlers.AllowedHeaders([]string{"content-type"}),
+		handlers.AllowedOrigins([]string{"*"}),
+	)
+
+	r.Use(cors)
 
 	http.Handle("/", r)
 	port := os.Getenv("SERVER_PORT")

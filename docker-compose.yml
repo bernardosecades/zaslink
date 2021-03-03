@@ -12,6 +12,7 @@ services:
       DB_PASS: 1234
       DB_HOST: mysql
       DB_PORT: 3306
+    restart: always
     ports:
       - 8080:8080
     links:

@@ -122,3 +122,11 @@ cd cmd/purge && go build -ldflags "-X main.commitHash=$(git rev-parse --short HE
 docker build -t sharesecret-server .
 docker run --env-file=../.ENV_PROD_SHARESECRET --rm -d -p 8080:8080 sharesecret-server
 ```
+
+Remove docker images not used by any container:
+
+```bash
+docker system prune -a 
+```
+
+See ip container, you can check with `docker inspect <container-ID>`

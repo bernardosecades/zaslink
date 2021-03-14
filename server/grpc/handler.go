@@ -8,6 +8,14 @@ import (
 	_ "google.golang.org/grpc/status"
 )
 
+// TODO handle errors
+/*
+	return data, status.Errorf(
+	            codes.InvalidArgument,
+	            fmt.Sprintf("Your message", req.data),
+	        )
+*/
+
 
 type shareSecretHandler struct {
 	secretService service.SecretService
@@ -20,14 +28,6 @@ func NewShareSecretServer(s service.SecretService) sharesecretgrpc.SecretAppServ
 func (s shareSecretHandler) CreateSecret(ctx context.Context, req *sharesecretgrpc.CreateSecretRequest) (*sharesecretgrpc.CreateSecretResponse, error) {
 
 	secret, err := s.secretService.CreateSecret(req.Content, req.Password)
-
-	// TODO handle errors
-	/*
-	return data, status.Errorf(
-	            codes.InvalidArgument,
-	            fmt.Sprintf("Your message", req.data),
-	        )
-	 */
 
 	if err != nil {
 		return nil, err

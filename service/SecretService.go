@@ -59,7 +59,7 @@ func (s *SecretService) GetContentSecret(id string, password string) (string, er
 		return "", ErrSecretNotFound
 	}
 
-	return  s.decryptContentSecret(secret.Content, password)
+	return s.decryptContentSecret(secret.Content, password)
 }
 
 func (s *SecretService) CreateSecret(rawContent string, password string) (types.Secret, error) {

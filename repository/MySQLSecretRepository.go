@@ -2,14 +2,16 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
+	"time"
 
 	"github.com/bernardosecades/sharesecret/types"
 	_ "github.com/go-sql-driver/mysql"
 
 	uuid "github.com/satori/go.uuid"
 
-	"fmt"
-	"time"
+
 )
 
 const formatDate = "2006-01-02 15:04:05"
@@ -72,10 +74,15 @@ func (r *MySQLSecretRepository) CreateSecret(content string, customPwd bool, exp
 
 func (r *MySQLSecretRepository) RemoveSecret(id string) error {
 
-	_, err := r.SQL.Exec("DELETE FROM secret WHERE id = ?", id)
+	res, err := r.SQL.Exec("DELETE FROM secret WHERE id = ?", id)
 	if err != nil {
 		return err
 	}
+
+	if ra, err := res.RowsAffected(); err != nil || ra == 0 {
+		return errors.New("we can not delete the secret")
+	}
+
 	return nil
 }
 

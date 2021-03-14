@@ -130,3 +130,31 @@ docker system prune -a
 ```
 
 See ip container, you can check with `docker inspect <container-ID>`
+
+
+# PROTO
+
+Install: 
+
+go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+go get -u google.golang.org/grpc
+
+See example: https://github.com/TutorialEdge/go-grpc-tutorial
+
+Generate secret.pb.go and secret_grpc.pb.go:
+
+```bash
+protoc -I=proto --go_out=. --go-grpc_opt=require_unimplemented_servers=false --go-grpc_out=. proto/secret.proto
+```
+
+https://blog.friendsofgo.tech/posts/introduccion-a-grpc/
+
+
+REFERENCIA:
+
+https://medium.com/@nate510/structuring-go-grpc-microservices-dd176fdf28d0 -> HERE https://medium.com/@nate510/structuring-go-grpc-microservices-dd176fdf28d0
+
+Este sobre todo: 
+
+https://blog.friendsofgo.tech/posts/introduccion-a-grpc/
+

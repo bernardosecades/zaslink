@@ -1,21 +1,21 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	_ "github.com/bernardosecades/sharesecret/cmd"
-	secretHandlers "github.com/bernardosecades/sharesecret/http"
 	"github.com/bernardosecades/sharesecret/repository"
 	"github.com/bernardosecades/sharesecret/service"
-
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-
-	"fmt"
-	"log"
-	"net/http"
-	"os"
+	"github.com/bernardosecades/sharesecret/server"
+	"github.com/bernardosecades/sharesecret/server/grpc"
 )
 
 func main() {
+
+	protocol := os.Getenv("SHARESECRET_SERVER_PROTOCOL")
+	host     := os.Getenv("SHARESECRET_SERVER_HOST")
+	port     := os.Getenv("SHARESECRET_SERVER_PORT")
 
 	dbName := os.Getenv("DB_NAME")
 	dbPass := os.Getenv("DB_PASS")
@@ -28,26 +28,15 @@ func main() {
 
 	secretRepository := repository.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
 	secretService := service.NewSecretService(secretRepository, secretKey, secretPassword)
-	secretHandler := secretHandlers.NewSecretHandler(secretService)
 
-	r := mux.NewRouter()
+	srvCfg := server.Config{Protocol: protocol, Host: host, Port: port}
+	srv := grpc.NewServer(srvCfg, secretService)
 
-	r.HandleFunc("/secret/{id}", secretHandler.GetSecret).Methods(http.MethodGet, http.MethodOptions)
-	r.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost, http.MethodOptions)
+	log.Printf("gRPC server running at %s://%s:%s ...\n", protocol, host, port)
 
-	cors := handlers.CORS(
-		handlers.AllowedHeaders([]string{"content-type"}),
-		handlers.AllowedOrigins([]string{"*"}),
-	)
-
-	r.Use(cors)
-
-	http.Handle("/", r)
-	port := os.Getenv("SERVER_PORT")
-	log.Print(fmt.Sprintf(":%s", port))
-	err := http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	err := srv.Serve()
 
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		log.Fatal("gRPC error: ", err)
 	}
 }

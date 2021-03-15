@@ -11,8 +11,7 @@ import (
 	"github.com/bernardosecades/sharesecret/server/grpc"
 )
 
-func main() {
-
+func App() server.Server {
 	protocol := os.Getenv("SHARESECRET_SERVER_PROTOCOL")
 	host     := os.Getenv("SHARESECRET_SERVER_HOST")
 	port     := os.Getenv("SHARESECRET_SERVER_PORT")
@@ -32,9 +31,15 @@ func main() {
 	srvCfg := server.Config{Protocol: protocol, Host: host, Port: port}
 	srv := grpc.NewServer(srvCfg, secretService)
 
-	log.Printf("gRPC server running at %s://%s:%s ...\n", protocol, host, port)
+	return srv
+}
 
+func main() {
+
+	srv := App()
 	err := srv.Serve()
+
+	//log.Printf("gRPC server running at %s://%s:%s ...\n", protocol, host, port)
 
 	if err != nil {
 		log.Fatal("gRPC error: ", err)

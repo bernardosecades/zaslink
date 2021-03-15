@@ -1,9 +1,10 @@
 package grpc
 
 import (
-	sharesecretgrpc "github.com/bernardosecades/sharesecret/build"
-	"github.com/bernardosecades/sharesecret/repository"
-	"github.com/bernardosecades/sharesecret/service"
+	sharesecretgrpc "github.com/bernardosecades/sharesecret/genproto"
+	sharesecret "github.com/bernardosecades/sharesecret/internal"
+	"github.com/bernardosecades/sharesecret/internal/storage/mysql"
+
 	"github.com/joho/godotenv"
 
 	"github.com/stretchr/testify/assert"
@@ -41,10 +42,10 @@ func init() {
 	secretKey := os.Getenv("SECRET_KEY")
 	secretPassword := os.Getenv("SECRET_PASSWORD")
 
-	secretRepository := repository.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
-	secretService := service.NewSecretService(secretRepository, secretKey, secretPassword)
+	secretRepository := mysql.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
+	secretService := sharesecret.NewSecretService(secretRepository, secretKey, secretPassword)
 
-	sharesecretgrpc.RegisterSecretAppServer(s, NewShareSecretServer(secretService))
+	sharesecretgrpc.RegisterSecretServiceServer(s, NewShareSecretServer(secretService))
 	go func() {
 		if err := s.Serve(lis); err != nil {
 			log.Fatalf("Server exited with error: %v", err)
@@ -63,7 +64,7 @@ func TestCreateAndSeeSecretWithoutPassword(t *testing.T) {
 		t.Fatalf("Failed to dial bufnet: %v", err)
 	}
 	defer conn.Close()
-	client := sharesecretgrpc.NewSecretAppClient(conn)
+	client := sharesecretgrpc.NewSecretServiceClient(conn)
 	resp1, err1 := client.CreateSecret(ctx, &sharesecretgrpc.CreateSecretRequest{Content: "This is my secret"})
 	if err1 != nil {
 		t.Fatalf("CreateSecret failed: %v", err1)
@@ -87,7 +88,7 @@ func TestCreateAndSeeSecretWithPassword(t *testing.T) {
 		t.Fatalf("Failed to dial bufnet: %v", err)
 	}
 	defer conn.Close()
-	client := sharesecretgrpc.NewSecretAppClient(conn)
+	client := sharesecretgrpc.NewSecretServiceClient(conn)
 	resp1, err1 := client.CreateSecret(ctx, &sharesecretgrpc.CreateSecretRequest{Content: "This is my secret", Password: "1234"})
 	if err1 != nil {
 		t.Fatalf("CreateSecret failed: %v", err1)

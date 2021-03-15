@@ -143,8 +143,15 @@ See example: https://github.com/TutorialEdge/go-grpc-tutorial
 
 Generate secret.pb.go and secret_grpc.pb.go:
 
+Without gateway (only gRPC):
 ```bash
-protoc -I=proto --go_out=. --go-grpc_opt=require_unimplemented_servers=false --go-grpc_out=. proto/secret.proto
+protoc -I=proto --go_out=. --go-grpc_opt=require_unimplemented_servers=false --go-grpc_out=. proto/secret.proto  
+```
+
+With gateway (API REST):
+
+```bash 
+protoc -I=proto -I /Users/admin/go/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=. --go-grpc_opt=require_unimplemented_servers=false --go-grpc_out=. proto/secret.proto --grpc-gateway_out=logtostderr=true:./genproto 
 ```
 
 https://blog.friendsofgo.tech/posts/introduccion-a-grpc/

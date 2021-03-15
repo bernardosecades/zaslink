@@ -1,20 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
-
-	_ "github.com/bernardosecades/sharesecret/cmd"
-	sharesecretgrpc "github.com/bernardosecades/sharesecret/build"
-
-	"google.golang.org/grpc"
-
-
 	"log"
 	"time"
-	"context"
+
+	sharesecretgrpc "github.com/bernardosecades/sharesecret/genproto"
+	_ "github.com/bernardosecades/sharesecret/cmd"
+	"google.golang.org/grpc"
 )
 
-// SEE: https://github.com/neocortical/mysvc/blob/main/grpc/client/client.go
 func main() {
 	conn, err := grpc.Dial("localhost:3333", grpc.WithInsecure())
 	if err != nil {
@@ -22,11 +18,11 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := sharesecretgrpc.NewSecretAppClient(conn)
+	client := sharesecretgrpc.NewSecretServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r1, err1 := client.CreateSecret(ctx, &sharesecretgrpc.CreateSecretRequest{Content: "this is a test"})
+	r1, err1 := client.CreateSecret(ctx, &sharesecretgrpc.CreateSecretRequest{Content: "this is a my secret"})
 	if err1 != nil {
 		log.Fatalf("CreateSecret: %v", err1)
 	}
@@ -39,4 +35,3 @@ func main() {
 	}
 	fmt.Println(r2.String())
 }
-

@@ -2,7 +2,7 @@ package main
 
 import (
 	_ "github.com/bernardosecades/sharesecret/cmd"
-	"github.com/bernardosecades/sharesecret/repository"
+	"github.com/bernardosecades/sharesecret/internal/storage/mysql"
 
 	"fmt"
 	"log"
@@ -17,7 +17,7 @@ func main() {
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 
-	secretRepository := repository.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
+	secretRepository := mysql.NewMySQLSecretRepository(dbName, dbUser, dbPass, dbHost, dbPort)
 	r, err := secretRepository.RemoveSecretsExpired()
 
 	if err != nil {

@@ -2,22 +2,22 @@ package grpc
 
 import (
 	"fmt"
+	sharesecret "github.com/bernardosecades/sharesecret/internal"
 	"net"
 	"os"
 
-	sharesecretgrpc "github.com/bernardosecades/sharesecret/build"
-	"github.com/bernardosecades/sharesecret/server"
-	"github.com/bernardosecades/sharesecret/service"
+	sharesecretgrpc "github.com/bernardosecades/sharesecret/genproto"
+	"github.com/bernardosecades/sharesecret/internal/server"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 )
 
 type grpcServer struct {
-	config          server.Config
-	secretService   service.SecretService
+	config        server.Config
+	secretService sharesecret.SecretService
 }
 
-func NewServer(config server.Config, ss service.SecretService) server.Server {
+func NewServer(config server.Config, ss sharesecret.SecretService) server.Server {
 	return &grpcServer{config: config, secretService: ss}
 }
 
@@ -34,7 +34,7 @@ func (s *grpcServer) Serve() error {
 	srv := grpc.NewServer()
 
 	serviceServer := NewShareSecretServer(s.secretService)
-	sharesecretgrpc.RegisterSecretAppServer(srv, serviceServer)
+	sharesecretgrpc.RegisterSecretServiceServer(srv, serviceServer)
 
 	if err := srv.Serve(listener); err != nil {
 		return err
@@ -42,4 +42,3 @@ func (s *grpcServer) Serve() error {
 
 	return nil
 }
-

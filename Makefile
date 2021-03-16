@@ -1,18 +1,16 @@
-.PHONY: dependency unit-test integration-test docker-up docker-down clear
+.PHONY: help dependencies up start stop restart status ps clean and execute tests
 
-dependency:
-	@go get -v ./...
-
-integration-test: docker-up dependency
-	@go test -v ./...
-
-unit-test: dependency
-	@go test -v -short ./...
-
-docker-up:
-	@docker-compose up -d
-
-docker-down:
-	@docker-compose down
-
-clear: docker-down
+up:
+	docker-compose up --build
+down:
+	docker-compose down
+test-coverage:
+	docker-compose exec service go clean -testcache && go test  ./... -tags=unit,integration,e2e -coverprofile cover.out && go tool cover -html=cover.out
+test-all:
+	docker-compose exec service go clean -testcache && go test  ./... -tags=unit,integration,e2e
+test-unit:
+	docker-compose exec service go clean -testcache && go test ./... -tags=unit
+test-integration:
+	docker-compose exec service go clean -testcache && go test ./... -tags=integration
+test-e2e:
+	docker-compose exec service go clean -testcache && go test -v ./... -tags=e2e

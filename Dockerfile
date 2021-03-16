@@ -27,8 +27,14 @@ RUN cd cmd/purge && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w 
 RUN upx /bin/server
 RUN upx /bin/purge
 
+# Expose port 3333 to the outside world
+EXPOSE 3333
+
+# Command to run the executable
+ENTRYPOINT ["/bin/server"]
+
 # STEP 2: Build a small image
-FROM alpine:3.13
+FROM alpine:3.13 AS production
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # passwd file to appuser created in first stage
@@ -41,8 +47,8 @@ RUN  ls -la /go/bin/
 
 # Use an unprivileged user.
 USER appuser
-# Expose port 8080 to the outside world
-EXPOSE 8080
+# Expose port 3333 to the outside world
+EXPOSE 3333
 
 # Command to run the executable
 ENTRYPOINT ["/go/bin/server"]

@@ -2,14 +2,13 @@ package grpc
 
 import (
 	"fmt"
-	sharesecret "github.com/bernardosecades/sharesecret/internal"
-	"net"
-	"os"
-
 	sharesecretgrpc "github.com/bernardosecades/sharesecret/genproto"
+	sharesecret "github.com/bernardosecades/sharesecret/internal"
 	"github.com/bernardosecades/sharesecret/internal/server"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
+	"net"
+	"os"
 )
 
 type grpcServer struct {

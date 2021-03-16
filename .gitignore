@@ -1,3 +1,4 @@
 .idea
+cover.out
 cmd/purge/purge
 cmd/server/server

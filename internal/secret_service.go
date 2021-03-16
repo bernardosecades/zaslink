@@ -15,6 +15,8 @@ var (
 	ErrEmptyContent   = errors.New("empty content")
 	ErrTextTooLong    = errors.New("text too long")
 	ErrPassTooLong    = errors.New("password too long")
+	ErrPassToDecrypt    = errors.New("error password to decrypt")
+	ErrToEncrypt    = errors.New("error to encrypt")
 )
 
 type SecretService interface {
@@ -62,7 +64,13 @@ func (s *secretService) GetContentSecret(id string, password string) (string, er
 		return "", ErrSecretNotFound
 	}
 
-	return s.decryptContentSecret(secret.Content, password)
+	content, err := s.decryptContentSecret(secret.Content, password)
+
+	if err != nil {
+		return "", ErrPassToDecrypt
+	}
+
+	return content, nil
 }
 
 func (s *secretService) CreateSecret(rawContent string, password string) (Secret, error) {
@@ -88,7 +96,7 @@ func (s *secretService) CreateSecret(rawContent string, password string) (Secret
 	content, err := s.encryptContentSecret(rawContent, password)
 
 	if err != nil {
-		return Secret{}, err
+		return Secret{}, ErrToEncrypt
 	}
 
 	expire := time.Now().UTC().AddDate(0, 0, 5)

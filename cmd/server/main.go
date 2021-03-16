@@ -37,7 +37,8 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	g, ctx := errgroup.WithContext(ctx) // workgroupo esperas a todo, errgroup sabe que tiene dos goroutine
+	// group context: https://bionic.fullstory.com/why-you-should-be-using-errgroup-withcontext-in-golang-server-handlers/
+	g, ctx := errgroup.WithContext(ctx)
 
 	g.Go(func() error {
 		srvCfg := server.Config{Protocol: protocol, Host: host, Port: port}
@@ -46,6 +47,7 @@ func main() {
 		log.Printf("gRPC server running at %s://%s:%s ...\n", protocol, host, port)
 		return srv.Serve()
 	})
+
 	g.Go(func() error {
 		httpAddr := fmt.Sprintf(":%s", port)
 		httpSrv := http.NewServer(httpAddr)
@@ -54,5 +56,5 @@ func main() {
 		return httpSrv.Serve(ctx)
 	})
 
-	log.Fatal(g.Wait()) // cuando una gouroutina el otro que falla termina la gourutina
+	log.Fatal(g.Wait())
 }

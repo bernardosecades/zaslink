@@ -165,3 +165,35 @@ Este sobre todo:
 
 https://blog.friendsofgo.tech/posts/introduccion-a-grpc/
 
+# UP SERVICE
+
+```bash
+docker-compose up --build
+```
+
+
+# Test
+
+All:
+
+```bash
+docker-compose exec service go test -v ./...
+```
+
+Unit:
+
+```bash
+docker-compose exec service go test ./... -tags=unit
+```
+
+Integration:
+
+```bash
+docker-compose exec service go test ./... -tags=integration
+```
+
+E2E:
+
+```bash
+docker-compose exec service go test ./... -tags=e2e
+```

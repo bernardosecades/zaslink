@@ -2,11 +2,10 @@ package http
 
 import (
 	"context"
-	"net/http"
-
 	sharesecretgrpc "github.com/bernardosecades/sharesecret/genproto"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
+	"net/http"
 )
 
 type Server struct {
@@ -19,7 +18,8 @@ func NewServer(httpAddr string) *Server {
 
 func (s *Server) Serve(ctx context.Context) error {
 	mux := runtime.NewServeMux()
-	opts := []grpc.DialOption{grpc.WithInsecure()}
+	opts := []grpc.DialOption{grpc.WithInsecure(), grpc.WithReturnConnectionError()}
+
 
 	err := sharesecretgrpc.RegisterSecretServiceHandlerFromEndpoint(ctx, mux, s.httpAddr, opts)
 	if err != nil {

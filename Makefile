@@ -1,5 +1,7 @@
 .PHONY: help dependencies up start stop restart status ps clean and execute tests
 
+ps:
+	docker-compose ps
 up:
 	docker-compose up --build
 down:

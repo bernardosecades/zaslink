@@ -9,7 +9,6 @@ import (
 )
 
 func TestGetContentSecret(t *testing.T) {
-
 	key := "11111111111111111111111111111111"
 	pass := "@myPassword"
 
@@ -20,7 +19,6 @@ func TestGetContentSecret(t *testing.T) {
 }
 
 func TestCreateSecret(t *testing.T) {
-
 	key := "11111111111111111111111111111111"
 	pass := ""
 	defaultPwd := "@myPassword"

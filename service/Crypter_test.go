@@ -7,7 +7,6 @@ import (
 )
 
 func TestEncryptDecryptWithSameKey(t *testing.T) {
-
 	text := []byte("My name is Bernie")
 	key := []byte("11111111111111111111111111111111")
 
@@ -23,7 +22,6 @@ func TestEncryptDecryptWithSameKey(t *testing.T) {
 }
 
 func TestEncryptDecryptWithDifferentKey(t *testing.T) {
-
 	text := []byte("My name is Bernie")
 	key1 := []byte("11111111111111111111111111111111")
 	key2 := []byte("11111111111111111111111111111112")

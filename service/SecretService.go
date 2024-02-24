@@ -17,7 +17,6 @@ type SecretService struct {
 }
 
 func NewSecretService(r repository.SecretRepository, key string, defaultPwd string) *SecretService {
-
 	if len(key) != 32 {
 		panic("key secret should have 32 bytes")
 	}
@@ -41,12 +40,10 @@ func (s *SecretService) GetSecret(id string) (types.Secret, error) {
 }
 
 func (s *SecretService) HasSecretWithCustomPwd(id string) (bool, error) {
-
 	return s.repository.HasSecretWithCustomPwd(id)
 }
 
 func (s *SecretService) GetContentSecret(id string, password string) (string, error) {
-
 	if len(password) == 0 {
 		password = s.defaultPwd
 	}
@@ -60,7 +57,6 @@ func (s *SecretService) GetContentSecret(id string, password string) (string, er
 }
 
 func (s *SecretService) CreateSecret(rawContent string, password string) (types.Secret, error) {
-
 	if len(password) > 32 {
 		return types.Secret{}, errors.New("password too long")
 	}

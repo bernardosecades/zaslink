@@ -41,6 +41,9 @@ func main() {
 
 	r.HandleFunc("/secret/{id}", secretHandler.GetSecret).Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost, http.MethodOptions)
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, fmt.Sprintf("%s/swagger/", os.Getenv("SERVER_URL")), http.StatusMovedPermanently)
+	}).Methods(http.MethodGet, http.MethodOptions)
 
 	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 

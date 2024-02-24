@@ -1,0 +1,128 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API to create and read secrets one time",
+        "title": "SHARE SECRET API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/secret": {
+            "post": {
+                "description": "Create secret",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Share Secret"
+                ],
+                "summary": "Create secret",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "password",
+                        "name": "X-Password",
+                        "in": "header"
+                    },
+                    {
+                        "description": "query params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateSecretRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateSecretResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "invalid param"
+                    },
+                    "500": {
+                        "description": "internal error"
+                    }
+                }
+            }
+        },
+        "/secret/{id}": {
+            "get": {
+                "description": "Get secret",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Share Secret"
+                ],
+                "summary": "Get secret",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "password",
+                        "name": "X-Password",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID of the secret",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.SecretResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "id is missing"
+                    },
+                    "404": {
+                        "description": "secret can not found"
+                    },
+                    "500": {
+                        "description": "internal error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "types.CreateSecretRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.CreateSecretResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.SecretResponse": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

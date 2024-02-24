@@ -3,7 +3,7 @@ services:
   web:
     build: .
     environment:
-      SERVER_PORT: 8080
+      SERVER_PORT: 8083
       SERVER_URL: http://127.0.0.1
       SECRET_KEY: 11111111111111111111111111111111
       SECRET_PASSWORD: "@myPassword"
@@ -14,11 +14,12 @@ services:
       DB_PORT: 3306
     restart: always
     ports:
-      - 8080:8080
+      - 8083:8080
     links:
       - mysql
   mysql:
-    image: mysql:5.7
+    platform: linux/arm64
+    image: mysql:8
     ports:
       - "3308:3306"
     environment:

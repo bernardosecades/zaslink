@@ -1,20 +1,27 @@
 package main
 
 import (
-	_ "github.com/bernardosecades/sharesecret/cmd"
-	secretHandlers "github.com/bernardosecades/sharesecret/http"
-	"github.com/bernardosecades/sharesecret/repository"
-	"github.com/bernardosecades/sharesecret/service"
-
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	_ "github.com/bernardosecades/sharesecret/cmd"
+	_ "github.com/bernardosecades/sharesecret/docs"
+	secretHandlers "github.com/bernardosecades/sharesecret/http"
+	"github.com/bernardosecades/sharesecret/repository"
+	"github.com/bernardosecades/sharesecret/service"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title SHARE SECRET API
+// @version 1.0
+// @description API to create and read secrets one time
+
+// @host
+// @BasePath /
 func main() {
 
 	dbName := os.Getenv("DB_NAME")
@@ -34,6 +41,8 @@ func main() {
 
 	r.HandleFunc("/secret/{id}", secretHandler.GetSecret).Methods(http.MethodGet, http.MethodOptions)
 	r.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost, http.MethodOptions)
+
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	cors := handlers.CORS(
 		handlers.AllowedHeaders([]string{"content-type"}),

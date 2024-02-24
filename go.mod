@@ -8,6 +8,8 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0
 	github.com/satori/go.uuid v1.2.0
-	github.com/stretchr/testify v1.6.1
-	golang.org/x/crypto v0.0.0-20201203163018-be400aefbc4c
+	github.com/stretchr/testify v1.7.0
+	github.com/swaggo/http-swagger v1.3.4 // indirect
+	github.com/swaggo/swag v1.8.1 // indirect
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 )

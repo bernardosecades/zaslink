@@ -1,0 +1,83 @@
+basePath: /
+definitions:
+  types.CreateSecretRequest:
+    properties:
+      content:
+        type: string
+    type: object
+  types.CreateSecretResponse:
+    properties:
+      id:
+        type: string
+      url:
+        type: string
+    type: object
+  types.SecretResponse:
+    properties:
+      content:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API to create and read secrets one time
+  title: SHARE SECRET API
+  version: "1.0"
+paths:
+  /secret:
+    post:
+      description: Create secret
+      parameters:
+      - description: password
+        in: header
+        name: X-Password
+        type: string
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/types.CreateSecretRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.CreateSecretResponse'
+        "400":
+          description: invalid param
+        "500":
+          description: internal error
+      summary: Create secret
+      tags:
+      - Share Secret
+  /secret/{id}:
+    get:
+      description: Get secret
+      parameters:
+      - description: password
+        in: header
+        name: X-Password
+        type: string
+      - description: ID of the secret
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.SecretResponse'
+        "400":
+          description: id is missing
+        "404":
+          description: secret can not found
+        "500":
+          description: internal error
+      summary: Get secret
+      tags:
+      - Share Secret
+swagger: "2.0"

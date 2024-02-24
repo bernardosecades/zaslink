@@ -130,3 +130,11 @@ docker system prune -a
 ```
 
 See ip container, you can check with `docker inspect <container-ID>`
+
+### Generate Swagger Doc
+
+Install in your machine: `go install github.com/swaggo/swag/cmd/swag@v1.8.12`
+
+```bash
+ swag init -d cmd/server/,http/,types/
+```

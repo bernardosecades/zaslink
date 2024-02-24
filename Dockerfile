@@ -41,8 +41,6 @@ RUN  ls -la /go/bin/
 
 # Use an unprivileged user.
 USER appuser
-# Expose port 8080 to the outside world
-EXPOSE 8080
 
 # Command to run the executable
 ENTRYPOINT ["/go/bin/server"]

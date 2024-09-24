@@ -9,16 +9,6 @@ import (
 
 type ResponseWriter struct {
 	http.ResponseWriter
-	statusCode int
-}
-
-func NewResponseWriter(w http.ResponseWriter) *ResponseWriter {
-	return &ResponseWriter{w, http.StatusOK}
-}
-
-func (rw *ResponseWriter) WriteHeader(code int) {
-	rw.statusCode = code
-	rw.ResponseWriter.WriteHeader(code)
 }
 
 var TotalRequests = prometheus.NewCounterVec(
@@ -34,8 +24,7 @@ func Prometheus(next http.Handler) http.Handler {
 		route := mux.CurrentRoute(r)
 		path, _ := route.GetPathTemplate()
 
-		rw := NewResponseWriter(w)
-		next.ServeHTTP(rw, r)
+		next.ServeHTTP(w, r)
 
 		TotalRequests.WithLabelValues(path).Inc()
 	})

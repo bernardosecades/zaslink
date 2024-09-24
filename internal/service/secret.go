@@ -20,11 +20,12 @@ const (
 )
 
 var (
-	ErrContentEmpty   = errors.New("content cannot be empty")
-	ErrMissingID      = errors.New("missing id")
-	ErrContentTooLong = errors.New("content too long")
-	ErrPassTooLong    = errors.New("pass too long")
-	ErrPassTooShort   = errors.New("pass too short")
+	ErrContentEmpty       = errors.New("content cannot be empty")
+	ErrMissingID          = errors.New("missing id")
+	ErrContentTooLong     = errors.New("content too long")
+	ErrPassTooLong        = errors.New("pass too long")
+	ErrPassTooShort       = errors.New("pass too short")
+	ErrSecretDoesNotExist = errors.New("secret does not exist")
 )
 
 type SecretRepository interface {
@@ -87,12 +88,12 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 
 	secret, err := s.secretRepo.GetSecret(ctx, ID)
 	if err != nil {
-		return entity.Secret{}, fmt.Errorf("could not retrive handler for ID %s: %w", ID, err)
+		return entity.Secret{}, ErrSecretDoesNotExist
 	}
 
 	decryptContent, err := s.decryptContent(secret.Content, pwd)
 	if err != nil {
-		return entity.Secret{}, fmt.Errorf("could not deecrypt content: %w", err)
+		return entity.Secret{}, fmt.Errorf("could not decrypt content: %w", err)
 	}
 
 	secret.Viewed = true

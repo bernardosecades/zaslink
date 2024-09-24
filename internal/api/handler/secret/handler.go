@@ -2,6 +2,8 @@ package secret
 
 import (
 	"encoding/json"
+	"errors"
+	"github.com/bernardosecades/sharesecret/pkg/api"
 	"net/http"
 
 	"github.com/bernardosecades/sharesecret/internal/service"
@@ -22,15 +24,13 @@ func (h *Handler) CreateSecret(w http.ResponseWriter, r *http.Request) {
 	var request CreateSecretRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		_, _ = w.Write([]byte(err.Error()))
+		api.EncodeHTTPError(api.NewHTTPError("wrong request parameters, please check the body request", http.StatusBadRequest), w)
 		return
 	}
 
 	secret, err := h.secretService.CreateSecret(r.Context(), request.Content, request.Pwd)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		_, _ = w.Write([]byte(err.Error()))
+		api.EncodeHTTPError(api.NewHTTPError(err.Error(), http.StatusInternalServerError), w)
 		return
 	}
 
@@ -39,12 +39,7 @@ func (h *Handler) CreateSecret(w http.ResponseWriter, r *http.Request) {
 		ExpiredAt: secret.ExpiredAt,
 	}
 
-	err = json.NewEncoder(w).Encode(response)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		_, _ = w.Write([]byte(err.Error()))
-		return
-	}
+	api.EncodeHTTPResponse(response, w, http.StatusCreated)
 }
 
 func (h *Handler) RetrieveSecret(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +51,11 @@ func (h *Handler) RetrieveSecret(w http.ResponseWriter, r *http.Request) {
 
 	secret, err := h.secretService.RetrieveSecret(r.Context(), ID, pwd)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
+		if errors.Is(err, service.ErrSecretDoesNotExist) {
+			api.EncodeHTTPError(api.NewHTTPError("secret does not exist or already read", http.StatusNotFound), w)
+			return
+		}
+		api.EncodeHTTPError(api.NewHTTPError("there was an error to read the secret, try later", http.StatusInternalServerError), w)
 		return
 	}
 
@@ -64,9 +63,5 @@ func (h *Handler) RetrieveSecret(w http.ResponseWriter, r *http.Request) {
 		Content: secret.Content,
 	}
 
-	err = json.NewEncoder(w).Encode(response)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	api.EncodeHTTPResponse(response, w, http.StatusOK)
 }

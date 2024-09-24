@@ -12,6 +12,9 @@ func Logger(logger zerolog.Logger) func(handler http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
 			defer func() {
+
+				// TODO if response is error print error. Use HttpError to print Unwrap error
+
 				logger.Info().
 					Str("request-id", GetRequestID(r.Context())).
 					Str("method", r.Method).

@@ -29,7 +29,7 @@ func (h *Handler) CreateSecret(w http.ResponseWriter, r *http.Request) {
 
 	secret, err := h.secretService.CreateSecret(r.Context(), request.Content, request.Pwd)
 	if err != nil {
-		api.EncodeHTTPError(api.NewHTTPError(err.Error(), http.StatusInternalServerError), w)
+		api.EncodeHTTPError(api.NewHTTPError(err.Error(), http.StatusBadRequest), w)
 		return
 	}
 

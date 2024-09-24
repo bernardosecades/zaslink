@@ -1,11 +1,7 @@
 # STEP 1: Build executable sever and purge binaries with UPX (it is an advanced executable file compressor)
-FROM golang:1.15 AS builder
+FROM golang:1.23 AS builder
 # Add Maintainer Info
 LABEL maintainer="Bernardo Secades <bernardosecades@gmail.com>"
-
-RUN apt-get update && \
-	apt-get install --no-install-recommends -y \
-	ca-certificates upx-ucl
 
 RUN useradd appuser
 
@@ -20,27 +16,28 @@ COPY . .
 # Build the Go app
 
 # -ldflags="-w -s" reduce size of bnary
-RUN cd cmd/server && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /bin/server .
-RUN cd cmd/purge && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /bin/purge .
+RUN cd cmd/api && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /bin/api-handler .
 
-# Compress binary files
-RUN upx /bin/server
-RUN upx /bin/purge
+# Expose port 8080 to the outside world
+EXPOSE 800
+
+# Command to run the executable
+ENTRYPOINT ["/bin/api-secret"]
 
 # STEP 2: Build a small image
-FROM alpine:3.13
+FROM alpine:3.13 AS production
 
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # passwd file to appuser created in first stage
 COPY --from=builder /etc/passwd /etc/passwd
 
-COPY --from=builder /bin/server /go/bin/server
-COPY --from=builder /bin/purge /go/bin/purge
+COPY --from=builder /bin/api-secret /go/bin/api-secret
 
 RUN  ls -la /go/bin/
 
 # Use an unprivileged user.
 USER appuser
+# Expose port 8080 to the outside world
+EXPOSE 8080
 
 # Command to run the executable
-ENTRYPOINT ["/go/bin/server"]
+ENTRYPOINT ["/go/bin/api-secret"]

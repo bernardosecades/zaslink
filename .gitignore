@@ -1,3 +1,2 @@
 .idea
-cmd/purge/purge
-cmd/server/server
+out

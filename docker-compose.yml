@@ -1,32 +1,49 @@
+# Use root/example as user/password credentials
 version: '3.1'
+
 services:
-  web:
-    build: .
+  mongo:
+    image: mongo
+    restart: always
     environment:
-      SERVER_PORT: 8083
-      SERVER_URL: http://127.0.0.1
-      SECRET_KEY: 11111111111111111111111111111111
-      SECRET_PASSWORD: "@myPassword"
-      DB_NAME: sharesecret
-      DB_USER: berni
-      DB_PASS: 1234
-      DB_HOST: mysql
-      DB_PORT: 3306
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+
+  mongo-express:
+    image: mongo-express
     restart: always
     ports:
-      - 8083:8080
-    links:
-      - mysql
-  mysql:
-    platform: linux/arm64
-    image: mysql:8
-    ports:
-      - "3308:3306"
+      - 8081:8081
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: berni
-      MYSQL_PASSWORD: 1234
-      MYSQL_DATABASE: sharesecret
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_BASICAUTH: null
 
+  prometheus:
+    image: prom/prometheus:v2.24.0
     volumes:
-      - "./schema.sql:/docker-entrypoint-initdb.d/schema.sql"
+      - ./configs/prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
+volumes:
+  prometheus_data:
+  grafana-storage:

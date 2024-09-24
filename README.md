@@ -15,126 +15,19 @@ General we can't do anything with your information even if we wanted to (which w
 
 If you include a password, we use it to encrypt the secret. We don't store the password (only a crypted hash) so we can never know what the secret is because we can't decrypt it.
 
-## Demo
 
-![Share Secret Demo](demo/demo.gif)
+## Docker
+ 
+Build image with tag version:
 
-## Create new secret
+`sudo docker build --tag bernardosecades/api-share-secret:v1`
 
-POST: `http://localhost:8080/secret`
+Build container from image:
 
-### Header (optional)
+`docker run -p 8080:8080 -e SECRET_KEY=11111111111111111111111111111111 -e DEFAULT_PASSWORD=@myPassword -e MONGODB_URI=mongodb://root:example@192.168.1.132:27017 bernardosecades/api-share-secret:v1`
 
-```bash
-X-Password: "MyPassword"
-```
+Push to docker hub:
 
-### Payload
+`sudo docker login -u bernardosecades -p <YOUR_PASSWORD>`
 
-```json
-{
-    "content": "This is my secret"
-}
-```
-
-### Example
-
-Without password:
-
-```bash
-curl -X POST http://localhost:8080/secret -d "{\"content\":\"This is my secret\"}"
-```
-
-With password:
-
-```bash
-curl -X POST http://localhost:8080/secret -H "X-Password: myPassword" -d "{\"content\":\"This is my secret\"}"
-```
-
-## See secret
-
-### Header (optional)
-
-```bash
-X-Password: "MyPassword"
-```
-
-### Request
-
-GET
-```bash 
-http://localhost:8080/secret/{id}
-```
-
-### Example
-
-Without password:
-
-```bash 
-curl http://127.0.0.1:8080/secret/b3eb17a5-bda5-4e83-9690-56967857d03e
-```
-
-With password:
-
-```bash
-curl -H "X-Password: myPassword" http://127.0.0.1:8080/secret/19d38f65-18c3-4d06-9685-9b705ee9d734
-```
-
-## Docker Compose
-
-Up webserver and MySQL:
-
-```bash
-docker-compose up --build
-```
-
-Now you will can access to: localhost:8080/secret (POST/GET)
-
-If you execute the command:
-
-```bash
-docker-compose ps
-```
-
-You will see two containers:
-
-- sharesecret_mysql_1
-- sharesecret_web_1
-
-In the container "sharesecret_web_1" we already compile two binary (server and purge) in the Dockerfile and run the server. If
-you want to execute the binary "purge" (delete from database all secrets expired):
-
-```bash
-docker exec -it sharesecret_web_1 ./cmd/purge/purge
-```
-
-Note: You can compile the sever and purge using flags for version:
-
-```bash
-cd cmd/server && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"
-```
-
-```bash
-cd cmd/purge && go build -ldflags "-X main.commitHash=$(git rev-parse --short HEAD)"
-```
-
-```bash
-docker build -t sharesecret-server .
-docker run --env-file=../.ENV_PROD_SHARESECRET --rm -d -p 8080:8080 sharesecret-server
-```
-
-Remove docker images not used by any container:
-
-```bash
-docker system prune -a 
-```
-
-See ip container, you can check with `docker inspect <container-ID>`
-
-### Generate Swagger Doc
-
-Install in your machine: `go install github.com/swaggo/swag/cmd/swag@v1.8.12`
-
-```bash
- swag init -d cmd/server/,http/,types/
-```
+`sudo docker push bernardosecades/api-share-secret:v1`

@@ -19,6 +19,7 @@ func (e *HTTPError) Error() string {
 }
 
 func EncodeHTTPError(err *HTTPError, w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(err.StatusCode)
 	_ = json.NewEncoder(w).Encode(err)
 }

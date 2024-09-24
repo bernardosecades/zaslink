@@ -3,8 +3,9 @@ package secret
 import (
 	"encoding/json"
 	"errors"
-	"github.com/bernardosecades/sharesecret/pkg/api"
 	"net/http"
+
+	"github.com/bernardosecades/sharesecret/pkg/api"
 
 	"github.com/bernardosecades/sharesecret/internal/service"
 	"github.com/gorilla/mux"
@@ -19,8 +20,6 @@ func NewHandler(secretService *service.SecretService) *Handler {
 }
 
 func (h *Handler) CreateSecret(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var request CreateSecretRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
 	if err != nil {
@@ -43,8 +42,6 @@ func (h *Handler) CreateSecret(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) RetrieveSecret(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	vars := mux.Vars(r)
 	pwd := r.Header.Get("X-Password")
 	ID := vars["id"]

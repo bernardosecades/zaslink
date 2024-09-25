@@ -1,26 +1,29 @@
+//go:build integration
+
 package integration
 
 import (
 	"context"
 	"encoding/json"
-	"io"
-	"net/http"
-	"net/http/httptest"
-	"strings"
-	"testing"
-
+	"fmt"
+	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
+	"github.com/bernardosecades/sharesecret/internal/component"
+	"github.com/bernardosecades/sharesecret/internal/entity"
+	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 	"github.com/testcontainers/testcontainers-go"
 	"go.mongodb.org/mongo-driver/v2/mongo"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+	"time"
 
-	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
 	"github.com/bernardosecades/sharesecret/internal/repository"
 	"github.com/bernardosecades/sharesecret/internal/service"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-func TestCreateSecretHandler(t *testing.T) {
+func TestShowSecretHandler(t *testing.T) {
 	ctx := context.Background()
 
 	container, client := setupMongoContainer(t)
@@ -40,32 +43,40 @@ func TestCreateSecretHandler(t *testing.T) {
 	defaultPwd := "@myPassword"
 	secretKey := "11111111111111111111111111111111"
 
+	keyWithPwd := "@myPassword111111111111111111111"
+	contentPlainText := "this is my secret"
+
+	contentEncrypted, err := component.Encrypt([]byte(keyWithPwd), []byte(contentPlainText))
+	assert.NoError(t, err)
+
 	secretRepository := repository.NewMongoDbSecretRepository(ctx, client, DBNameTest)
 	secretService := service.NewSecretService(secretRepository, defaultPwd, secretKey)
 	secretHandler := secret.NewHandler(secretService)
 
-	secretBody := `{"content": "this is my secret", "pwd": ""}` // #nosec (skip linter G101: Potential hardcoded credentials)
-	req, err := http.NewRequest("POST", "/secret", http.NoBody)
-	req.Body = io.NopCloser(strings.NewReader(secretBody))
+	// load fixtures
+	item := entity.Secret{
+		ID:        "854d492d-038e-4900-ba1c-454346f16a61",
+		Content:   contentEncrypted,
+		CustomPwd: false,
+		Viewed:    false,
+		CreatedAt: time.Now(),
+		ExpiredAt: time.Now(),
+	}
+	err = secretRepository.SaveSecret(ctx, item)
+	assert.NoError(t, err)
 
+	r := mux.NewRouter()
+	r.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/secret/%s", item.ID), http.NoBody)
 	assert.NoError(t, err)
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(secretHandler.CreateSecret)
-	handler.ServeHTTP(rr, req)
+	r.ServeHTTP(rr, req)
 
-	assert.Equal(t, http.StatusCreated, rr.Code)
+	assert.Equal(t, http.StatusOK, rr.Code)
 
-	var data secret.CreateSecretResponse
+	var data secret.RetrieveSecretResponse
 	err = json.Unmarshal(rr.Body.Bytes(), &data)
 	assert.NoError(t, err)
-
-	assert.NotEmpty(t, data.ID)
-	assert.NotEmpty(t, data.ExpiredAt)
-
-	filter := bson.M{"_id": data.ID}
-	totalDocuments, err := client.Database(DBNameTest).Collection(repository.SecretCollectionName).CountDocuments(ctx, filter)
-
-	assert.NoError(t, err)
-	assert.EqualValues(t, 1, totalDocuments)
+	assert.Equal(t, contentPlainText, data.Content)
 }

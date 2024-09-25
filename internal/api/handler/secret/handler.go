@@ -57,7 +57,7 @@ func (h *Handler) RetrieveSecret(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := RetrieveSecretResponse{
-		Content: secret.Content,
+		Content: string(secret.Content),
 	}
 
 	api.EncodeHTTPResponse(response, w, http.StatusOK)

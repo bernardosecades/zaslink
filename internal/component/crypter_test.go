@@ -1,3 +1,5 @@
+//go:build unit
+
 package component_test
 
 import (

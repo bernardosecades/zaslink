@@ -62,9 +62,9 @@ func NewSecretService(secretRepo SecretRepository, defaultPwd, key string) *Secr
 // CreateSecret create handler method
 func (s *SecretService) CreateSecret(ctx context.Context, content, pwd string) (entity.Secret, error) {
 	if pwd == "" {
-		return s.createSecret(ctx, content, s.defaultPwd, false)
+		return s.createSecret(ctx, []byte(content), s.defaultPwd, false)
 	}
-	return s.createSecret(ctx, content, pwd, true)
+	return s.createSecret(ctx, []byte(content), pwd, true)
 }
 
 // RetrieveSecret retrieve handler method
@@ -108,8 +108,8 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 	return secret, nil
 }
 
-func (s *SecretService) createSecret(ctx context.Context, content, pwd string, customPwd bool) (entity.Secret, error) {
-	if content == "" {
+func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd string, customPwd bool) (entity.Secret, error) {
+	if len(content) == 0 {
 		return entity.Secret{}, ErrContentEmpty
 	}
 
@@ -146,21 +146,21 @@ func (s *SecretService) createSecret(ctx context.Context, content, pwd string, c
 	return secret, nil
 }
 
-func (s *SecretService) encryptContent(content, pwd string) (string, error) {
+func (s *SecretService) encryptContent(content []byte, pwd string) ([]byte, error) {
 	key := component.MergePwdIntoKey(s.key, pwd)
 	contentEncrypted, err := component.Encrypt(key, []byte(content))
 
 	if err != nil {
-		return "", fmt.Errorf("could not encrypt content: %w", err)
+		return nil, fmt.Errorf("could not encrypt content: %w", err)
 	}
-	return string(contentEncrypted), nil
+	return contentEncrypted, nil
 }
 
-func (s *SecretService) decryptContent(content, pwd string) (string, error) {
+func (s *SecretService) decryptContent(content []byte, pwd string) ([]byte, error) {
 	key := component.MergePwdIntoKey(s.key, pwd)
-	decryptContent, err := component.Decrypt(key, []byte(content))
+	decryptContent, err := component.Decrypt(key, content)
 	if err != nil {
-		return "", fmt.Errorf("could not deecrypt content: %w", err)
+		return nil, fmt.Errorf("could not deecrypt content: %w", err)
 	}
-	return string(decryptContent), nil
+	return decryptContent, nil
 }

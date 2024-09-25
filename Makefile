@@ -1,6 +1,3 @@
-APP_NAME=api-share-secret
-APP_EXECUTABLE=./out/${APP_NAME}
-ALL_PACKAGES=$(shell go list ./... | grep -v /vendor)
 SHELL := /bin/bash # Use bash syntax
 
 # Optional colors to beautify output
@@ -29,21 +26,30 @@ vet: ## go vet
 fmt: ## runs go formatter
 	go fmt ./...
 
+tidy: ## run go mod tidy
+	go mod tidy
 ## Test
-test: ## runs tests and create generates coverage report
+test-all: ## runs tests and create generates coverage report
 	make tidy
-	go test -v -timeout 10m ./... -coverprofile=coverage.out -json > report.json
+	go test ./... --tags=unit,integration
+
+test-integration:
+	make tidy
+	go test ./... --tags=integration
+
+test-unit:
+	make tidy
+	go test ./... --tags=unit
 
 coverage: ## displays test coverage report in html mode
-	make test
+	make test-all
 	go tool cover -html=coverage.out
 
-.PHONY: all test build vendor
+.PHONY: all test-all
 ## All
-all: ## runs setup, quality checks and builds
+all: ## quality checks and tests
 	make check-quality
-	make test
-	make build
+	make test-all
 
 .PHONY: help
 ## Help

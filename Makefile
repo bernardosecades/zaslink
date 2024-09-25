@@ -15,10 +15,10 @@ check-quality: ## runs code quality checks
 
 # Append || true below if blocking local developement
 lint: ## go linting. Update and use specific lint tool and options
-	golangci-lint run
+	golangci-lint run -c ./.github/.golangci.yml
 
 lint-fix: ## go linting. Update and use specific lint tool and options
-	golangci-lint run --fix
+	golangci-lint run -c ./.github/.golangci.yml --fix
 
 vet: ## go vet
 	go vet ./...

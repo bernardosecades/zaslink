@@ -7,7 +7,7 @@ ShareSecret is a service to share sensitive information that's both simple and s
 
 If you share some text will be display it once and then delete it. After that it's gone forever.
 
-We keep secrets for up to 5 days.
+We keep secrets for up to 48 hours.
 
 ## Why should I trust you?
 

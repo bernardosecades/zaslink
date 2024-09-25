@@ -31,7 +31,7 @@ tidy: ## run go mod tidy
 ## Test
 test-all: ## runs tests and create generates coverage report
 	make tidy
-	go test ./... --tags=unit,integration
+	go test ./... --tags=unit,integration -coverprofile=coverage.out
 
 test-integration:
 	make tidy

@@ -10,6 +10,9 @@ import (
 	"syscall"
 	"time"
 
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
+
 	"github.com/bernardosecades/sharesecret/internal/api/handler/health"
 	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
 	"github.com/prometheus/client_golang/prometheus"
@@ -49,7 +52,10 @@ func main() {
 		panic("MONGODB_NAME is not present")
 	}
 
-	secretRepo := repository.NewMongoDbSecretRepository(ctx, mongoDBUri, mongoDBName)
+	opts := options.Client().ApplyURI(mongoDBUri).SetConnectTimeout(10 * time.Second)
+	client, _ := mongo.Connect(opts)
+
+	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, mongoDBName)
 	secretService := service.NewSecretService(secretRepo, defaultPassword, secretKey)
 
 	// HANDLERS

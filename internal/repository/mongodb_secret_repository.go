@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"time"
 
 	"github.com/bernardosecades/sharesecret/internal/entity"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -10,15 +9,13 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
-const collectionName = "handler"
+const SecretCollectionName = "secrets"
 
 type MongoDbSecretRepository struct {
 	database *mongo.Database
 }
 
-func NewMongoDbSecretRepository(ctx context.Context, uri, dbName string) *MongoDbSecretRepository {
-	opts := options.Client().ApplyURI(uri).SetConnectTimeout(10 * time.Second)
-	client, _ := mongo.Connect(opts)
+func NewMongoDbSecretRepository(ctx context.Context, client *mongo.Client, dbName string) *MongoDbSecretRepository {
 	err := client.Ping(ctx, nil)
 	if err != nil {
 		panic(err)
@@ -34,7 +31,7 @@ func (r *MongoDbSecretRepository) GetSecret(ctx context.Context, id string) (ent
 		"_id":    id,
 		"viewed": false,
 	}
-	err := r.database.Collection(collectionName).FindOne(ctx, filter).Decode(&result)
+	err := r.database.Collection(SecretCollectionName).FindOne(ctx, filter).Decode(&result)
 	if err != nil {
 		return entity.Secret{}, err
 	}
@@ -46,7 +43,7 @@ func (r *MongoDbSecretRepository) SaveSecret(ctx context.Context, secret entity.
 	opts := options.Update().SetUpsert(true)
 	filter := bson.M{"_id": secret.ID}
 	update := bson.M{"$set": secret}
-	_, err := r.database.Collection(collectionName).UpdateOne(ctx, filter, update, opts)
+	_, err := r.database.Collection(SecretCollectionName).UpdateOne(ctx, filter, update, opts)
 	if err != nil {
 		return err
 	}

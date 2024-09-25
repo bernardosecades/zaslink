@@ -16,7 +16,7 @@ COPY . .
 # Build the Go app
 
 # -ldflags="-w -s" reduce size of bnary
-RUN cd cmd/api && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /bin/api-handler .
+RUN cd cmd/api && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /bin/api-secret .
 
 # Expose port 8080 to the outside world
 EXPOSE 800

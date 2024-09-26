@@ -67,6 +67,9 @@ func main() {
 	router.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
 	router.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
 
+	// TODO: https://stackoverflow.com/questions/19659600/how-to-use-gorilla-mux-with-http-timeouthandler
+	//http.TimeoutHandler(secretHandler.RetrieveSecret, 10*time.Second)
+
 	router.HandleFunc("/healthz", healthHandler.Healthz).Methods(http.MethodGet)
 	router.Path("/prometheus").Handler(promhttp.Handler())
 
@@ -101,7 +104,9 @@ func main() {
 		}
 	}()
 
-	http.Handle("/", router)
+	routerWithMiddlewares := http.TimeoutHandler(router, time.Second*3, "Timeout!")
+
+	http.Handle("/", routerWithMiddlewares)
 	log.Info().Msg(fmt.Sprintf("HTTP server listening on port %s", server.Addr))
 
 	// RUN SERVER

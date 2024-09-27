@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
-	"github.com/bernardosecades/sharesecret/internal/component"
 	"github.com/bernardosecades/sharesecret/internal/entity"
+	"github.com/bernardosecades/sharesecret/pkg/crypter"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 	"github.com/testcontainers/testcontainers-go"
@@ -46,7 +46,7 @@ func TestShowSecretHandler(t *testing.T) {
 	keyWithPwd := "@myPassword111111111111111111111"
 	contentPlainText := "this is my secret"
 
-	contentEncrypted, err := component.Encrypt([]byte(keyWithPwd), []byte(contentPlainText))
+	contentEncrypted, err := crypter.Encrypt([]byte(keyWithPwd), []byte(contentPlainText))
 	assert.NoError(t, err)
 
 	secretRepository := repository.NewMongoDbSecretRepository(ctx, client, DBNameTest)

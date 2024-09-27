@@ -1,4 +1,4 @@
-package component
+package crypter
 
 import (
 	"crypto/aes"

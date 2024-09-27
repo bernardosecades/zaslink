@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bernardosecades/sharesecret/internal/component"
+	"github.com/bernardosecades/sharesecret/pkg/crypter"
+
 	"github.com/bernardosecades/sharesecret/internal/entity"
 	"github.com/google/uuid"
 )
@@ -147,8 +148,8 @@ func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd st
 }
 
 func (s *SecretService) encryptContent(content []byte, pwd string) ([]byte, error) {
-	key := component.MergePwdIntoKey(s.key, pwd)
-	contentEncrypted, err := component.Encrypt(key, []byte(content))
+	key := crypter.MergePwdIntoKey(s.key, pwd)
+	contentEncrypted, err := crypter.Encrypt(key, []byte(content))
 
 	if err != nil {
 		return nil, fmt.Errorf("could not encrypt content: %w", err)
@@ -157,8 +158,8 @@ func (s *SecretService) encryptContent(content []byte, pwd string) ([]byte, erro
 }
 
 func (s *SecretService) decryptContent(content []byte, pwd string) ([]byte, error) {
-	key := component.MergePwdIntoKey(s.key, pwd)
-	decryptContent, err := component.Decrypt(key, content)
+	key := crypter.MergePwdIntoKey(s.key, pwd)
+	decryptContent, err := crypter.Decrypt(key, content)
 	if err != nil {
 		return nil, fmt.Errorf("could not deecrypt content: %w", err)
 	}

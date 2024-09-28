@@ -1,0 +1,1 @@
+Add here json dashboard from grafana

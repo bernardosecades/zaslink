@@ -10,10 +10,15 @@ import (
 	"syscall"
 	"time"
 
-	"go.opentelemetry.io/otel"
-
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/prometheus"
+	"go.opentelemetry.io/otel/metric"
+	apiMetric "go.opentelemetry.io/otel/sdk/metric"
+	"go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 
 	"github.com/bernardosecades/sharesecret/internal/api/handler/health"
 	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
@@ -52,6 +57,9 @@ func main() {
 	logger := zerolog.New(loggerOutput)
 
 	// OBSERVABILITY (OPEN TELEMETRY)
+
+	/* TRACES */
+	// TODO change sporter stdout to jaeger (zipkin is other option)
 	consoleTraceExporter, err := observability.NewTraceExporter()
 	if err != nil {
 		logger.Fatal().Err(err).Msg("failed to initialize observability trace exporter")
@@ -61,14 +69,36 @@ func main() {
 	defer func() { _ = tracerProvider.Shutdown(ctx) }()
 	otel.SetTracerProvider(tracerProvider)
 
-	consoleMetricExporter, err := observability.NewMetricExporter()
+	/* METRICS */
+	prometheusMetricExporter, err := prometheus.New()
 	if err != nil {
-		logger.Fatal().Err(err).Msg("failed to initialize observability metric exporter")
+		logger.Fatal().Err(err).Msg("failed to initialize prometheus exporter")
 	}
 
-	meterProvider := observability.NewMeterProvider(consoleMetricExporter)
+	// Create the resource to be observed
+	res, err := resource.Merge(
+		resource.Default(),
+		resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceName("share service secret"),
+			semconv.ServiceVersion("v0.0.1"),
+		),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	meterProvider := apiMetric.NewMeterProvider(
+		apiMetric.WithResource(res),
+		apiMetric.WithReader(prometheusMetricExporter),
+	)
 	defer func() { _ = meterProvider.Shutdown(ctx) }()
 	otel.SetMeterProvider(meterProvider)
+
+	meter := otel.Meter(
+		"share secret api",
+		metric.WithInstrumentationVersion("v0.0.1"),
+	)
 
 	prop := observability.NewPropagator()
 	otel.SetTextMapPropagator(prop)
@@ -89,10 +119,13 @@ func main() {
 	router.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
 
 	router.HandleFunc("/healthz", healthHandler.Healthz).Methods(http.MethodGet)
+	// Used to expose metrics in prometheus format
+	router.Handle("/metrics", promhttp.Handler())
 
 	// MIDDLEWARE
 	router.Use(middleware.RequestID)
 	router.Use(middleware.Logger(logger))
+	router.Use(middleware.NewMetricMiddleware(meter))
 
 	// TODO Instrument the HTTP Server
 

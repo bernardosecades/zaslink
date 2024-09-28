@@ -10,15 +10,15 @@ import (
 	"syscall"
 	"time"
 
+	"go.opentelemetry.io/otel"
+
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 
 	"github.com/bernardosecades/sharesecret/internal/api/handler/health"
 	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-
 	"github.com/bernardosecades/sharesecret/internal/api/middleware"
+	"github.com/bernardosecades/sharesecret/internal/observability"
 	"github.com/bernardosecades/sharesecret/internal/repository"
 	"github.com/bernardosecades/sharesecret/internal/service"
 	"github.com/gorilla/mux"
@@ -26,14 +26,9 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func init() {
-	if err := prometheus.Register(middleware.TotalRequests); err != nil {
-		panic(err)
-	}
-}
-
 func main() {
 	ctx := context.Background()
+
 	// ENVIRONMENT VARIABLES
 	secretKey, ok := os.LookupEnv("SECRET_KEY")
 	if !ok {
@@ -52,13 +47,39 @@ func main() {
 		panic("MONGODB_NAME is not present")
 	}
 
+	// LOGGER
+	loggerOutput := zerolog.ConsoleWriter{Out: os.Stdout}
+	logger := zerolog.New(loggerOutput)
+
+	// OBSERVABILITY (OPEN TELEMETRY)
+	consoleTraceExporter, err := observability.NewTraceExporter()
+	if err != nil {
+		logger.Fatal().Err(err).Msg("failed to initialize observability trace exporter")
+	}
+
+	tracerProvider := observability.NewTraceProvider(consoleTraceExporter)
+	defer func() { _ = tracerProvider.Shutdown(ctx) }()
+	otel.SetTracerProvider(tracerProvider)
+
+	consoleMetricExporter, err := observability.NewMetricExporter()
+	if err != nil {
+		logger.Fatal().Err(err).Msg("failed to initialize observability metric exporter")
+	}
+
+	meterProvider := observability.NewMeterProvider(consoleMetricExporter)
+	defer func() { _ = meterProvider.Shutdown(ctx) }()
+	otel.SetMeterProvider(meterProvider)
+
+	prop := observability.NewPropagator()
+	otel.SetTextMapPropagator(prop)
+
+	// HANDLERS
 	opts := options.Client().ApplyURI(mongoDBUri).SetConnectTimeout(10 * time.Second)
 	client, _ := mongo.Connect(opts)
 
 	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, mongoDBName)
 	secretService := service.NewSecretService(secretRepo, defaultPassword, secretKey)
 
-	// HANDLERS
 	secretHandler := secret.NewHandler(secretService)
 	healthHandler := health.NewHandler(mongoDBUri)
 
@@ -67,20 +88,13 @@ func main() {
 	router.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
 	router.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
 
-	// TODO: https://stackoverflow.com/questions/19659600/how-to-use-gorilla-mux-with-http-timeouthandler
-	//http.TimeoutHandler(secretHandler.RetrieveSecret, 10*time.Second)
-
 	router.HandleFunc("/healthz", healthHandler.Healthz).Methods(http.MethodGet)
-	router.Path("/prometheus").Handler(promhttp.Handler())
-
-	// LOGGER
-	loggerOutput := zerolog.ConsoleWriter{Out: os.Stdout}
-	logger := zerolog.New(loggerOutput)
 
 	// MIDDLEWARE
 	router.Use(middleware.RequestID)
 	router.Use(middleware.Logger(logger))
-	router.Use(middleware.Prometheus)
+
+	// TODO Instrument the HTTP Server
 
 	// SERVER
 	server := &http.Server{

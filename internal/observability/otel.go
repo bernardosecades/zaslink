@@ -15,6 +15,7 @@ func NewTraceExporter() (trace.SpanExporter, error) {
 	return stdouttrace.New(stdouttrace.WithPrettyPrint())
 }
 
+// NewMetricExporter output in stdout only keep to debug
 func NewMetricExporter() (metric.Exporter, error) {
 	return stdoutmetric.New()
 }
@@ -27,6 +28,7 @@ func NewTraceProvider(traceExporter trace.SpanExporter) *trace.TracerProvider {
 	return traceProvider
 }
 
+// TODO merge with main.go provider
 func NewMeterProvider(meterExporter metric.Exporter) *metric.MeterProvider {
 	meterProvider := metric.NewMeterProvider(
 		metric.WithReader(metric.NewPeriodicReader(meterExporter,

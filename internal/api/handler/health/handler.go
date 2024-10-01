@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
+// TODO move trace and metric
 var (
 	tracer      = otel.Tracer("sharesecret-service")
 	meter       = otel.Meter("sharesecret-service")

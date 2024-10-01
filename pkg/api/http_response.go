@@ -14,3 +14,19 @@ func EncodeHTTPResponse(v interface{}, w http.ResponseWriter, statusCode int) {
 		return
 	}
 }
+
+// NewStatusCodeCapturerWriter creates an HTTP.ResponseWriter capable of
+// capture the HTTP response status code.
+func NewStatusCodeCapturerWriter(w http.ResponseWriter) *ResponseWriter {
+	return &ResponseWriter{w, http.StatusOK}
+}
+
+type ResponseWriter struct {
+	http.ResponseWriter
+	StatusCode int
+}
+
+func (w *ResponseWriter) WriteHeader(code int) {
+	w.StatusCode = code
+	w.ResponseWriter.WriteHeader(code)
+}

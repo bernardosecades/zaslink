@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/bernardosecades/sharesecret/pkg/api"
+
 	"github.com/gorilla/mux"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
@@ -20,7 +22,7 @@ func NewMetricMiddleware(meter metric.Meter) mux.MiddlewareFunc {
 			metric.WithUnit("ms"),
 		)
 		counter, _ := meter.Int64Counter(
-			"request_count_bernie",
+			"request_count",
 			metric.WithDescription("Incoming request count"),
 			metric.WithUnit("request"),
 		)
@@ -46,17 +48,13 @@ func (m *httpMetricMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	// Golang's http implementation doesn't allow us to retrieve the raw response
 	// so we have to use a capturer in order to have access to any response
 	// data. In this case, we want to capture the response HTTP status code.
-	rw := NewStatusCodeCapturerWriter(w)
+	rw := api.NewStatusCodeCapturerWriter(w)
 
 	initialTime := time.Now()
 	m.next.ServeHTTP(rw, r)
 	duration := time.Since(initialTime)
 
 	route := mux.CurrentRoute(r)
-
-	// It's important to use `route.GetPathTemplate` to get the unformated
-	// path: For example, we get "/orders/{id}" instead of "/orders/2" or
-	// "/orders/1234"
 	pathTemplate, _ := route.GetPathTemplate()
 
 	metricAttributes := attribute.NewSet(
@@ -70,7 +68,7 @@ func (m *httpMetricMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request)
 		},
 		attribute.KeyValue{
 			Key:   semconv.HTTPResponseStatusCodeKey,
-			Value: attribute.IntValue(rw.statusCode),
+			Value: attribute.IntValue(rw.StatusCode),
 		},
 	)
 
@@ -82,20 +80,4 @@ func (m *httpMetricMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request)
 
 	m.requestCounter.Add(r.Context(), 1, metric.WithAttributeSet(metricAttributes))
 
-}
-
-// NewStatusCodeCapturerWriter creates an HTTP.ResponseWriter capable of
-// capture the HTTP response status code.
-func NewStatusCodeCapturerWriter(w http.ResponseWriter) *ResponseWriter {
-	return &ResponseWriter{w, http.StatusOK}
-}
-
-type ResponseWriter struct {
-	http.ResponseWriter
-	statusCode int
-}
-
-func (w *ResponseWriter) WriteHeader(code int) {
-	w.statusCode = code
-	w.ResponseWriter.WriteHeader(code)
 }

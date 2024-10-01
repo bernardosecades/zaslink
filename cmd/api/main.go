@@ -23,13 +23,16 @@ import (
 	"github.com/bernardosecades/sharesecret/internal/api/handler/health"
 	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
 	"github.com/bernardosecades/sharesecret/internal/api/middleware"
-	"github.com/bernardosecades/sharesecret/internal/observability"
 	"github.com/bernardosecades/sharesecret/internal/repository"
 	"github.com/bernardosecades/sharesecret/internal/service"
+	"github.com/bernardosecades/sharesecret/pkg/observability"
+	observabilityMiddleware "github.com/bernardosecades/sharesecret/pkg/observability/middleware"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
+
+const timeOutHandlers = 30 * time.Second
 
 func main() {
 	ctx := context.Background()
@@ -104,7 +107,7 @@ func main() {
 	otel.SetTextMapPropagator(prop)
 
 	// HANDLERS
-	opts := options.Client().ApplyURI(mongoDBUri).SetConnectTimeout(10 * time.Second)
+	opts := options.Client().ApplyURI(mongoDBUri).SetConnectTimeout(5 * time.Second)
 	client, _ := mongo.Connect(opts)
 
 	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, mongoDBName)
@@ -125,14 +128,14 @@ func main() {
 	// MIDDLEWARE
 	router.Use(middleware.RequestID)
 	router.Use(middleware.Logger(logger))
-	router.Use(middleware.NewMetricMiddleware(meter))
+	router.Use(observabilityMiddleware.NewMetricMiddleware(meter))
 
 	// TODO Instrument the HTTP Server
 
 	// SERVER
 	server := &http.Server{
 		Addr:              ":8080",
-		ReadHeaderTimeout: 5 * time.Second,
+		ReadHeaderTimeout: 60 * time.Second,
 	}
 
 	// SHUTDOWN
@@ -151,7 +154,7 @@ func main() {
 		}
 	}()
 
-	routerWithMiddlewares := http.TimeoutHandler(router, time.Second*3, "Timeout!")
+	routerWithMiddlewares := http.TimeoutHandler(router, timeOutHandlers, "Timeout!")
 
 	http.Handle("/", routerWithMiddlewares)
 	log.Info().Msg(fmt.Sprintf("HTTP server listening on port %s", server.Addr))

@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bernardosecades/sharesecret/pkg/crypter"
-
 	"github.com/bernardosecades/sharesecret/internal/entity"
+	"github.com/bernardosecades/sharesecret/pkg/crypter"
 	"github.com/google/uuid"
 )
 

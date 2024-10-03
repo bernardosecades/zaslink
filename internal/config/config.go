@@ -21,7 +21,7 @@ type Builder struct {
 	mongoDBName     string
 }
 
-// Port	Go doesn’t support optional parameters in function signatures so we use builder pattern
+// Port	Go doesn’t support optional parameters in function signatures so we use builder pattern (Another approach is the functional options pattern)
 func (cb *Builder) Port(port string) *Builder {
 	if port == "" {
 		cb.port = "8080"

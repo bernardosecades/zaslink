@@ -32,3 +32,7 @@ Push to docker hub:
 `sudo docker login -u bernardosecades -p <YOUR_PASSWORD>`
 
 `sudo docker push bernardosecades/api-share-secret:v1`
+
+## Structure folder
+
+Based on: https://github.com/golang-standards/project-layout

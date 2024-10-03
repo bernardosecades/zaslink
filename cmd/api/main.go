@@ -10,6 +10,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/bernardosecades/sharesecret/internal/events"
+
 	"github.com/bernardosecades/sharesecret/internal/config"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -109,7 +111,7 @@ func main() {
 	client, _ := mongo.Connect(opts)
 
 	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, cfg.MongoDBName)
-	secretService := service.NewSecretService(secretRepo, cfg.DefaultPassword, cfg.SecretKey)
+	secretService := service.NewSecretService(secretRepo, events.NewDummyPublisher(), cfg.DefaultPassword, cfg.SecretKey)
 
 	secretHandler := secret.NewHandler(secretService)
 	healthHandler := health.NewHandler(cfg.MongoDBURI)

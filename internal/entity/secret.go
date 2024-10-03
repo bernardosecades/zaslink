@@ -8,5 +8,6 @@ type Secret struct {
 	CustomPwd bool      `bson:"customPwd"`
 	Viewed    bool      `bson:"viewed"`
 	CreatedAt time.Time `bson:"createdAt"`
+	UpdatedAt time.Time `bson:"UpdateAt"`
 	ExpiredAt time.Time `bson:"expiredAt"`
 }

@@ -5,6 +5,7 @@ package integration
 import (
 	"context"
 	"encoding/json"
+	"github.com/bernardosecades/sharesecret/internal/events"
 	"github.com/gorilla/mux"
 	"io"
 	"net/http"
@@ -44,7 +45,7 @@ func TestCreateSecretHandler(t *testing.T) {
 	secretKey := "11111111111111111111111111111111"
 
 	secretRepository := repository.NewMongoDbSecretRepository(ctx, client, DBNameTest)
-	secretService := service.NewSecretService(secretRepository, defaultPwd, secretKey)
+	secretService := service.NewSecretService(secretRepository, events.NewDummyPublisher(), defaultPwd, secretKey)
 	secretHandler := secret.NewHandler(secretService)
 
 	r := mux.NewRouter()

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
 	"github.com/bernardosecades/sharesecret/internal/entity"
+	"github.com/bernardosecades/sharesecret/internal/events"
 	"github.com/bernardosecades/sharesecret/pkg/crypter"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
@@ -50,7 +51,7 @@ func TestShowSecretHandler(t *testing.T) {
 	assert.NoError(t, err)
 
 	secretRepository := repository.NewMongoDbSecretRepository(ctx, client, DBNameTest)
-	secretService := service.NewSecretService(secretRepository, defaultPwd, secretKey)
+	secretService := service.NewSecretService(secretRepository, events.NewDummyPublisher(), defaultPwd, secretKey)
 	secretHandler := secret.NewHandler(secretService)
 
 	// load fixtures

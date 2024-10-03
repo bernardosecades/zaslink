@@ -6,6 +6,9 @@ import (
 	"fmt"
 	"time"
 
+	customEvents "github.com/bernardosecades/sharesecret/internal/events"
+	"github.com/bernardosecades/sharesecret/pkg/events"
+
 	"github.com/bernardosecades/sharesecret/internal/entity"
 	"github.com/bernardosecades/sharesecret/pkg/crypter"
 	"github.com/google/uuid"
@@ -36,14 +39,18 @@ type SecretRepository interface {
 
 type SecretService struct {
 	secretRepo SecretRepository
+	publisher  events.Publisher[map[string]string]
 	defaultPwd string
 	key        string
 }
 
 // NewSecretService constructor
-func NewSecretService(secretRepo SecretRepository, defaultPwd, key string) *SecretService {
+func NewSecretService(secretRepo SecretRepository, publisher events.Publisher[map[string]string], defaultPwd, key string) *SecretService {
 	if secretRepo == nil {
 		panic("secretRepo cannot be nil")
+	}
+	if publisher == nil {
+		panic("publisher cannot be nil")
 	}
 
 	if len(key) != keyLength {
@@ -57,7 +64,7 @@ func NewSecretService(secretRepo SecretRepository, defaultPwd, key string) *Secr
 		panic(fmt.Sprintf("defaultPwd must be >= %d bytes", minPassLength))
 	}
 
-	return &SecretService{secretRepo: secretRepo, defaultPwd: defaultPwd, key: key}
+	return &SecretService{secretRepo: secretRepo, publisher: publisher, defaultPwd: defaultPwd, key: key}
 }
 
 // CreateSecret create handler method
@@ -98,13 +105,18 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 	}
 
 	secret.Viewed = true
+	secret.UpdatedAt = time.Now()
 	err = s.secretRepo.SaveSecret(ctx, secret)
-
 	if err != nil {
 		return entity.Secret{}, fmt.Errorf("could not save handler for ID %s: %w", ID, err)
 	}
 
 	secret.Content = decryptContent
+
+	go func() {
+		// We use empty context instead of ctx because maybe the context was cancelled (Example: client close the connection, request is cancelled in http/2 or the response has been written back to the client)
+		_ = s.publisher.Publish(context.Background(), customEvents.NewSecretViewed(secret))
+	}()
 
 	return secret, nil
 }
@@ -136,6 +148,7 @@ func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd st
 		Content:   contentEncrypted,
 		CustomPwd: customPwd,
 		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 		ExpiredAt: time.Now().Add(expirationHours * time.Hour),
 	}
 
@@ -143,6 +156,11 @@ func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd st
 	if err != nil {
 		return entity.Secret{}, fmt.Errorf("could not save content: %w", err)
 	}
+
+	go func() {
+		// We use empty context instead of ctx because maybe the context was cancelled (Example: client close the connection, request is cancelled in http/2 or the response has been written back to the client)
+		_ = s.publisher.Publish(context.Background(), customEvents.NewSecretCreated(secret))
+	}()
 
 	return secret, nil
 }

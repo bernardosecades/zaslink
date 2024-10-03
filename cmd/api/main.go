@@ -10,6 +10,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/bernardosecades/sharesecret/internal/config"
+
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
@@ -37,27 +39,23 @@ const timeOutHandlers = 30 * time.Second
 func main() {
 	ctx := context.Background()
 
-	// ENVIRONMENT VARIABLES
-	secretKey, ok := os.LookupEnv("SECRET_KEY")
-	if !ok {
-		panic("SECRET_KEY is not present")
-	}
-	defaultPassword, ok := os.LookupEnv("DEFAULT_PASSWORD")
-	if !ok {
-		panic("DEFAULT_PASSWORD is not present")
-	}
-	mongoDBUri, ok := os.LookupEnv("MONGODB_URI")
-	if !ok {
-		panic("DEFAULT_PASSWORD is not present")
-	}
-	mongoDBName, ok := os.LookupEnv("MONGODB_NAME")
-	if !ok {
-		panic("MONGODB_NAME is not present")
-	}
-
 	// LOGGER
 	loggerOutput := zerolog.ConsoleWriter{Out: os.Stdout}
 	logger := zerolog.New(loggerOutput)
+
+	// CONFIG
+	builder := config.Builder{}
+
+	builder.Port(os.Getenv("PORT"))
+	builder.SecretKey(os.Getenv("SECRET_KEY"))
+	builder.DefaultPassword(os.Getenv("DEFAULT_PASSWORD"))
+	builder.MongoDBURI(os.Getenv("MONGODB_URI"))
+	builder.MongoDBName(os.Getenv("MONGODB_NAME"))
+
+	cfg, err := builder.Build()
+	if err != nil {
+		logger.Fatal().Err(err).Msg("failed to initialize configuration")
+	}
 
 	// OBSERVABILITY (OPEN TELEMETRY)
 
@@ -107,14 +105,14 @@ func main() {
 	otel.SetTextMapPropagator(prop)
 
 	// HANDLERS
-	opts := options.Client().ApplyURI(mongoDBUri).SetConnectTimeout(5 * time.Second)
+	opts := options.Client().ApplyURI(cfg.MongoDBURI).SetConnectTimeout(5 * time.Second)
 	client, _ := mongo.Connect(opts)
 
-	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, mongoDBName)
-	secretService := service.NewSecretService(secretRepo, defaultPassword, secretKey)
+	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, cfg.MongoDBName)
+	secretService := service.NewSecretService(secretRepo, cfg.DefaultPassword, cfg.SecretKey)
 
 	secretHandler := secret.NewHandler(secretService)
-	healthHandler := health.NewHandler(mongoDBUri)
+	healthHandler := health.NewHandler(cfg.MongoDBURI)
 
 	// ROUTER
 	router := mux.NewRouter()
@@ -134,8 +132,8 @@ func main() {
 
 	// SERVER
 	server := &http.Server{
-		Addr:              ":8080",
-		ReadHeaderTimeout: 60 * time.Second,
+		Addr:              fmt.Sprintf(":%s", cfg.Port),
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	// SHUTDOWN

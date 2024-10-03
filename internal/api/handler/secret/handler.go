@@ -49,10 +49,14 @@ func (h *Handler) RetrieveSecret(w http.ResponseWriter, r *http.Request) {
 	secret, err := h.secretService.RetrieveSecret(r.Context(), ID, pwd)
 	if err != nil {
 		if errors.Is(err, service.ErrSecretDoesNotExist) {
-			api.EncodeHTTPError(api.NewHTTPError("secret does not exist or already read", http.StatusNotFound), w)
+			api.EncodeHTTPError(api.NewHTTPError("The secret does not exist or has already been read.", http.StatusNotFound), w)
 			return
 		}
-		api.EncodeHTTPError(api.NewHTTPError("there was an error to read the secret, try later", http.StatusInternalServerError), w)
+		if errors.Is(err, service.ErrInvalidPassword) {
+			api.EncodeHTTPError(api.NewHTTPError(service.ErrInvalidPassword.Error(), http.StatusBadRequest), w)
+			return
+		}
+		api.EncodeHTTPError(api.NewHTTPError("There was an error reading the secret. Please try again later.", http.StatusInternalServerError), w)
 		return
 	}
 

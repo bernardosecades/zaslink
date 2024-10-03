@@ -26,6 +26,7 @@ var (
 	ErrPassTooLong        = errors.New("pass too long")
 	ErrPassTooShort       = errors.New("pass too short")
 	ErrSecretDoesNotExist = errors.New("secret does not exist")
+	ErrInvalidPassword    = errors.New("invalid password")
 )
 
 type SecretRepository interface {
@@ -93,7 +94,7 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 
 	decryptContent, err := s.decryptContent(secret.Content, pwd)
 	if err != nil {
-		return entity.Secret{}, fmt.Errorf("could not decrypt content: %w", err)
+		return entity.Secret{}, ErrInvalidPassword
 	}
 
 	secret.Viewed = true

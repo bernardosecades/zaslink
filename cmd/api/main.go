@@ -118,8 +118,11 @@ func main() {
 
 	// ROUTER
 	router := mux.NewRouter()
-	router.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
-	router.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
+	api := router.PathPrefix("/api/").Subrouter()
+
+	v1 := api.PathPrefix("/v1").Subrouter()
+	v1.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
+	v1.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
 
 	router.HandleFunc("/healthz", healthHandler.Healthz).Methods(http.MethodGet)
 	// Used to expose metrics in prometheus format

@@ -1,8 +1,6 @@
 # ShareSecret
 
-[![Tests](https://github.com/bernardosecades/sharesecret/actions/workflows/tests.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/tests.yml)
-[![Lint Code](https://github.com/bernardosecades/sharesecret/actions/workflows/linter.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/linter.yml)
-[![Build Docker Image](https://github.com/bernardosecades/sharesecret/actions/workflows/image-build.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/image-build.yml)
+[![Build](https://github.com/bernardosecades/sharesecret/actions/workflows/build.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/build.yml)
 
 ShareSecret is a service to share sensitive information that's both simple and secure.
 

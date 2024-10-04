@@ -19,7 +19,7 @@ const (
 	maxPassLength    = 12
 	minPassLength    = 4
 	maxContentLength = 10000
-	expirationHours  = 48
+	expiration       = 48 * time.Hour
 )
 
 var (
@@ -105,7 +105,7 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 	}
 
 	secret.Viewed = true
-	secret.UpdatedAt = time.Now()
+	secret.UpdatedAt = time.Now().UTC()
 	err = s.secretRepo.SaveSecret(ctx, secret)
 	if err != nil {
 		return entity.Secret{}, fmt.Errorf("could not save handler for ID %s: %w", ID, err)
@@ -143,13 +143,14 @@ func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd st
 		return entity.Secret{}, err
 	}
 
+	now := time.Now().UTC()
 	secret := entity.Secret{
 		ID:        uuid.New().String(),
 		Content:   contentEncrypted,
 		CustomPwd: customPwd,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		ExpiredAt: time.Now().Add(expirationHours * time.Hour),
+		CreatedAt: now,
+		UpdatedAt: now,
+		ExpiredAt: now.Add(expiration),
 	}
 
 	err = s.secretRepo.SaveSecret(ctx, secret)

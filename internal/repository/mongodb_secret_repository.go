@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"time"
 
 	"github.com/bernardosecades/sharesecret/internal/entity"
 	"go.mongodb.org/mongo-driver/v2/bson"
@@ -30,6 +31,9 @@ func (r *MongoDbSecretRepository) GetSecret(ctx context.Context, id string) (ent
 	filter := bson.M{
 		"_id":    id,
 		"viewed": false,
+		"expiredAt": bson.M{
+			"$gte": time.Now().UTC(),
+		},
 	}
 	err := r.database.Collection(SecretCollectionName).FindOne(ctx, filter).Decode(&result)
 	if err != nil {

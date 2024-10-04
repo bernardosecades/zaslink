@@ -17,7 +17,7 @@ func Logger(logger zerolog.Logger) func(handler http.Handler) http.Handler {
 			// data. In this case, we want to capture the response HTTP status code.
 			rw := api.NewStatusCodeCapturerWriter(w)
 
-			start := time.Now()
+			start := time.Now().UTC()
 			defer func() {
 				logger.Info().
 					Str("request-id", GetRequestID(r.Context())).

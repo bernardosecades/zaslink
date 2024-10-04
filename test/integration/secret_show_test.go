@@ -56,13 +56,15 @@ func TestShowSecretHandler(t *testing.T) {
 	secretHandler := secret.NewHandler(secretService)
 
 	// load fixtures
+	now := time.Now()
 	item := entity.Secret{
 		ID:        "854d492d-038e-4900-ba1c-454346f16a61",
 		Content:   contentEncrypted,
 		CustomPwd: false,
 		Viewed:    false,
-		CreatedAt: time.Now(),
-		ExpiredAt: time.Now(),
+		CreatedAt: now,
+		UpdatedAt: now,
+		ExpiredAt: now.Add(1 * time.Hour),
 	}
 	err = secretRepository.SaveSecret(ctx, item)
 	assert.NoError(t, err)

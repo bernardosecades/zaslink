@@ -50,7 +50,7 @@ func (m *httpMetricMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	// data. In this case, we want to capture the response HTTP status code.
 	rw := api.NewStatusCodeCapturerWriter(w)
 
-	initialTime := time.Now()
+	initialTime := time.Now().UTC()
 	m.next.ServeHTTP(rw, r)
 	duration := time.Since(initialTime)
 

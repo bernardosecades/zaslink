@@ -25,6 +25,7 @@ import (
 )
 
 func TestCreateSecretHandler(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 
 	container, client := setupMongoContainer(t)

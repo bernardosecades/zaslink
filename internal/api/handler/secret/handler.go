@@ -3,9 +3,8 @@ package secret
 import (
 	"encoding/json"
 	"errors"
+	"github.com/bernardosecades/sharesecret/pkg/api"co
 	"net/http"
-
-	"github.com/bernardosecades/sharesecret/pkg/api"
 
 	"github.com/bernardosecades/sharesecret/internal/service"
 	"github.com/gorilla/mux"

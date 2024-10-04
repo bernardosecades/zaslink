@@ -11,7 +11,6 @@ RESET  := $(shell tput -Txterm sgr0)
 run-openapi-ui: ## runs swagger ui: http://localhost:4000/
 	docker run -p 4000:8080 -e SWAGGER_JSON=/docs/openapi/secret.yaml -v $(PWD)/docs/openapi:/docs/openapi swaggerapi/swagger-ui:v5.17.14
 
-
 ## Quality
 check-quality: ## runs code quality checks
 	make lint

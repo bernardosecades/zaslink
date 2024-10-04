@@ -3,7 +3,7 @@ package secret
 import (
 	"encoding/json"
 	"errors"
-	"github.com/bernardosecades/sharesecret/pkg/api"co
+	"github.com/bernardosecades/sharesecret/pkg/api"
 	"net/http"
 
 	"github.com/bernardosecades/sharesecret/internal/service"

@@ -1,0 +1,23 @@
+name: Manual Workflow with Inputs
+
+on:
+  workflow_dispatch:
+    inputs: # optional
+      environment:
+        description: 'Select environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print environment
+        run: echo "Deploying to ${{ github.event.inputs.environment }}"
+      - name: deploy api
+        run: ./scripts/deploy_api.sh

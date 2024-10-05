@@ -1,6 +1,7 @@
 # ShareSecret
 
 [![Build](https://github.com/bernardosecades/sharesecret/actions/workflows/build.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/build.yml)
+[![Deploy](https://github.com/bernardosecades/sharesecret/actions/workflows/deploy.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/deploy.yml)
 
 ShareSecret is a service to share sensitive information that's both simple and secure.
 

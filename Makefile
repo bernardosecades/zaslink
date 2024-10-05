@@ -9,7 +9,11 @@ RESET  := $(shell tput -Txterm sgr0)
 
 ## Swagger UI
 run-openapi-ui: ## runs swagger ui: http://localhost:4000/
-	docker run -p 4000:8080 -e SWAGGER_JSON=/docs/openapi/secret.yaml -v $(PWD)/docs/openapi:/docs/openapi swaggerapi/swagger-ui:v5.17.14
+	docker rm -f sharesecret-swagger 2>/dev/null || true && \
+    docker run --name sharesecret-swagger -p 4000:8080 \
+    -e SWAGGER_JSON=/docs/openapi/secret.yaml \
+    -v $(PWD)/docs/openapi:/docs/openapi \
+    swaggerapi/swagger-ui:v5.17.14
 
 ## Quality
 check-quality: ## runs code quality checks

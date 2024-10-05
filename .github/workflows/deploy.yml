@@ -32,7 +32,12 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H bernardosecades.com >> ~/.ssh/known_hosts          
 
-      - name: deploy api
+      - name: Deploy to Server - API
+        env: # Pass your secrets as environment variables
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
         run: ./scripts/deploy_api.sh
-      - name: deploy swagger ui
+      - name: Deploy to Server - SWAGGER UI
         run: ./scripts/deploy_swagger_ui.sh

@@ -11,6 +11,7 @@ RESET  := $(shell tput -Txterm sgr0)
 run-openapi-ui: ## runs swagger ui: http://localhost:4000/
 	docker rm -f sharesecret-swagger 2>/dev/null || true && \
     docker run --name sharesecret-swagger -p 4000:8080 \
+    --restart unless-stopped \
     -e SWAGGER_JSON=/docs/openapi/secret.yaml \
     -v $(PWD)/docs/openapi:/docs/openapi \
     swaggerapi/swagger-ui:v5.17.14

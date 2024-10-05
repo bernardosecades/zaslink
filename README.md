@@ -32,7 +32,15 @@ Build image with tag version:
 
 Build container from image (Example):
 
-`docker run --name sharesecret-api -p 8080:8080 -e SECRET_KEY=11111111111111111111111111111111 -e DEFAULT_PASSWORD=@myPassword -e MONGODB_URI=mongodb://root:example@bernardosecades.com:27017 -e MONGODB_NAME=share_secret bernardosecades/api-share-secret:latest`
+`docker run --name sharesecret-api \
+  --restart unless-stopped \
+  -p 8080:8080 \
+  -e SECRET_KEY=11111111111111111111111111111111 \
+  -e DEFAULT_PASSWORD=@myPassword \
+  -e MONGODB_URI=mongodb://root:example@bernardosecades.com:27017 \
+  -e MONGODB_NAME=share_secret \
+  bernardosecades/api-share-secret:latest
+`
 
 Push to docker hub:
 

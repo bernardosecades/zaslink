@@ -2,14 +2,13 @@ name: Deploy
 
 on:
   workflow_dispatch:
-    inputs: # optional
+    inputs:
       environment:
         description: 'Select environment to deploy to'
         required: true
-        default: 'staging'
+        default: 'production'
         type: choice
         options:
-          - staging
           - production
 
 jobs:
@@ -19,6 +18,10 @@ jobs:
     steps:
       - name: Print environment
         run: echo "Deploying to ${{ github.event.inputs.environment }}"
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Add your SSH private key as a secret in GitHub
       - name: deploy api
         run: ./scripts/deploy_api.sh
       - name: deploy swagger ui

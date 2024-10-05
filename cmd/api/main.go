@@ -116,6 +116,8 @@ func main() {
 	secretHandler := secret.NewHandler(secretService)
 	healthHandler := health.NewHandler(cfg.MongoDBURI)
 
+	// TODO move the router to internal package
+
 	// ROUTER
 	router := mux.NewRouter()
 	api := router.PathPrefix("/api/").Subrouter()

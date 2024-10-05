@@ -5,9 +5,9 @@ import (
 	"github.com/bernardosecades/sharesecret/pkg/events"
 )
 
-func NewSecretCreated(secret entity.Secret) events.Event[map[string]string] {
+func NewSecretDeleted(secret entity.Secret) events.Event[map[string]string] {
 	return events.Event[map[string]string]{
-		Name: "secret.created",
+		Name: "secret.deleted",
 		Data: secret.ToMap(),
 	}
 }

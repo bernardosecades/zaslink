@@ -6,6 +6,7 @@ import (
 
 type CreateSecretResponse struct {
 	ID        string    `json:"id"`
+	PrivateID string    `json:"privateId"`
 	ExpiredAt time.Time `json:"expiredAt"`
 }
 

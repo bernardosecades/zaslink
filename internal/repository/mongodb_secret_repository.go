@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/bernardosecades/sharesecret/internal/entity"
@@ -37,7 +38,11 @@ func (r *MongoDbSecretRepository) GetSecret(ctx context.Context, id string) (ent
 	}
 	err := r.database.Collection(SecretCollectionName).FindOne(ctx, filter).Decode(&result)
 	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return entity.Secret{}, ErrSecretNotFound
+		}
 		return entity.Secret{}, err
+
 	}
 	return result, nil
 }
@@ -52,4 +57,24 @@ func (r *MongoDbSecretRepository) SaveSecret(ctx context.Context, secret entity.
 		return err
 	}
 	return nil
+}
+
+// DeleteSecret if secret does not exist will return an error
+func (r *MongoDbSecretRepository) DeleteSecret(ctx context.Context, privateID string) (entity.Secret, error) {
+	filter := bson.M{"privateId": privateID}
+	result := r.database.Collection(SecretCollectionName).FindOneAndDelete(ctx, filter)
+	if result.Err() != nil {
+		if errors.Is(result.Err(), mongo.ErrNoDocuments) {
+			return entity.Secret{}, ErrSecretNotFound
+		}
+		return entity.Secret{}, result.Err()
+	}
+
+	var secret entity.Secret
+	err := result.Decode(&secret)
+	if err != nil {
+		return entity.Secret{}, err
+	}
+
+	return secret, nil
 }

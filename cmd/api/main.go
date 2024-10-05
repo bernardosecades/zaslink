@@ -122,6 +122,7 @@ func main() {
 
 	v1 := api.PathPrefix("/v1").Subrouter()
 	v1.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
+	v1.HandleFunc("/secret/{private_id}", secretHandler.DeleteSecret).Methods(http.MethodDelete)
 	v1.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
 
 	router.HandleFunc("/healthz", healthHandler.Healthz).Methods(http.MethodGet)

@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"time"
 
-	customEvents "github.com/bernardosecades/sharesecret/internal/events"
-	"github.com/bernardosecades/sharesecret/pkg/events"
-
 	"github.com/bernardosecades/sharesecret/internal/entity"
+	customEvents "github.com/bernardosecades/sharesecret/internal/events"
+	"github.com/bernardosecades/sharesecret/internal/expiration"
+	"github.com/bernardosecades/sharesecret/internal/repository"
 	"github.com/bernardosecades/sharesecret/pkg/crypter"
+	"github.com/bernardosecades/sharesecret/pkg/events"
 	"github.com/google/uuid"
 )
 
@@ -19,7 +20,6 @@ const (
 	maxPassLength    = 12
 	minPassLength    = 4
 	maxContentLength = 10000
-	expiration       = 48 * time.Hour
 )
 
 var (
@@ -35,6 +35,7 @@ var (
 type SecretRepository interface {
 	GetSecret(ctx context.Context, id string) (entity.Secret, error)
 	SaveSecret(ctx context.Context, secret entity.Secret) error
+	DeleteSecret(ctx context.Context, privateID string) (entity.Secret, error)
 }
 
 type SecretService struct {
@@ -68,11 +69,29 @@ func NewSecretService(secretRepo SecretRepository, publisher events.Publisher[ma
 }
 
 // CreateSecret create handler method
-func (s *SecretService) CreateSecret(ctx context.Context, content, pwd string) (entity.Secret, error) {
+func (s *SecretService) CreateSecret(ctx context.Context, content, pwd, expirationStr string) (entity.Secret, error) {
 	if pwd == "" {
-		return s.createSecret(ctx, []byte(content), s.defaultPwd, false)
+		return s.createSecret(ctx, []byte(content), s.defaultPwd, expirationStr, false)
 	}
-	return s.createSecret(ctx, []byte(content), pwd, true)
+	return s.createSecret(ctx, []byte(content), pwd, expirationStr, true)
+}
+
+// DeleteSecret delete handler method
+func (s *SecretService) DeleteSecret(ctx context.Context, privateID string) error {
+	secret, err := s.secretRepo.DeleteSecret(ctx, privateID)
+	if err != nil {
+		if errors.Is(err, repository.ErrSecretNotFound) {
+			return ErrSecretDoesNotExist
+		}
+		return err
+	}
+
+	go func() {
+		// We use empty context instead of ctx because maybe the context was cancelled (Example: client close the connection, request is cancelled in http/2 or the response has been written back to the client)
+		_ = s.publisher.Publish(context.Background(), customEvents.NewSecretDeleted(secret))
+	}()
+
+	return nil
 }
 
 // RetrieveSecret retrieve handler method
@@ -96,7 +115,10 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 
 	secret, err := s.secretRepo.GetSecret(ctx, ID)
 	if err != nil {
-		return entity.Secret{}, ErrSecretDoesNotExist
+		if errors.Is(err, repository.ErrSecretNotFound) {
+			return entity.Secret{}, ErrSecretDoesNotExist
+		}
+		return entity.Secret{}, err
 	}
 
 	decryptContent, err := s.decryptContent(secret.Content, pwd)
@@ -121,7 +143,16 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 	return secret, nil
 }
 
-func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd string, customPwd bool) (entity.Secret, error) {
+func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd, expirationStr string, customPwd bool) (entity.Secret, error) {
+	if expirationStr == "" {
+		expirationStr = string(expiration.OneDay)
+	}
+
+	exp, err := expiration.ValidateExpiration(expirationStr)
+	if err != nil {
+		return entity.Secret{}, err
+	}
+
 	if len(content) == 0 {
 		return entity.Secret{}, ErrContentEmpty
 	}
@@ -146,11 +177,12 @@ func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd st
 	now := time.Now().UTC()
 	secret := entity.Secret{
 		ID:        uuid.New().String(),
+		PrivateID: uuid.New().String(),
 		Content:   contentEncrypted,
 		CustomPwd: customPwd,
 		CreatedAt: now,
 		UpdatedAt: now,
-		ExpiredAt: now.Add(expiration),
+		ExpiredAt: now.Add(exp.Duration()),
 	}
 
 	err = s.secretRepo.SaveSecret(ctx, secret)

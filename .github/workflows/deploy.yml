@@ -1,4 +1,4 @@
-name: Manual Workflow with Inputs
+name: Deploy
 
 on:
   workflow_dispatch:
@@ -21,3 +21,5 @@ jobs:
         run: echo "Deploying to ${{ github.event.inputs.environment }}"
       - name: deploy api
         run: ./scripts/deploy_api.sh
+      - name: deploy swagger ui
+        run: ./scripts/deploy_swagger_ui.sh

@@ -17,6 +17,7 @@
 8. 🐙 [GitHub Actions](#github-actions)
 9. ✨ [Misc commands](#misc-commands)
 10. ©️ [License](#license)
+11. Observability (WIP)
 
 ## <a name="what-is-this-api">🐺 What is this API ?</a>
 

@@ -50,7 +50,7 @@ jobs:
         id: build-docker-image
         run: |
           ls -la 
-          docker build . -f Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/api-share-secret:latest
+          docker build . -f Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/zaslink-api:latest
       - name: push the docker image
         id: push-docker-image
-        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/api-share-secret:latest
+        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/zaslink-api:latest

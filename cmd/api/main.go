@@ -10,9 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/bernardosecades/sharesecret/internal/events"
-
-	"github.com/bernardosecades/sharesecret/internal/config"
+	"github.com/rs/cors"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -27,6 +25,8 @@ import (
 	"github.com/bernardosecades/sharesecret/internal/api/handler/health"
 	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
 	"github.com/bernardosecades/sharesecret/internal/api/middleware"
+	"github.com/bernardosecades/sharesecret/internal/config"
+	"github.com/bernardosecades/sharesecret/internal/events"
 	"github.com/bernardosecades/sharesecret/internal/repository"
 	"github.com/bernardosecades/sharesecret/internal/service"
 	"github.com/bernardosecades/sharesecret/pkg/observability"
@@ -120,9 +120,8 @@ func main() {
 
 	// ROUTER
 	router := mux.NewRouter()
-	api := router.PathPrefix("/api/").Subrouter()
 
-	v1 := api.PathPrefix("/v1").Subrouter()
+	v1 := router.PathPrefix("/v1").Subrouter()
 	v1.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
 	v1.HandleFunc("/secret/{private_id}", secretHandler.DeleteSecret).Methods(http.MethodDelete)
 	v1.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
@@ -160,7 +159,21 @@ func main() {
 		}
 	}()
 
-	routerWithMiddlewares := http.TimeoutHandler(router, timeOutHandlers, "Timeout!")
+	// CORS
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{
+			"http://localhost:4000",
+			"https://docs.zaslink.com",
+		},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true,
+	})
+
+	routerWithCors := c.Handler(router)
+
+	// TIMEOUT endpoints handlers
+	routerWithMiddlewares := http.TimeoutHandler(routerWithCors, timeOutHandlers, "Timeout!")
 
 	http.Handle("/", routerWithMiddlewares)
 	log.Info().Msg(fmt.Sprintf("HTTP server listening on port %s", server.Addr))

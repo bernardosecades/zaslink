@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/bernardosecades/sharesecret/internal/entity"
+	"github.com/bernardosecades/zaslink/internal/entity"
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"

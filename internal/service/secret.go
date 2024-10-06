@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bernardosecades/sharesecret/internal/entity"
-	customEvents "github.com/bernardosecades/sharesecret/internal/events"
-	"github.com/bernardosecades/sharesecret/internal/expiration"
-	"github.com/bernardosecades/sharesecret/internal/repository"
-	"github.com/bernardosecades/sharesecret/pkg/crypter"
-	"github.com/bernardosecades/sharesecret/pkg/events"
+	"github.com/bernardosecades/zaslink/internal/entity"
+	customEvents "github.com/bernardosecades/zaslink/internal/events"
+	"github.com/bernardosecades/zaslink/internal/expiration"
+	"github.com/bernardosecades/zaslink/internal/repository"
+	"github.com/bernardosecades/zaslink/pkg/crypter"
+	"github.com/bernardosecades/zaslink/pkg/events"
 	"github.com/google/uuid"
 )
 

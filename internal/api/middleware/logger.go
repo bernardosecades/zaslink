@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/bernardosecades/sharesecret/pkg/api"
+	"github.com/bernardosecades/zaslink/pkg/api"
 
 	"github.com/rs/zerolog"
 )

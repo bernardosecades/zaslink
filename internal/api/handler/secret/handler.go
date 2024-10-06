@@ -5,9 +5,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/bernardosecades/sharesecret/pkg/api"
+	"github.com/bernardosecades/zaslink/pkg/api"
 
-	"github.com/bernardosecades/sharesecret/internal/service"
+	"github.com/bernardosecades/zaslink/internal/service"
 	"github.com/gorilla/mux"
 )
 

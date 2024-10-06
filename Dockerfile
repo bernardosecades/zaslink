@@ -6,7 +6,7 @@ LABEL maintainer="Bernardo Secades <bernardosecades@gmail.com>"
 RUN useradd appuser
 
 # Set the Current Working Directory inside the container
-WORKDIR $GOPATH/src/github.com/bernardosecades/sharesecret
+WORKDIR $GOPATH/src/github.com/bernardosecades/zaslink
 # Copy go mod and sum files
 COPY go.mod go.sum ./
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed

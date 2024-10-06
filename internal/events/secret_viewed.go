@@ -1,8 +1,8 @@
 package events
 
 import (
-	"github.com/bernardosecades/sharesecret/internal/entity"
-	"github.com/bernardosecades/sharesecret/pkg/events"
+	"github.com/bernardosecades/zaslink/internal/entity"
+	"github.com/bernardosecades/zaslink/pkg/events"
 )
 
 func NewSecretViewed(secret entity.Secret) events.Event[map[string]string] {

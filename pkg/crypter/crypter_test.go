@@ -3,7 +3,7 @@
 package crypter_test
 
 import (
-	"github.com/bernardosecades/sharesecret/pkg/crypter"
+	"github.com/bernardosecades/zaslink/pkg/crypter"
 	"github.com/stretchr/testify/assert"
 
 	"testing"

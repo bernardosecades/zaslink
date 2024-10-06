@@ -12,8 +12,8 @@ import (
 
 // TODO move trace and metric
 var (
-	tracer      = otel.Tracer("sharesecret-service")
-	meter       = otel.Meter("sharesecret-service")
+	tracer      = otel.Tracer("zaslink-service")
+	meter       = otel.Meter("zaslink-service")
 	viewCounter metric.Int64Counter
 )
 

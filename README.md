@@ -1,9 +1,9 @@
-# ShareSecret
+# zaslink
 
-[![Build](https://github.com/bernardosecades/sharesecret/actions/workflows/build.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/build.yml)
-[![Deploy](https://github.com/bernardosecades/sharesecret/actions/workflows/deploy.yml/badge.svg)](https://github.com/bernardosecades/sharesecret/actions/workflows/deploy.yml)
+[![Build](https://github.com/bernardosecades/zaslink/actions/workflows/build.yml/badge.svg)](https://github.com/bernardosecades/zaslink/actions/workflows/build.yml)
+[![Deploy](https://github.com/bernardosecades/zaslink/actions/workflows/deploy.yml/badge.svg)](https://github.com/bernardosecades/zaslink/actions/workflows/deploy.yml)
 
-ShareSecret is a service to share sensitive information that's both simple and secure.
+zaslink is a service to share sensitive information that's both simple and secure.
 
 If you share some text will be display it once and then delete it. After that it's gone forever.
 
@@ -29,22 +29,22 @@ Based on: https://github.com/golang-standards/project-layout
 
 Build image with tag version:
 
-`sudo docker build --tag bernardosecades/api-share-secret:latest`
+`sudo docker build --tag bernardosecades/zaslink-api:latest`
 
 Build container from image (Example):
 
-`docker run --name sharesecret-api \
+`docker run --name zaslink-api \
   --restart unless-stopped \
   -p 8080:8080 \
   -e SECRET_KEY=11111111111111111111111111111111 \
   -e DEFAULT_PASSWORD=@myPassword \
   -e MONGODB_URI=mongodb://root:example@bernardosecades.com:27017 \
   -e MONGODB_NAME=share_secret \
-  bernardosecades/api-share-secret:latest
+  bernardosecades/zaslink-api:latest
 `
 
 Push to docker hub:
 
 `sudo docker login -u bernardosecades -p <YOUR_PASSWORD>`
 
-`sudo docker push bernardosecades/api-share-secret:latest`
+`sudo docker push bernardosecades/zaslink-api:latest`

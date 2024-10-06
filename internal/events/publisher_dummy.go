@@ -3,7 +3,7 @@ package events
 import (
 	"context"
 
-	"github.com/bernardosecades/sharesecret/pkg/events"
+	"github.com/bernardosecades/zaslink/pkg/events"
 )
 
 type DummyPublisher struct {

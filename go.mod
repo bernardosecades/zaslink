@@ -1,4 +1,4 @@
-module github.com/bernardosecades/sharesecret
+module github.com/bernardosecades/zaslink
 
 go 1.23
 

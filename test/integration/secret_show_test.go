@@ -6,10 +6,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
-	"github.com/bernardosecades/sharesecret/internal/entity"
-	"github.com/bernardosecades/sharesecret/internal/events"
-	"github.com/bernardosecades/sharesecret/pkg/crypter"
+	"github.com/bernardosecades/zaslink/internal/api/handler/secret"
+	"github.com/bernardosecades/zaslink/internal/entity"
+	"github.com/bernardosecades/zaslink/internal/events"
+	"github.com/bernardosecades/zaslink/pkg/crypter"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 	"github.com/testcontainers/testcontainers-go"
@@ -19,8 +19,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bernardosecades/sharesecret/internal/repository"
-	"github.com/bernardosecades/sharesecret/internal/service"
+	"github.com/bernardosecades/zaslink/internal/repository"
+	"github.com/bernardosecades/zaslink/internal/service"
 	"github.com/stretchr/testify/assert"
 )
 

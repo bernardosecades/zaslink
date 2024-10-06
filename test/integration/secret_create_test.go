@@ -5,7 +5,7 @@ package integration
 import (
 	"context"
 	"encoding/json"
-	"github.com/bernardosecades/sharesecret/internal/events"
+	"github.com/bernardosecades/zaslink/internal/events"
 	"github.com/gorilla/mux"
 	"io"
 	"net/http"
@@ -17,9 +17,9 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 
-	"github.com/bernardosecades/sharesecret/internal/api/handler/secret"
-	"github.com/bernardosecades/sharesecret/internal/repository"
-	"github.com/bernardosecades/sharesecret/internal/service"
+	"github.com/bernardosecades/zaslink/internal/api/handler/secret"
+	"github.com/bernardosecades/zaslink/internal/repository"
+	"github.com/bernardosecades/zaslink/internal/service"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/v2/bson"
 )

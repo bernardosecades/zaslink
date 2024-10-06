@@ -1,5 +1,5 @@
 scrape_configs:
-  - job_name: "sharesecret-collector"
+  - job_name: "zaslink-collector"
     scrape_interval: 10s
     static_configs:
       - targets: ["host.docker.internal:8080"]

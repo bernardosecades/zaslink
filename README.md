@@ -21,7 +21,13 @@
 
 ## <a name="what-is-this-api">🐺 What is this API ?</a>
 
+ZasLink secret is a link that can be accessed only once. It’s a single-use URL.
+
 This api allow share sensitive information that's both simple and secure.
+
+Keep sensitive info out of your email and chat logs.
+
+When you share sensitive information, such as passwords or private links, through email or chat, copies of that data can be stored in various locations. By using a one-time link, the information is accessible only once and can't be viewed again by anyone else. This ensures that your sensitive data is shared securely, with only one recipient able to access it. It's similar to sending a self-destructing message.
 
 ## <a name="production-and-development-links">✨ Production and development links</a>
 

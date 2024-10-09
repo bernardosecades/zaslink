@@ -163,8 +163,7 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{
 			"https://docs.zaslink.com",
-			"https://zaslink.com",
-			"https://www.zaslink.com",
+			"https://www.zaslink.com/",
 		},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},

@@ -39,6 +39,7 @@ jobs:
           DEFAULT_PASSWORD: ${{ secrets.DEFAULT_PASSWORD }}
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
+          NATS_URL: ${{ secrets.NATS_URL }}
         run: ./scripts/deploy_api.sh
       # NOTIFIER
       - name: Deploy to Server - NOTIFIER

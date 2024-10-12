@@ -5,4 +5,5 @@ ssh root@bernardosecades.com "docker pull bernardosecades/zaslink-api && docker 
   -e DEFAULT_PASSWORD=$DEFAULT_PASSWORD \
   -e MONGODB_URI=$MONGODB_URI \
   -e MONGODB_NAME=$MONGODB_NAME \
+  -e NATS_URL=$NATS_URL \
   bernardosecades/zaslink-api:latest" || echo "API Deployment failed" &

@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"github.com/bernardosecades/zaslink/internal/api/handler/secret"
 	"github.com/bernardosecades/zaslink/internal/entity"
-	"github.com/bernardosecades/zaslink/internal/events"
 	"github.com/bernardosecades/zaslink/pkg/crypter"
+	"github.com/bernardosecades/zaslink/pkg/events"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
 	"github.com/testcontainers/testcontainers-go"
@@ -52,7 +52,7 @@ func TestShowSecretHandler(t *testing.T) {
 	assert.NoError(t, err)
 
 	secretRepository := repository.NewMongoDbSecretRepository(ctx, client, DBNameTest)
-	secretService := service.NewSecretService(secretRepository, events.NatsPublisher(), defaultPwd, secretKey)
+	secretService := service.NewSecretService(secretRepository, events.NewInMemoryPublisher(), defaultPwd, secretKey)
 	secretHandler := secret.NewHandler(secretService)
 
 	// load fixtures

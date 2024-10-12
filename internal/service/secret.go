@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/rs/zerolog/log"
 	"time"
 
 	"github.com/bernardosecades/zaslink/internal/entity"
@@ -88,7 +89,9 @@ func (s *SecretService) DeleteSecret(ctx context.Context, privateID string) erro
 
 	go func() {
 		// We use empty context instead of ctx because maybe the context was cancelled (Example: client close the connection, request is cancelled in http/2 or the response has been written back to the client)
-		_ = s.publisher.Publish(context.Background(), customEvents.NewSecretDeleted(secret))
+		if err = s.publisher.Publish(context.Background(), customEvents.NewSecretDeleted(secret)); err != nil {
+			log.Printf("Failed to publish event secret deleted: %v", err)
+		}
 	}()
 
 	return nil
@@ -137,7 +140,9 @@ func (s *SecretService) retrieveSecret(ctx context.Context, ID string, pwd strin
 
 	go func() {
 		// We use empty context instead of ctx because maybe the context was cancelled (Example: client close the connection, request is cancelled in http/2 or the response has been written back to the client)
-		_ = s.publisher.Publish(context.Background(), customEvents.NewSecretViewed(secret))
+		if err = s.publisher.Publish(context.Background(), customEvents.NewSecretViewed(secret)); err != nil {
+			log.Printf("Failed to publish even secret viewed: %v", err)
+		}
 	}()
 
 	return secret, nil
@@ -192,7 +197,9 @@ func (s *SecretService) createSecret(ctx context.Context, content []byte, pwd, e
 
 	go func() {
 		// We use empty context instead of ctx because maybe the context was cancelled (Example: client close the connection, request is cancelled in http/2 or the response has been written back to the client)
-		_ = s.publisher.Publish(context.Background(), customEvents.NewSecretCreated(secret))
+		if err = s.publisher.Publish(context.Background(), customEvents.NewSecretCreated(secret)); err != nil {
+			log.Printf("Failed to publish event secret created: %v", err)
+		}
 	}()
 
 	return secret, nil

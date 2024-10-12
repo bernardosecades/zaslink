@@ -5,7 +5,7 @@ package integration
 import (
 	"context"
 	"encoding/json"
-	"github.com/bernardosecades/zaslink/internal/events"
+	"github.com/bernardosecades/zaslink/pkg/events"
 	"github.com/gorilla/mux"
 	"io"
 	"net/http"
@@ -46,7 +46,7 @@ func TestCreateSecretHandler(t *testing.T) {
 	secretKey := "11111111111111111111111111111111"
 
 	secretRepository := repository.NewMongoDbSecretRepository(ctx, client, DBNameTest)
-	secretService := service.NewSecretService(secretRepository, events.NatsPublisher(), defaultPwd, secretKey)
+	secretService := service.NewSecretService(secretRepository, events.NewInMemoryPublisher(), defaultPwd, secretKey)
 	secretHandler := secret.NewHandler(secretService)
 
 	r := mux.NewRouter()

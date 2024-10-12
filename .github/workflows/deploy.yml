@@ -46,6 +46,7 @@ jobs:
         env: # Pass your secrets as environment variables
           NOTIFIER_TELEGRAM_BOT_TOKEN: ${{ secrets.NOTIFIER_TELEGRAM_BOT_TOKEN }}
           NOTIFIER_TELEGRAM_USER_ID: ${{ secrets.NOTIFIER_TELEGRAM_USER_ID }}
+          NATS_URL: ${{ secrets.NATS_URL }}
         run: ./scripts/deploy_notifier.sh
       # SWAGGER UI
       - name: Deploy to Server - SWAGGER UI

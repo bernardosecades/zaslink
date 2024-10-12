@@ -17,7 +17,12 @@ func main() {
 	loggerOutput := zerolog.ConsoleWriter{Out: os.Stdout}
 	logger := zerolog.New(loggerOutput).With().Timestamp().Logger()
 
-	nc, err := nats.Connect(nats.DefaultURL)
+	natsURL, ok := os.LookupEnv("NATS_URL")
+	if !ok {
+		logger.Fatal().Msg("Environment variable NATS_URL is not defined")
+	}
+
+	nc, err := nats.Connect(natsURL)
 	if err != nil {
 		panic(err)
 	}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -65,7 +64,7 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	// Keep the program alive until interrupted
-	log.Println("Waiting for messages. Press Ctrl+C to exit.")
+	logger.Info().Msg("Waiting for messages dude!!!!")
 	<-sigChan
 
 	logger.Info().Msg("Shutting down...")

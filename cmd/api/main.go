@@ -53,6 +53,7 @@ func main() {
 	builder.DefaultPassword(os.Getenv("DEFAULT_PASSWORD"))
 	builder.MongoDBURI(os.Getenv("MONGODB_URI"))
 	builder.MongoDBName(os.Getenv("MONGODB_NAME"))
+	builder.NatsURL(os.Getenv("NATS_URL"))
 
 	cfg, err := builder.Build()
 	if err != nil {
@@ -111,7 +112,7 @@ func main() {
 	client, _ := mongo.Connect(opts)
 
 	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, cfg.MongoDBName)
-	secretService := service.NewSecretService(secretRepo, events.NewNatsPublisher(), cfg.DefaultPassword, cfg.SecretKey)
+	secretService := service.NewSecretService(secretRepo, events.NewNatsPublisher(cfg.NatsURL), cfg.DefaultPassword, cfg.SecretKey)
 
 	secretHandler := secret.NewHandler(secretService)
 	healthHandler := health.NewHandler(cfg.MongoDBURI)

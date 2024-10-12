@@ -82,6 +82,7 @@ Build container from image (Example):
   -e DEFAULT_PASSWORD=@myPassword \
   -e MONGODB_URI=mongodb://root:example@bernardosecades.com:27017 \
   -e MONGODB_NAME=share_secret \
+  -e NATS_URL=nats://168.119.167.200:4222 \
   bernardosecades/zaslink-api:latest
 `
 

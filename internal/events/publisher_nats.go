@@ -3,26 +3,24 @@ package events
 import (
 	"context"
 	"encoding/json"
-	"fmt"
-
-	"github.com/bernardosecades/zaslink/pkg/masking"
 
 	"github.com/nats-io/nats.go"
 
 	"github.com/bernardosecades/zaslink/pkg/events"
+	"github.com/bernardosecades/zaslink/pkg/masking"
 )
 
 type NatsPublisher struct {
+	url string
 }
 
-func NewNatsPublisher() *NatsPublisher {
-	return &NatsPublisher{}
+func NewNatsPublisher(url string) *NatsPublisher {
+	return &NatsPublisher{url: url}
 }
 
 func (m *NatsPublisher) Publish(_ context.Context, event events.Event[map[string]string]) error {
-	nc, err := nats.Connect(nats.DefaultURL)
+	nc, err := nats.Connect(m.url)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 	defer nc.Close()
@@ -34,18 +32,14 @@ func (m *NatsPublisher) Publish(_ context.Context, event events.Event[map[string
 	event.Data["privateId"] = masking.MaskString(event.Data["id"])
 	message, err := json.MarshalIndent(event.Data, "", "    ")
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
 
 	// Publish the message
 	err = nc.Publish(subject, message)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
-
-	fmt.Println("Published message to ", string(message))
 
 	return nil
 }

@@ -11,6 +11,7 @@ type Config struct {
 	DefaultPassword string
 	MongoDBURI      string
 	MongoDBName     string
+	NatsURL         string
 }
 
 type Builder struct {
@@ -19,6 +20,7 @@ type Builder struct {
 	defaultPassword string
 	mongoDBURI      string
 	mongoDBName     string
+	natsURL         string
 }
 
 // Port	Go doesn’t support optional parameters in function signatures so we use builder pattern (Another approach is the functional options pattern)
@@ -51,6 +53,11 @@ func (cb *Builder) MongoDBName(name string) *Builder {
 	return cb
 }
 
+func (cb *Builder) NatsURL(url string) *Builder {
+	cb.natsURL = url
+	return cb
+}
+
 func (cb *Builder) Build() (Config, error) {
 	portConverted, err := strconv.Atoi(cb.port)
 	if err != nil {
@@ -75,11 +82,16 @@ func (cb *Builder) Build() (Config, error) {
 		return Config{}, fmt.Errorf("mongodb name should not be empty")
 	}
 
+	if cb.natsURL == "" {
+		return Config{}, fmt.Errorf("nats URL should not be empty")
+	}
+
 	return Config{
 		Port:            cb.port,
 		SecretKey:       cb.secretKey,
 		DefaultPassword: cb.defaultPassword,
 		MongoDBURI:      cb.mongoDBURI,
 		MongoDBName:     cb.mongoDBName,
+		NatsURL:         cb.natsURL,
 	}, nil
 }

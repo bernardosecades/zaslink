@@ -43,7 +43,7 @@ func main() {
 
 	// LOGGER
 	loggerOutput := zerolog.ConsoleWriter{Out: os.Stdout}
-	logger := zerolog.New(loggerOutput)
+	logger := zerolog.New(loggerOutput).With().Timestamp().Logger()
 
 	// CONFIG
 	builder := config.Builder{}
@@ -111,13 +111,12 @@ func main() {
 	client, _ := mongo.Connect(opts)
 
 	secretRepo := repository.NewMongoDbSecretRepository(ctx, client, cfg.MongoDBName)
-	secretService := service.NewSecretService(secretRepo, events.NewDummyPublisher(), cfg.DefaultPassword, cfg.SecretKey)
+	secretService := service.NewSecretService(secretRepo, events.NewNatsPublisher(), cfg.DefaultPassword, cfg.SecretKey)
 
 	secretHandler := secret.NewHandler(secretService)
 	healthHandler := health.NewHandler(cfg.MongoDBURI)
 
 	// TODO move the router to internal package
-
 	// ROUTER
 	router := mux.NewRouter()
 
@@ -136,7 +135,6 @@ func main() {
 	router.Use(observabilityMiddleware.NewMetricMiddleware(meter))
 
 	// TODO Instrument the HTTP Server
-
 	// SERVER
 	server := &http.Server{
 		Addr:              fmt.Sprintf(":%s", cfg.Port),
@@ -163,8 +161,6 @@ func main() {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{
 			"https://docs.zaslink.com",
-			"https://docs.zaslink.com/",
-			"https://www.zaslink.com/",
 			"https://www.zaslink.com",
 		},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
@@ -176,12 +172,16 @@ func main() {
 
 	// TIMEOUT endpoints handlers
 	routerWithMiddlewares := http.TimeoutHandler(routerWithCors, timeOutHandlers, "Timeout!")
-
 	http.Handle("/", routerWithMiddlewares)
-	log.Info().Msg(fmt.Sprintf("HTTP server listening on port %s", server.Addr))
+
+	logger.Info().
+		Str("PORT", server.Addr).
+		Msg("HTTP server listening on port")
 
 	// RUN SERVER
 	if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-		log.Fatal().Msg(fmt.Sprintf("HTTP server error: %v", err))
+		logger.Fatal().
+			Err(err).
+			Msg("failed to start server")
 	}
 }

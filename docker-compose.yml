@@ -11,6 +11,15 @@ services:
     ports:
       - 27017:27017
 
+  nats:
+    container_name: nats
+    image: nats:latest
+    ports:
+      - 4222:4222
+  nats-box:
+    container_name: nats-box
+    image: synadia/nats-box:latest
+
   mongo-express:
     image: mongo-express
     restart: always

@@ -46,11 +46,21 @@ jobs:
           password: ${{secrets.DOCKERHUB_PASSWORD}}
         run: |
           docker login -u $username -p $password
-      - name: build the docker image
-        id: build-docker-image
+      ## API
+      - name: API build the docker image
+        id: api-build-docker-image
         run: |
           ls -la 
-          docker build . -f Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/zaslink-api:latest
-      - name: push the docker image
-        id: push-docker-image
+          docker build . -f .docker/api/Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/zaslink-api:latest
+      - name: API push the docker image
+        id: api-push-docker-image
         run: docker push ${{secrets.DOCKERHUB_USERNAME}}/zaslink-api:latest
+      ## NOTIFIER
+      - name: NOTIFIER build the docker image
+        id: notifier-build-docker-image
+        run: |
+          ls -la 
+          docker build . -f .docker/api/Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/zaslink-notiier:latest
+      - name: NOTIFIER push the docker image
+        id: notifier-push-docker-image
+        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/zaslink-notifier:latest

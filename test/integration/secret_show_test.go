@@ -52,7 +52,7 @@ func TestShowSecretHandler(t *testing.T) {
 	assert.NoError(t, err)
 
 	secretRepository := repository.NewMongoDbSecretRepository(ctx, client, DBNameTest)
-	secretService := service.NewSecretService(secretRepository, events.NewDummyPublisher(), defaultPwd, secretKey)
+	secretService := service.NewSecretService(secretRepository, events.NatsPublisher(), defaultPwd, secretKey)
 	secretHandler := secret.NewHandler(secretService)
 
 	// load fixtures

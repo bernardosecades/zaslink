@@ -32,6 +32,7 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -H bernardosecades.com >> ~/.ssh/known_hosts          
 
+      # API
       - name: Deploy to Server - API
         env: # Pass your secrets as environment variables
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -39,5 +40,12 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           MONGODB_NAME: ${{ secrets.MONGODB_NAME }}
         run: ./scripts/deploy_api.sh
+      # NOTIFIER
+      - name: Deploy to Server - NOTIFIER
+        env: # Pass your secrets as environment variables
+          NOTIFIER_TELEGRAM_BOT_TOKEN: ${{ secrets.NOTIFIER_TELEGRAM_BOT_TOKEN }}
+          NOTIFIER_TELEGRAM_USER_ID: ${{ secrets.NOTIFIER_TELEGRAM_USER_ID }}
+        run: ./scripts/deploy_notifier.sh
+      # SWAGGER UI
       - name: Deploy to Server - SWAGGER UI
         run: ./scripts/deploy_swagger_ui.sh

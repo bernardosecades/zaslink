@@ -60,7 +60,7 @@ jobs:
         id: notifier-build-docker-image
         run: |
           ls -la 
-          docker build . -f .docker/api/Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/zaslink-notiier:latest
+          docker build . -f .docker/notifier/Dockerfile -t ${{secrets.DOCKERHUB_USERNAME}}/zaslink-notifier:latest
       - name: NOTIFIER push the docker image
         id: notifier-push-docker-image
         run: docker push ${{secrets.DOCKERHUB_USERNAME}}/zaslink-notifier:latest

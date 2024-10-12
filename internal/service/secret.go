@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"time"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/bernardosecades/zaslink/internal/entity"
 	customEvents "github.com/bernardosecades/zaslink/internal/events"

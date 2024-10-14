@@ -125,6 +125,9 @@ func main() {
 	v1.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
 	v1.HandleFunc("/secret/{private_id}", secretHandler.DeleteSecret).Methods(http.MethodDelete)
 	v1.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
+	v1.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte("pong"))
+	}).Methods(http.MethodGet)
 
 	router.HandleFunc("/healthz", healthHandler.Healthz).Methods(http.MethodGet)
 	// Used to expose metrics in prometheus format

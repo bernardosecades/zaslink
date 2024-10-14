@@ -15,9 +15,11 @@
 6. 🌿 [Env variables](#env-variables)
 7. ☑️ [Code analysis and consistency](#code-analysis-and-consistency)
 8. 🐙 [GitHub Actions](#github-actions)
-9. ✨ [Misc commands](#misc-commands)
-10. ©️ [License](#license)
-11. Observability (WIP)
+9.  [Structure folder](#structure-folder) 
+10. [Stack](#stack)
+11. ✨ [Misc commands](#misc-commands)
+12. ©️ [License](#license)
+13. Observability (WIP)
 
 ## <a name="what-is-this-api">🐺 What is this API ?</a>
 
@@ -180,6 +182,16 @@ You can find all the workflows in the **[.github/workflows directory](https://gi
 |:------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:------------------:|
 |               **[⚙️ Build](https://github.com/bernardosecades/zaslink/actions/workflows/build.yml)**               |                     Execute linter, unit test, integration test and if everything is OK build docker image and push in docker hub                                            | `push` on `master` | 
 | **[🚀 Deploy To Production Workflow](https://github.com/bernardosecades/zaslink/actions/workflows/deploy.yml)**    | Connect to machine via ssh and with last docker image run new containers. As well API DOCS (Swagger UI) is deployed (it will use file open api V3: docs/openapi/secret.yaml) |      `manual`      | 
+
+## <a name="structure-folder">Structure folder</a>
+
+We follow [Standard Go Project Layout](https://github.com/golang-standards/project-layout)
+
+## <a name="stack">Stack</a>
+
+- mongo DB
+- NATS (notifier)
+- testcontainers for integration test (https://testcontainers.com/)
 
 ## <a name="license">©️ License</a>
 

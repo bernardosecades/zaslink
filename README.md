@@ -130,14 +130,25 @@ Targets:
 
 ## <a name="env-variables">🌿 Env variables</a>
 
-Environment variables are :
+Environment variables are (API):
 
-|         Name         |                   Description                   | Required |                 Default value                  | 
-|:--------------------:|:-----------------------------------------------:|:--------:|:----------------------------------------------:|
-|     `SECRET_KEY`     |              Used to encrypt data               |    ✅     |       `11111111111111111111111111111111`       | 
-|  `DEFAULT_PASSWORD`  | Used to encrypt data (combined with secret key) |    ✅     |                 `@myPassword`                  | 
-|    `MONGODB_URI`     |       url mongo db with user and password       |    ✅     |    `mongodb://root:example@localhost:27017`    | 
-| `MONGODB_NAME`       |                  mongo db name                  |    ✅     |                 `share_secret`                 | 
+|        Name        |                   Description                   | Required |                     Default value                      | 
+|:------------------:|:-----------------------------------------------:|:--------:|:------------------------------------------------------:|
+|    `SECRET_KEY`    |              Used to encrypt data               |    ✅     |           `11111111111111111111111111111111`           | 
+| `DEFAULT_PASSWORD` | Used to encrypt data (combined with secret key) |    ✅     |                     `@myPassword`                      | 
+|   `MONGODB_URI`    |       url mongo db with user and password       |    ✅     |        `mongodb://root:example@localhost:27017`        | 
+|   `MONGODB_NAME`   |                  mongo db name                  |    ✅     |                     `share_secret`                     | 
+|    `NATS_URL `     |                    nats url                     |    ✅     |                `nats://127.0.0.1:4222`                 | 
+
+
+Environment variables are (NOTIFIER):
+
+|             Name              |    Description     | Required |      Default value      | 
+|:-----------------------------:|:------------------:|:--------:|:-----------------------:|
+|          `NATS_URL `          |      nats url      |    ✅     | `nats://127.0.0.1:4222` | 
+| `NOTIFIER_TELEGRAM_BOT_TOKEN` | bot token telegram |    ✅     |         `-----`         |
+| `NOTIFIER_TELEGRAM_USER_ID`   |  telegram user id  |    ✅     |         `-----`         |
+ 
 
 
 

@@ -125,8 +125,11 @@ func main() {
 	v1.HandleFunc("/secret/{id}", secretHandler.RetrieveSecret).Methods(http.MethodGet)
 	v1.HandleFunc("/secret/{private_id}", secretHandler.DeleteSecret).Methods(http.MethodDelete)
 	v1.HandleFunc("/secret", secretHandler.CreateSecret).Methods(http.MethodPost)
-	v1.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
-		writer.Write([]byte("pong"))
+	v1.HandleFunc("/ping", func(writer http.ResponseWriter, _ *http.Request) {
+		_, err = writer.Write([]byte("pong"))
+		if err != nil {
+			fmt.Println(err)
+		}
 	}).Methods(http.MethodGet)
 
 	router.HandleFunc("/healthz", healthHandler.Healthz).Methods(http.MethodGet)

@@ -1,5 +1,6 @@
 SHELL := /bin/bash # Use bash syntax
 
+
 # Optional colors to beautify output
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
